@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using MSAddonLib.Util;
 
-namespace MSAddonChecker.Configuration
+namespace StormCat.Configuration
 {
     public class ConfigurationFileBase
     {

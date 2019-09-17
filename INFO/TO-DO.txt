@@ -1,78 +1,18 @@
 
 StormCat - TO-DO
 ----------------
-- Tabla addons:
-	- doble-click: -> List of Assets (table)
-	- Description
-	-> Excel
-	
-- Gestión/List of Databases -> CATALOGUES
-	Create
-	Rename
-	Drop
-	Save
-	Save As
-	Save Auto (check) - con versions rotando
-	
-- Configuración:
-	- Renombrar fichero
-	- Default DB
-	
-Tabs:
-	Catalogues: new save edit select delete  EDIT DESCRIPTION <-  nueva property    Set default DB
-	Addons: -> Filter   Delete  Add  Refresh  (select multiple)  
-			doble-click: -> List of Assets (table)
-			Descripción
-			-> Excel
-	Search Assets
-	Check
-	
-Export Excel: catch Exceptions
 
-* Better inline documentation of code
-
-AddonLib: Más coherencia en la captura de errores -> Issues
-
->> AddonPackage.ToString(): si HasIssues: print!
+AddonLib: 
+	AddonPackage: 
+		- Más coherencia en la captura de errores -> Issues
+		- ToString(): si HasIssues: print!
 
 Al importar: Si alguno issues: show:
+	
+* Better inline documentation of code
+----
 
 
------------------------------------------------------------------
-Hecho:
-
-- Select manually Moviestorm paths
-
-- Análisis de Addons y Content Packs instalados (sería reutilizable en MSCompanion): lento (crea un archivo temporal)
 
 
-- Descripción contenido:
-	- Materials: no aparecen en MANIFEST, sino en un fichero Materials.materials
-		\Data\Materials\<loc>
-		donde <loc>::= Wall | Floor | Ceiling
-		Es un vector de materiales, con nombre, descripción y texturas asociadas
-		Ver: 
-			TODO general de Devel
-			Folder !Tools
-	- SFX
-	- Decals: bodypart decals HEAD and exists in addon
-	- Props: tipo (en DESCRIPTOR): prop/autoanim/pyroprop...
-	- Has animation info (StateMachine, Verb)
-	- Props: animations
-	Skys - Data/Sky/* (No *_preview.*)
-	=> DOCUMENTAR EN BIBLIA!
-
-+ description file analyzer (from assetData.jar - traer mirror extracting code from MSAddonHacker)
-	Bodypart: basic|morph
-	Materials (no en assetData.jar)
-	Verbs (no en assetData.jar)
-	DESCRIPTOR (props)
-
-- Formato tabla:
-	Addon name
-		path
-	Asset
-		type: movie  stock prop bodypart bodyanimation  sound filter sfx materials
-		name
-		path
 

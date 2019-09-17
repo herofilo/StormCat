@@ -6,10 +6,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using MSAddonChecker.Misc;
+using StormCat.Misc;
 using MSAddonLib.Persistence.AddonDB;
 
-namespace MSAddonChecker
+namespace StormCat
 {
     public partial class AssetSearchResultForm : Form
     {
@@ -64,7 +64,9 @@ namespace MSAddonChecker
 
             string file = sfdExportExcel.FileName;
             string errorText;
-            ExcelExporter.ExcelExport(dgvAssets, file, "Assets", out errorText);
+            if(!ExcelExporter.ExcelExport(dgvAssets, file, "Assets", out errorText))
+                MessageBox.Show($@"An error has happened while trying to export to Excel:\n{errorText}",
+                    @"Exportation error", MessageBoxButtons.OK);
         }
     }
 }

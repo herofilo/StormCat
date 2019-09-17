@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 
-namespace MSAddonChecker.Misc
+namespace StormCat.Misc
 {
     /// <summary>
     /// Provides a generic collection that supports data binding and additionally supports sorting.

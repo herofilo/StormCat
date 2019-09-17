@@ -1,11 +1,11 @@
-MSAddonChecker, by jamoram
+StormCat, by jamoram
 
-Current version: 1.5.0 [INTERNAL]
-Last Update: 2019/09/07
+Current version: 1.7.1 
+Last Update: 2019/09/17
 
 A little tool for:
-	1) Creating and managing multiple independent databases of Moviestorm addons, both installed and as addon files:
-		- Databases can be searched for specific assets according to a series of criteria.
+	1) Creating and managing multiple independent catalogues of Moviestorm addons, both installed and as addon files:
+		- Catalogues can be searched for specific assets according to a series of criteria.
 		- Asset lists can be exported as Microsoft Excel 2007 workbooks.
 	2) Checking the the validity and listing the contents of your valid:
 		- Moviestorm addon/content package files (.addon)
@@ -14,11 +14,26 @@ A little tool for:
 	4) Optionally restoring Moviestorm addon files disguised as archive files
 
 
-WHAT'S NEW (1.5.0):
+WHAT'S NEW (1.7.1):
 -----------
-* Support for multiple independent databases of Moviestorm addons.
-	- Databases can be searched for specific assets according to a series of criteria.
-	- Asset lists can be exported as Microsoft Excel 2007 workbooks.
+* Major overhaul of the User Interface
+* (Hopefully) Much better and more complete catalogue management
+* New types of "assets" listed and searchable:
+	Animations
+	Stocks
+	Demo/Start Movies
+* Addon catalogue table:
+	- Double-click: shows contents for selected row
+	- New option in contextual menu: export to Excel
+	- Added columns (AddonBasicInfo): 
+		Description
+		Statiscs of assets 
+	- Autosave
+* Bugs fixed:
+	- Searching assets: 
+		- when an asset name is specified
+		- when the type of addon is specified (official content pack/third-party addon)
+	- Some other minor bugs
 
 Please refer to the VERSION HISTORY section for a complete history of changes in the program
 
@@ -66,12 +81,17 @@ KNOWN ISSUES:
 When selecting the 'Report Only Issues' some spurious output may be generated as it tries to inspect folders and the contents of archive files.
 
 
+REQUIREMENTS
+------------
+Microsoft .NET runtime version 4.x must be installed for the application to be properly executed. Otherwise, an error will happen on launching.
+
+
 SOURCE CODE FOR THE APPLICATION COMPONENTS AND THIRD-PARTY LIBRARIES:
 ---------------------------------------------------------------------
 The source code for the application is available from its GitHub repository (https://github.com/herofilo/MSAddonChecker)
 The source code for the MSAddonLib library can be downloaded from https://github.com/herofilo/MSAddonLib
 SevenZipSharp can be obtained from its home site (https://archive.codeplex.com/?p=sevenzipsharp)
-
+Other libraries will be restored automatically by the Nuget Package Restore system.
 
 CONTACT INFO
 ------------
@@ -80,8 +100,29 @@ Suggestions for improvements and bug reports can be addressed to the email accou
 
 VERSION HISTORY
 ---------------
-* v1.5.0 (20190907) [INTERNAL]
-	Support for multiple independent databases of Moviestorm addons.
+* v1.7.1 (20190917):
+	- Major overhaul of the User Interface
+	- (Hopefully) Much better and more complete catalogue management
+	- New types of "assets" listed and searchable:
+		Animations
+		Stocks
+		Demo/Start Movies
+	- Addon catalogue table:
+		- Double-click: shows contents for selected row
+		- New option in contextual menu: export to Excel
+		- Added columns (AddonBasicInfo): 
+			Description
+			Statiscs of assets 
+		- Autosave
+	- Bugs fixed:
+		- Searching assets: 
+			- when an asset name is specified
+			- when the type of addon is specified (official content pack/third-party addon)
+		- Some other minor bugs
+
+* v1.5.0 (20190907) 
+	Support for multiple independent catalogues of Moviestorm addons.
+	Application name changed to StormCat
 
 * v1.3.0 (20190831): [INTERNAL]
 	Syncing version number with MSAddonLib's

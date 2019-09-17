@@ -1,4 +1,4 @@
-﻿namespace MSAddonChecker
+﻿namespace StormCat
 {
     partial class AssetSearchResultForm
     {
@@ -29,8 +29,20 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AssetSearchResultForm));
             this.dgvAssets = new System.Windows.Forms.DataGridView();
+            this.cmAssetTable = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmiSaveToExcel = new System.Windows.Forms.ToolStripMenuItem();
+            this.sfdExportExcel = new System.Windows.Forms.SaveFileDialog();
+            this.lblSummary = new System.Windows.Forms.Label();
+            this.pbSaveToExcel = new System.Windows.Forms.Button();
             this.colAddonName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAddonPublisher = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAssetType = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -42,11 +54,6 @@
             this.colInstalled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colContentPack = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cmAssetTable = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cmiSaveToExcel = new System.Windows.Forms.ToolStripMenuItem();
-            this.sfdExportExcel = new System.Windows.Forms.SaveFileDialog();
-            this.lblSummary = new System.Windows.Forms.Label();
-            this.pbSaveToExcel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAssets)).BeginInit();
             this.cmAssetTable.SuspendLayout();
             this.SuspendLayout();
@@ -78,105 +85,6 @@
             this.dgvAssets.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAssets.Size = new System.Drawing.Size(860, 533);
             this.dgvAssets.TabIndex = 1;
-            // 
-            // colAddonName
-            // 
-            this.colAddonName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colAddonName.DataPropertyName = "AddonName";
-            this.colAddonName.HeaderText = "Addon";
-            this.colAddonName.Name = "colAddonName";
-            this.colAddonName.ReadOnly = true;
-            this.colAddonName.Width = 63;
-            // 
-            // colAddonPublisher
-            // 
-            this.colAddonPublisher.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colAddonPublisher.DataPropertyName = "AddonPublisher";
-            this.colAddonPublisher.HeaderText = "Publisher";
-            this.colAddonPublisher.Name = "colAddonPublisher";
-            this.colAddonPublisher.ReadOnly = true;
-            this.colAddonPublisher.Width = 75;
-            // 
-            // colAssetType
-            // 
-            this.colAssetType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colAssetType.DataPropertyName = "AssetType";
-            this.colAssetType.HeaderText = "Asset Type";
-            this.colAssetType.Name = "colAssetType";
-            this.colAssetType.ReadOnly = true;
-            this.colAssetType.Width = 85;
-            // 
-            // colAssetSubtype
-            // 
-            this.colAssetSubtype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colAssetSubtype.DataPropertyName = "AssetSubType";
-            this.colAssetSubtype.HeaderText = "Subtype";
-            this.colAssetSubtype.Name = "colAssetSubtype";
-            this.colAssetSubtype.ReadOnly = true;
-            this.colAssetSubtype.Width = 71;
-            // 
-            // colName
-            // 
-            this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colName.DataPropertyName = "Name";
-            this.colName.HeaderText = "Name";
-            this.colName.Name = "colName";
-            this.colName.ReadOnly = true;
-            this.colName.Width = 60;
-            // 
-            // colTags
-            // 
-            this.colTags.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colTags.DataPropertyName = "Tags";
-            this.colTags.HeaderText = "Tags";
-            this.colTags.Name = "colTags";
-            this.colTags.ReadOnly = true;
-            this.colTags.Width = 56;
-            // 
-            // colExtraInfo
-            // 
-            this.colExtraInfo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colExtraInfo.DataPropertyName = "ExtraInfo";
-            this.colExtraInfo.HeaderText = "Extra Info";
-            this.colExtraInfo.Name = "colExtraInfo";
-            this.colExtraInfo.ReadOnly = true;
-            this.colExtraInfo.Width = 77;
-            // 
-            // colFree
-            // 
-            this.colFree.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.colFree.DataPropertyName = "Free";
-            this.colFree.HeaderText = "Free";
-            this.colFree.Name = "colFree";
-            this.colFree.ReadOnly = true;
-            this.colFree.Width = 34;
-            // 
-            // colInstalled
-            // 
-            this.colInstalled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.colInstalled.DataPropertyName = "Installed";
-            this.colInstalled.HeaderText = "Installed";
-            this.colInstalled.Name = "colInstalled";
-            this.colInstalled.ReadOnly = true;
-            this.colInstalled.Width = 52;
-            // 
-            // colContentPack
-            // 
-            this.colContentPack.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.colContentPack.DataPropertyName = "ContentPack";
-            this.colContentPack.HeaderText = "Cont.Pack";
-            this.colContentPack.Name = "colContentPack";
-            this.colContentPack.ReadOnly = true;
-            this.colContentPack.Width = 63;
-            // 
-            // colLocation
-            // 
-            this.colLocation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colLocation.DataPropertyName = "Location";
-            this.colLocation.HeaderText = "Location";
-            this.colLocation.Name = "colLocation";
-            this.colLocation.ReadOnly = true;
-            this.colLocation.Width = 73;
             // 
             // cmAssetTable
             // 
@@ -220,6 +128,126 @@
             this.pbSaveToExcel.UseVisualStyleBackColor = true;
             this.pbSaveToExcel.Click += new System.EventHandler(this.pbSaveToExcel_Click);
             // 
+            // colAddonName
+            // 
+            this.colAddonName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colAddonName.DataPropertyName = "AddonName";
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.colAddonName.DefaultCellStyle = dataGridViewCellStyle1;
+            this.colAddonName.HeaderText = "Addon";
+            this.colAddonName.Name = "colAddonName";
+            this.colAddonName.ReadOnly = true;
+            this.colAddonName.Width = 63;
+            // 
+            // colAddonPublisher
+            // 
+            this.colAddonPublisher.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colAddonPublisher.DataPropertyName = "AddonPublisher";
+            this.colAddonPublisher.HeaderText = "Publisher";
+            this.colAddonPublisher.Name = "colAddonPublisher";
+            this.colAddonPublisher.ReadOnly = true;
+            this.colAddonPublisher.Width = 75;
+            // 
+            // colAssetType
+            // 
+            this.colAssetType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colAssetType.DataPropertyName = "AssetType";
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.colAssetType.DefaultCellStyle = dataGridViewCellStyle2;
+            this.colAssetType.HeaderText = "Asset Type";
+            this.colAssetType.Name = "colAssetType";
+            this.colAssetType.ReadOnly = true;
+            this.colAssetType.Width = 85;
+            // 
+            // colAssetSubtype
+            // 
+            this.colAssetSubtype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colAssetSubtype.DataPropertyName = "AssetSubType";
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.colAssetSubtype.DefaultCellStyle = dataGridViewCellStyle3;
+            this.colAssetSubtype.HeaderText = "Subtype";
+            this.colAssetSubtype.Name = "colAssetSubtype";
+            this.colAssetSubtype.ReadOnly = true;
+            this.colAssetSubtype.Width = 71;
+            // 
+            // colName
+            // 
+            this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colName.DataPropertyName = "Name";
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.colName.DefaultCellStyle = dataGridViewCellStyle4;
+            this.colName.HeaderText = "Name";
+            this.colName.Name = "colName";
+            this.colName.ReadOnly = true;
+            this.colName.Width = 60;
+            // 
+            // colTags
+            // 
+            this.colTags.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colTags.DataPropertyName = "Tags";
+            this.colTags.HeaderText = "Tags";
+            this.colTags.Name = "colTags";
+            this.colTags.ReadOnly = true;
+            this.colTags.Width = 56;
+            // 
+            // colExtraInfo
+            // 
+            this.colExtraInfo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colExtraInfo.DataPropertyName = "ExtraInfo";
+            this.colExtraInfo.HeaderText = "Extra Info";
+            this.colExtraInfo.Name = "colExtraInfo";
+            this.colExtraInfo.ReadOnly = true;
+            this.colExtraInfo.Width = 77;
+            // 
+            // colFree
+            // 
+            this.colFree.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.colFree.DataPropertyName = "Free";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
+            dataGridViewCellStyle5.NullValue = false;
+            this.colFree.DefaultCellStyle = dataGridViewCellStyle5;
+            this.colFree.HeaderText = "Free";
+            this.colFree.Name = "colFree";
+            this.colFree.ReadOnly = true;
+            this.colFree.Width = 34;
+            // 
+            // colInstalled
+            // 
+            this.colInstalled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.colInstalled.DataPropertyName = "Installed";
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
+            dataGridViewCellStyle6.NullValue = false;
+            this.colInstalled.DefaultCellStyle = dataGridViewCellStyle6;
+            this.colInstalled.HeaderText = "Installed";
+            this.colInstalled.Name = "colInstalled";
+            this.colInstalled.ReadOnly = true;
+            this.colInstalled.Width = 52;
+            // 
+            // colContentPack
+            // 
+            this.colContentPack.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.colContentPack.DataPropertyName = "ContentPack";
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
+            dataGridViewCellStyle7.NullValue = false;
+            this.colContentPack.DefaultCellStyle = dataGridViewCellStyle7;
+            this.colContentPack.HeaderText = "Cont.Pack";
+            this.colContentPack.Name = "colContentPack";
+            this.colContentPack.ReadOnly = true;
+            this.colContentPack.Width = 63;
+            // 
+            // colLocation
+            // 
+            this.colLocation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colLocation.DataPropertyName = "Location";
+            this.colLocation.HeaderText = "Location";
+            this.colLocation.Name = "colLocation";
+            this.colLocation.ReadOnly = true;
+            this.colLocation.Width = 73;
+            // 
             // AssetSearchResultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -242,6 +270,11 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dgvAssets;
+        private System.Windows.Forms.ContextMenuStrip cmAssetTable;
+        private System.Windows.Forms.ToolStripMenuItem cmiSaveToExcel;
+        private System.Windows.Forms.SaveFileDialog sfdExportExcel;
+        private System.Windows.Forms.Label lblSummary;
+        private System.Windows.Forms.Button pbSaveToExcel;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAddonName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAddonPublisher;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAssetType;
@@ -253,10 +286,5 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn colInstalled;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colContentPack;
         private System.Windows.Forms.DataGridViewTextBoxColumn colLocation;
-        private System.Windows.Forms.ContextMenuStrip cmAssetTable;
-        private System.Windows.Forms.ToolStripMenuItem cmiSaveToExcel;
-        private System.Windows.Forms.SaveFileDialog sfdExportExcel;
-        private System.Windows.Forms.Label lblSummary;
-        private System.Windows.Forms.Button pbSaveToExcel;
     }
 }

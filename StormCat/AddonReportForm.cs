@@ -8,7 +8,7 @@ using System.Media;
 using System.Text;
 using System.Windows.Forms;
 
-namespace MSAddonChecker
+namespace StormCat
 {
     public partial class AddonReportForm : Form
     {

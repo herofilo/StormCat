@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using MSAddonChecker.Configuration;
+using StormCat.Configuration;
 using MSAddonLib.Util;
 using MSAddonLib.Util.Persistence;
 
-namespace MSAddonChecker
+namespace StormCat
 {
     public partial class SetupForm : Form
     {

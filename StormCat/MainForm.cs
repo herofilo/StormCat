@@ -5,17 +5,18 @@ using System.Drawing;
 using System.IO;
 using System.Media;
 using System.Windows.Forms;
-using MSAddonChecker.Configuration;
-using MSAddonChecker.Domain;
-using MSAddonChecker.Misc;
+using StormCat.Configuration;
+using StormCat.Domain;
+using StormCat.Misc;
 using MSAddonLib.Domain;
 using MSAddonLib.Domain.Addon;
 using MSAddonLib.Persistence;
 using MSAddonLib.Persistence.AddonDB;
 using MSAddonLib.Util;
 using MSAddonLib.Util.Persistence;
+using StormCat.Persistence;
 
-namespace MSAddonChecker
+namespace StormCat
 {
     public partial class MainForm : Form
     {
@@ -30,7 +31,9 @@ namespace MSAddonChecker
 
         private MoviestormPaths _moviestormPaths = null;
 
-        private string _currentAddonDatabaseFilename = AddonPackageSet.DefaultAddonPackageSetFileName;
+        private CataloguesIndex _cataloguesIndex = null;
+
+        private string _currentAddonDatabaseName = Path.GetFileNameWithoutExtension(AddonPackageSet.DefaultAddonPackageSetFileName);
 
         private AddonPackageSet _addonPackageSet = null;
 
@@ -75,7 +78,11 @@ namespace MSAddonChecker
             string errorText;
             Utils.ResetTempFolder(out errorText);
 
+            LoadCataloguesInfo();
+
             LoadAddonDatabase();
+
+            RefreshCatalogueIndexTable(_cataloguesIndex.DefaultAddonDatabase);
 
             ControlsInitialization();
 
@@ -83,33 +90,72 @@ namespace MSAddonChecker
             if (_arguments != null && _arguments.Length > 0)
             {
                 if (PreScanArguments())
+                {
+                    tcMainForm.SelectedTab = tpChecking;
                     ProcessArguments(_arguments);
+                }
             }
 
 
         }
 
+
+
+
+        private void LoadCataloguesInfo()
+        {
+            string errorText;
+            if (!File.Exists(CataloguesIndex.CataloguesIndexFilePath))
+            {
+                _cataloguesIndex = CataloguesIndex.Initialize(_moviestormPaths, out errorText);
+                if (_cataloguesIndex == null)
+                {
+                    tbLog.AppendText($"ERROR: initializing catalogues information: {errorText}\n");
+                    return;
+                }
+            }
+            else
+            {
+                _cataloguesIndex = CataloguesIndex.Load(out errorText);
+                if (_cataloguesIndex == null)
+                {
+                    tbLog.AppendText($"ERROR: loading catalogues information: {errorText}\n");
+                    return;
+                }
+            }
+        }
+
+
+
+
         private void LoadAddonDatabase()
         {
             string errorText;
 
-            if (!File.Exists(AddonPackageSet.DefaultAddonPackageSetFileName))
+            string defaultCatalogue = _cataloguesIndex?.DefaultAddonDatabaseFilename ??
+                                      AddonPackageSet.DefaultAddonPackageSetFileName;
+
+            string defaultCatalogueName = Path.GetFileNameWithoutExtension(defaultCatalogue);
+
+            _currentAddonDatabaseName = defaultCatalogueName;
+
+            if (!File.Exists(defaultCatalogue))
             {
-                InitializeAddonDatabase(true, "No default addon Database found");
+                InitializeAddonDatabase(true, $"No default addon Catalogue ({defaultCatalogueName}) found");
                 return;
             }
 
-            tbLog.AppendText("Loading Addon Database...\n");
-            _addonPackageSet = AddonPackageSet.Load(out errorText);
+            tbLog.AppendText($"Loading default Addon Catalogue ({defaultCatalogueName})...\n");
+            _addonPackageSet = AddonPackageSet.Load(out errorText, defaultCatalogue);
             if (_addonPackageSet == null)
             {
-                tbLog.AppendText($"  ERROR: loading Addon Database: {errorText}\n");
-                InitializeAddonDatabase(true, "Database couldn't be loaded");
+                tbLog.AppendText($"  ERROR: loading Addon Catalogue: {errorText}\n");
+                InitializeAddonDatabase(true, "Catalogue couldn't be loaded");
                 return;
             }
-            
 
-            tbLog.AppendText("   Addon Database successfully loaded:\n");
+
+            tbLog.AppendText($"   Addon Catalogue '{defaultCatalogueName}' successfully loaded:\n");
             tbLog.AppendText($"     Addons registered: {_addonPackageSet.Addons?.Count ?? 0}\n");
             tbLog.AppendText($"     Last updated: {_addonPackageSet.LastUpdate.ToString("s")}\n");
 
@@ -124,16 +170,16 @@ namespace MSAddonChecker
             if (pAskInitialize)
             {
                 populateDatabase = MessageBox.Show($"{pReason}. Would you like to create and initialize it?",
-                    "Initialize Database", MessageBoxButtons.YesNo) == DialogResult.Yes;
+                    "Initialize Catalogue", MessageBoxButtons.YesNo) == DialogResult.Yes;
             }
-            
-            tbLog.AppendText("Initializing Addon Database...\n");
+
+            tbLog.AppendText("Initializing Addon Catalogue...\n");
             _addonPackageSet = new AddonPackageSet(_moviestormPaths, null);
             DiskEntityBase.AddonPackageSet = _addonPackageSet;
 
             if (populateDatabase)
             {
-                tbLog.AppendText("Populating Addon Database. It can take a while...\n");
+                tbLog.AppendText("Populating Addon Catalogue. It can take a while...\n");
                 _addonPackageSet.InitializeDatabase();
             }
 
@@ -142,22 +188,22 @@ namespace MSAddonChecker
 
             string errorText;
             if (!_addonPackageSet.Save(out errorText))
-                tbLog.AppendText($"  ERROR: Addon Database couldn't be saved: {errorText}\n");
+                tbLog.AppendText($"  ERROR: Addon Catalogue couldn't be saved: {errorText}\n");
 
             _addonPackageSetTimeStamp = _addonPackageSet.LastUpdate;
         }
 
 
 
-        
+
         /// <summary>
         /// UI controls initialization
         /// </summary>
         private void ControlsInitialization()
         {
-            tcMainForm.SelectedIndex = 0;
+            tcMainForm.SelectedTab = tpDatabase;
 
-            lblAddonDbFilename.Text = _currentAddonDatabaseFilename;
+            lblAddonDbFilename.Text = _currentAddonDatabaseName;
 
             SetToolTips();
 
@@ -165,7 +211,7 @@ namespace MSAddonChecker
 
             cbascInstalled.SelectedIndex = cbascType.SelectedIndex = 0;
 
-            AddonDatabaseInitialization();
+            RefreshCatalogueAddonTable();
 
             LoadAndSetOptions();
         }
@@ -177,7 +223,7 @@ namespace MSAddonChecker
             tbLog.AppendText("Loading/Initializing Configuration...\n");
 
             string errorText;
-            if (File.Exists(ApplicationConfiguration.ConfigurationFilePath))
+            if (File.Exists(ApplicationConfiguration.ConfigurationFilePath) || File.Exists(ApplicationConfiguration.OldConfigurarionFilePath))
                 _applicationConfiguration = ApplicationConfiguration.Load(out errorText);
 
             if (_applicationConfiguration != null)
@@ -209,7 +255,7 @@ namespace MSAddonChecker
             foreach (string argument in _arguments)
             {
                 string lwrArgument = argument?.ToLower()?.Trim();
-                
+
                 if ((lwrArgument == "-onlyissues") || (lwrArgument == "-i"))
                 {
                     firstOption = ResetOptionsConditionally(firstOption);
@@ -263,7 +309,7 @@ namespace MSAddonChecker
                 arguments.Add(argument);
             }
 
-            if(!firstOption) 
+            if (!firstOption)
                 SetOptions(flags);
 
 
@@ -325,10 +371,14 @@ namespace MSAddonChecker
 
             // -----------------------------------------
 
-            formToolTip.SetToolTip(pbClearAddonDatabase, "Clear content of the Addon database");
-            formToolTip.SetToolTip(pbInitAddonDatabase, "Initialize Addon database with the addons currently installed");
-            formToolTip.SetToolTip(pbLoadAddonDatabase, "Load Addon database from file");
-            formToolTip.SetToolTip(pbSaveAddonDatabase, "Save current Addon database to file");
+            formToolTip.SetToolTip(cbAppendToDatabase, "Append valid addons to current catalogue");
+            formToolTip.SetToolTip(cbRefreshItemsInDatabase, "Refresh valid addons in current catalogue");
+
+            formToolTip.SetToolTip(pbClearAddonDatabase, "Clear content of the Addon catalogue");
+            formToolTip.SetToolTip(pbInitAddonDatabase, "Initialize Addon catalogue with the addons currently installed");
+            formToolTip.SetToolTip(pbSaveAddonDatabase, "Save current Addon catalogue to file");
+            formToolTip.SetToolTip(cbAutoSave, "Automatically saves the current catalogue whenever some change happens");
+
             formToolTip.SetToolTip(pbsResetAddonCriteria, "Reset Addon Search Criteria");
             formToolTip.SetToolTip(pbsResetAssetCriteria, "Reset Asset Search Criteria");
             formToolTip.SetToolTip(pbatClearAll, "Uncheck (deselect) every type of asset");
@@ -339,13 +389,26 @@ namespace MSAddonChecker
             formToolTip.SetToolTip(tbsAddonPublisher, "Addon Publisher (ignores case and accepts regular expressions)");
             formToolTip.SetToolTip(tbsAddonLocation, "Addon location (ignores case)");
             formToolTip.SetToolTip(tbsAssetName, "Asset Name (ignores case and accepts regular expressions)");
+            formToolTip.SetToolTip(tbAssetSubTypes, "List of Asset Subtype literals, separated by blanks (ignores case)");
             formToolTip.SetToolTip(tbsAssetTags, "List of Asset Tags, separated by blanks (ignores case)");
             formToolTip.SetToolTip(cbascInstalled, "Filter addons: installed/not installed/all");
             formToolTip.SetToolTip(cbascType, "Filter addons: official content packs/third party addons/both");
 
             formToolTip.SetToolTip(pbSetup1, "Application setup");
-            formToolTip.SetToolTip(dgvAddons, "Drag and drop here: addon files, folders, and/or ZIP/RAR/7z archives for adding to the Database\nRight-click for options");
-            formToolTip.SetToolTip(lblTipTable, "Drag and drop on the grid: addon files, folders, and/or ZIP/RAR/7z archives for adding to the Database\nRight-click for options");
+            formToolTip.SetToolTip(dgvAddons, "Drag and drop on the grid: addon files, folders, and/or ZIP/RAR/7z archives for adding to the Catalogue\nRight-click for options\nDouble-click row for listing addon contents");
+            formToolTip.SetToolTip(lblTipTable, "Drag and drop on the grid: addon files, folders, and/or ZIP/RAR/7z archives for adding to the Catalogue\nRight-click for options\nDouble-click row for listing addon contents");
+
+            formToolTip.SetToolTip(pbCatNew, "Create a new addon catalogue (and make it the current catalogue)");
+            formToolTip.SetToolTip(pbCatEdit, "Change the description of the selected catalogue");
+            formToolTip.SetToolTip(pbCatRename, "Rename the selected catalogue");
+            formToolTip.SetToolTip(pbCatCopy, "Create a copy of the selected catalogue");
+            formToolTip.SetToolTip(pbCatDelete, "Delete the selected catalogue");
+            formToolTip.SetToolTip(pbCatLoad, "Load from file the selected catalogue, replacing the currently active");
+            formToolTip.SetToolTip(pbCatSave, "Save to file the currently active catalogue");
+            formToolTip.SetToolTip(pbCatSetDefault, "Mark the selected catalogue as the one loaded when the program is launched");
+            formToolTip.SetToolTip(pbRefreshIndex, "Refresh the Index of Addon catalogues, according to the catalogue files found");
+
+            formToolTip.SetToolTip(cbListAlwaysAnimations, "List animations, regardless the addon includes verbs or not");
             
         }
 
@@ -391,7 +454,11 @@ namespace MSAddonChecker
             }
 
             if (processingFlags.HasFlag(ProcessingFlags.AppendToAddonPackageSet))
-                AddonDatabaseInitialization();
+            {
+                RefreshCatalogueAddonTable();
+                if(cbAutoSave.Checked && (_addonPackageSet.LastUpdate > _addonPackageSetTimeStamp))
+                   SaveCurrentAddonDatabase();
+            }
         }
 
 
@@ -416,7 +483,7 @@ namespace MSAddonChecker
                 if (cbAppendToDatabase.Checked)
                 {
                     processingFlags |= ProcessingFlags.AppendToAddonPackageSet;
-                    if(cbRefreshItemsInDatabase.Checked)
+                    if (cbRefreshItemsInDatabase.Checked)
                         processingFlags |= ProcessingFlags.AppendToAddonPackageSetForceRefresh;
                 }
             }
@@ -535,27 +602,16 @@ namespace MSAddonChecker
             {
                 if (_addonPackageSetTimeStamp < _addonPackageSet.LastUpdate)
                 {
-                    if (string.IsNullOrEmpty(_currentAddonDatabaseFilename))
+                    if (!string.IsNullOrEmpty(_currentAddonDatabaseName))
                     {
-                        sfdSaveAddonDb.InitialDirectory = Utils.GetExecutableDirectory();
-                        sfdSaveAddonDb.FileName = AddonPackageSet.DefaultAddonPackageSetFileName;
-                        if (sfdSaveAddonDb.ShowDialog(this) != DialogResult.Cancel)
-                        {
-                            _currentAddonDatabaseFilename = ShortenAddonFileName(sfdSaveAddonDb.FileName);
-                            lblAddonDbFilename.Text = _currentAddonDatabaseFilename;
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(_currentAddonDatabaseFilename))
-                    {
-                        tbLog.AppendText("Saving Addon Database...\n");
-                        tbLog.AppendText(_addonPackageSet.Save(out errorText, _currentAddonDatabaseFilename)
-                            ? "   Addon Database successfully saved.\n"
-                            : $"  ERROR: saving Addon Database: {errorText}\n");
+                        tbLog.AppendText("Saving Addon Catalogue...\n");
+                        tbLog.AppendText(_addonPackageSet.Save(out errorText, _currentAddonDatabaseName)
+                            ? "   Addon Catalogue successfully saved.\n"
+                            : $"  ERROR: saving Addon Catalogue: {errorText}\n");
                     }
                 }
             }
-            
+
             Utils.ResetTempFolder(out errorText);
         }
 
@@ -718,7 +774,7 @@ namespace MSAddonChecker
         #region DatabaseTab
         // ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        private void AddonDatabaseInitialization()
+        private void RefreshCatalogueAddonTable()
         {
             AddonBasicInfoSet.MoviestormContentPackPath = _moviestormPaths.ContentPacksPath;
 
@@ -733,8 +789,11 @@ namespace MSAddonChecker
             }
 
             dgvAddons.DataSource = source;
-
-            lblAddonCount.Text = $"Addon count: {_addons.Addons?.Count ?? 0}";
+            lblAddonDbFilename.Text = _currentAddonDatabaseName;
+            Text = !string.IsNullOrEmpty(_currentAddonDatabaseName)
+                ? $@"StormCat     (version {Utils.GetExecutableVersion()})  -  {_currentAddonDatabaseName}"
+                : $@"StormCat     (version {Utils.GetExecutableVersion()})";
+            lblAddonCount.Text = $@"{_addons.Addons?.Count ?? 0}";
         }
 
 
@@ -747,16 +806,23 @@ namespace MSAddonChecker
         }
 
 
+        private int GetAddonSelectedRowIndex()
+        {
+            if ((_addons?.Addons == null) || (_addons.Addons.Count == 0))
+                return -1;
+
+            int rowIndex = dgvAddons.CurrentCell.RowIndex;
+            return (rowIndex < 0) ? -1 : rowIndex;
+        }
+
+
+
         private void cmAddonTable_Opening(object sender, CancelEventArgs e)
         {
             cmiDisplayReport.Enabled =
                 cmiShowContents.Enabled = cmiRefreshAddon.Enabled = cmiDeleteAddon.Enabled = false;
-            if ((_addons?.Addons == null) || (_addons.Addons.Count == 0))
-            {
-                e.Cancel = true;
-                return;
-            }
-            int rowIndex = dgvAddons.CurrentCell.RowIndex;
+
+            int rowIndex = GetAddonSelectedRowIndex();
             if (rowIndex < 0)
             {
                 e.Cancel = true;
@@ -769,7 +835,7 @@ namespace MSAddonChecker
 
         private string GetSelectedAddonNameLocation(out string pLocation)
         {
-            pLocation =(string)dgvAddons.SelectedRows[0].Cells["dgvAddonLocation"].Value;
+            pLocation = (string)dgvAddons.SelectedRows[0].Cells["dgvAddonLocation"].Value;
             return (string)dgvAddons.SelectedRows[0].Cells["dgvAddonPublisher"].Value + "." + (string)dgvAddons.SelectedRows[0].Cells["dgvAddonName"].Value;
         }
 
@@ -786,7 +852,8 @@ namespace MSAddonChecker
             reportForm.Show(this);
         }
 
-        private void cmiShowContents_Click(object sender, EventArgs e)
+
+        private void ShowAddonContents()
         {
             string location;
             string name = GetSelectedAddonNameLocation(out location);
@@ -795,13 +862,54 @@ namespace MSAddonChecker
             if (package == null)
                 return;
 
-            List<AssetSearchResultItem> assets = _addonPackageSet.SearchAsset(new List<AddonPackage>() {package}, null);
 
-
+            AssetSearchCriteria criteria = null;
+            if(!cbListAlwaysAnimations.Checked && (package.AssetSummary.Verbs > 0))
+            {
+                AddonAssetType types = AddonAssetType.Any ^ AddonAssetType.Animation;
+                criteria = new AssetSearchCriteria(null, types, null, null);
+            }
+            
+            List<AssetSearchResultItem> assets = _addonPackageSet.SearchAsset(new List<AddonPackage>() { package }, criteria);
+            
             AddonContentForm contentForm = new AddonContentForm(name, assets);
             contentForm.Show(this);
-
         }
+
+
+        private void cmiShowContents_Click(object sender, EventArgs e)
+        {
+            ShowAddonContents();
+        }
+
+
+        private void dgvAddons_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (GetAddonSelectedRowIndex() < 0)
+                return;
+            ShowAddonContents();
+        }
+
+
+        private void cmiExportExcel_Click(object sender, EventArgs e)
+        {
+            if ((_addonPackageSet?.Addons == null) || (_addonPackageSet.Addons.Count == 0))
+                return;
+
+            sfdAddonListExportExcel.FileName =
+                string.IsNullOrEmpty(_currentAddonDatabaseName.Trim())
+                ? "AddonsCatalogue.xlsx"
+                : Path.GetFileNameWithoutExtension(_currentAddonDatabaseName) + ".xlsx";
+            if (sfdAddonListExportExcel.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            string file = sfdAddonListExportExcel.FileName;
+            string errorText;
+            if (!ExcelExporter.ExcelExport(dgvAddons, file, "Addons", out errorText))
+                MessageBox.Show($@"An error has happened while trying to export to Excel:\n{errorText}",
+                    @"Exportation error", MessageBoxButtons.OK);
+        }
+
 
         private void cmiRefreshAddon_Click(object sender, EventArgs e)
         {
@@ -824,8 +932,10 @@ namespace MSAddonChecker
             }
             asset.CheckEntity(processingFlags);
 
-            AddonDatabaseInitialization();
+            RefreshCatalogueAddonTable();
             tbLog.AppendText($"Addon '{name}' refreshed\n");
+            if (cbAutoSave.Checked && (_addonPackageSet.LastUpdate > _addonPackageSetTimeStamp))
+                SaveCurrentAddonDatabase();
         }
 
         private void cmiDeleteAddon_Click(object sender, EventArgs e)
@@ -833,14 +943,16 @@ namespace MSAddonChecker
             string location;
             string name = GetSelectedAddonNameLocation(out location);
 
-            if (MessageBox.Show($"Delete addon {name} from Database. Please Confirm?", "Clear Addon Database",
+            if (MessageBox.Show($"Delete addon {name} from Catalogue. Please Confirm?", "Clear Addon Catalogue",
                     MessageBoxButtons.YesNo) != DialogResult.Yes)
                 return;
 
             if (_addonPackageSet.DeleteByLocation(location))
             {
-                AddonDatabaseInitialization();
+                RefreshCatalogueAddonTable();
                 tbLog.AppendText($"Addon '{name}' deleted\n");
+                if (cbAutoSave.Checked)
+                    SaveCurrentAddonDatabase();
             }
         }
 
@@ -868,31 +980,23 @@ namespace MSAddonChecker
 
         private void SelectAllAssetTypes(bool pSelect)
         {
-            cbatBodyPart.Checked = cbatDecal.Checked = cbatProp.Checked = cbatVerb.Checked =
+            cbatBodyPart.Checked = cbatDecal.Checked = cbatProp.Checked = cbatVerb.Checked = cbatAnimation.Checked = 
             cbatMaterial.Checked =
-                cbatSound.Checked = cbatFilter.Checked = cbatSky.Checked = cbatSfx.Checked = pSelect;
+                cbatSound.Checked = cbatFilter.Checked = cbatSky.Checked = cbatSfx.Checked = cbatStock.Checked = cbatMovie.Checked = pSelect;
         }
 
 
         private void pbsResetAssetCriteria_Click(object sender, EventArgs e)
         {
-            tbsAssetName.Text = tbsAssetTags.Text = null;
+            tbsAssetName.Text = tbsAssetTags.Text = tbAssetSubTypes.Text = null;
             SelectAllAssetTypes(true);
+            cbatAnimation.Checked = false;
         }
 
         private void pbsSearch_Click(object sender, EventArgs e)
         {
             bool? installed = null;
             switch (cbascInstalled.SelectedIndex)
-            {
-                case 1: installed = true;
-                    break;
-                case 2: installed = false;
-                    break;
-            }
-
-            bool? contentPack = null;
-            switch (cbascType.SelectedIndex)
             {
                 case 1:
                     installed = true;
@@ -902,20 +1006,34 @@ namespace MSAddonChecker
                     break;
             }
 
-            AddonSearchCriteria addonSearchCriteria = new AddonSearchCriteria(tbsAssetName.Text, tbsAddonPublisher.Text, installed, contentPack, tbsAddonLocation.Text);
+            bool? contentPack = null;
+            switch (cbascType.SelectedIndex)
+            {
+                case 1:
+                    contentPack = true;
+                    break;
+                case 2:
+                    contentPack = false;
+                    break;
+            }
+
+            AddonSearchCriteria addonSearchCriteria = new AddonSearchCriteria(tbsAddonName.Text, tbsAddonPublisher.Text, installed, contentPack, tbsAddonLocation.Text);
 
             AddonAssetType assetType = AddonAssetType.Null;
             if (cbatBodyPart.Checked) assetType |= AddonAssetType.BodyPart;
             if (cbatDecal.Checked) assetType |= AddonAssetType.Decal;
             if (cbatProp.Checked) assetType |= AddonAssetType.Prop;
             if (cbatVerb.Checked) assetType |= AddonAssetType.Verb;
+            if (cbatAnimation.Checked) assetType |= AddonAssetType.Animation;
             if (cbatMaterial.Checked) assetType |= AddonAssetType.Material;
             if (cbatSound.Checked) assetType |= AddonAssetType.Sound;
             if (cbatFilter.Checked) assetType |= AddonAssetType.Filter;
             if (cbatSky.Checked) assetType |= AddonAssetType.SkyTexture;
             if (cbatSfx.Checked) assetType |= AddonAssetType.SpecialEffect;
+            if (cbatStock.Checked) assetType |= AddonAssetType.Stock;
+            if (cbatMovie.Checked) assetType |= AddonAssetType.StartMovie;
 
-            AssetSearchCriteria assetSearchCriteria = new AssetSearchCriteria(tbsAssetName.Text, assetType, tbsAssetTags.Text);
+            AssetSearchCriteria assetSearchCriteria = new AssetSearchCriteria(tbsAssetName.Text, assetType, tbAssetSubTypes.Text?.Trim(), tbsAssetTags.Text?.Trim());
 
             List<AssetSearchResultItem> searchOutput = _addonPackageSet.Search(addonSearchCriteria, assetSearchCriteria);
 
@@ -923,10 +1041,6 @@ namespace MSAddonChecker
             resultForm.Show(this);
         }
 
-        private void dgvAddons_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
 
 
 
@@ -934,43 +1048,43 @@ namespace MSAddonChecker
 
         private void pbClearAddonDatabase_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Clear Addon Database. Please Confirm?", "Clear Addon Database",
+            if (MessageBox.Show("Clear Addon Catalogue? Please Confirm", "Clear Addon Catalogue",
                     MessageBoxButtons.YesNo) != DialogResult.Yes)
                 return;
 
-            tbLog.AppendText("Clearing Addon Database...\n");
+            tbLog.AppendText("Clearing Addon Catalogue...\n");
             _addonPackageSet.Clear();
-            AddonDatabaseInitialization();
-            tbLog.AppendText("   Addon Database cleared.\n");
-            _currentAddonDatabaseFilename = null;
-            lblAddonDbFilename.Text = null;
+            RefreshCatalogueAddonTable();
+            tbLog.AppendText("   Addon Catalogue cleared.\n");
+            // _currentAddonDatabaseName = null;
+            // lblAddonDbFilename.Text = null;
         }
 
 
 
         private void pbInitAddonDatabase_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Initialize Addon Database. Please Confirm?", "Initialize Addon Database",
+            if (MessageBox.Show("Initialize Addon Catalogue? Its current content will be cleared and then every installed addon will be added to the Catalogue. Please Confirm", "Initialize Addon Catalogue",
                     MessageBoxButtons.YesNo) != DialogResult.Yes)
                 return;
 
-            tbLog.AppendText("Initializing Addon Database (it can take a while)...\n");
+            tbLog.AppendText("Initializing Addon Catalogue (it can take a while)...\n");
             _addonPackageSet.InitializeDatabase();
 
-            AddonDatabaseInitialization();
-            tbLog.AppendText("   Addon Database initialized\n");
+            RefreshCatalogueAddonTable();
+            tbLog.AppendText("   Addon Catalogue initialized\n");
 
         }
 
 
 
-        private void pbLoadAddonDatabase_Click(object sender, EventArgs e)
+
+        private void LoadAddonDatabase(string pDatabaseName)
         {
-            ofdLoadAddonDb.InitialDirectory = Utils.GetExecutableDirectory();
-            if (ofdLoadAddonDb.ShowDialog(this) != DialogResult.OK)
+            if (string.IsNullOrEmpty(pDatabaseName = pDatabaseName?.Trim()))
                 return;
 
-            string fileName = ofdLoadAddonDb.FileName;
+            string fileName = pDatabaseName + AddonPackageSet.AddonPackageSetFileExtension;
             if (!File.Exists(fileName))
                 return;
 
@@ -978,42 +1092,52 @@ namespace MSAddonChecker
             AddonPackageSet addonSet = AddonPackageSet.Load(out errorText, fileName);
             if (addonSet == null)
             {
-                tbLog.AppendText($"ERROR trying to load Addon Database fron file: {errorText}");
+                _logReportWriter.WriteReportLineFeed($"ERROR trying to load Addon Catalogue fron file: {errorText}");
                 return;
             }
 
-            _addonPackageSet = addonSet;
-            _currentAddonDatabaseFilename = ShortenAddonFileName(fileName);
-            lblAddonDbFilename.Text = _currentAddonDatabaseFilename;
+            UpdateCurrentAddonDatabaseInfo(pDatabaseName, addonSet);
+            _logReportWriter.WriteReportLineFeed($"Catalogue loaded from file '{_currentAddonDatabaseName}'");
+            _logReportWriter.WriteReportLineFeed($"    Addons registered: {_addonPackageSet.Addons?.Count ?? 0}");
+            _logReportWriter.WriteReportLineFeed($"    Last updated: {_addonPackageSet.LastUpdate}");
+        }
+
+
+        private void UpdateCurrentAddonDatabaseInfo(string pName, AddonPackageSet pAddonPackageSet)
+        {
+            _addonPackageSet = pAddonPackageSet;
+            _addonPackageSetTimeStamp = _addonPackageSet.LastUpdate;
+            _currentAddonDatabaseName = ShortenAddonFileName(pName);
+            lblAddonDbFilename.Text = _currentAddonDatabaseName;
             DiskEntityBase.AddonPackageSet = _addonPackageSet;
-            AddonDatabaseInitialization();
-            tbLog.AppendText($"Database loaded from file '{_currentAddonDatabaseFilename}'");
+            RefreshCatalogueAddonTable();
         }
 
 
         private void pbSaveAddonDatabase_Click(object sender, EventArgs e)
         {
-            if (_addonPackageSet == null)
+            SaveCurrentAddonDatabase();
+        }
+
+
+        private void SaveCurrentAddonDatabase()
+        {
+            if ((_currentAddonDatabaseName == null) || (_addonPackageSet == null))
                 return;
 
-            sfdSaveAddonDb.InitialDirectory = Utils.GetExecutableDirectory();
-            sfdSaveAddonDb.FileName = _currentAddonDatabaseFilename ?? AddonPackageSet.DefaultAddonPackageSetFileName;
-            if (sfdSaveAddonDb.ShowDialog(this) != DialogResult.OK)
-                return;
+            string fileName = _currentAddonDatabaseName + AddonPackageSet.AddonPackageSetFileExtension;
 
-            string fileName = sfdSaveAddonDb.FileName;
             string errorText;
-
             if (!_addonPackageSet.Save(out errorText, fileName))
             {
-                tbLog.AppendText($"ERROR trying to save Addon Database to file: {errorText}");
+                _logReportWriter.WriteReportLineFeed($"ERROR trying to save Addon Catalogue to file: {errorText}");
                 return;
             }
 
-            _currentAddonDatabaseFilename = ShortenAddonFileName(fileName);
-            lblAddonDbFilename.Text = _currentAddonDatabaseFilename;
-            tbLog.AppendText($"Database saved to file '{_currentAddonDatabaseFilename}'");
+            _addonPackageSetTimeStamp = _addonPackageSet.LastUpdate;
+            _logReportWriter.WriteReportLineFeed($"Catalogue '{_currentAddonDatabaseName}' saved to file");
         }
+        
 
         private string ShortenAddonFileName(string pFilename)
         {
@@ -1049,7 +1173,7 @@ namespace MSAddonChecker
             if (files.Length == 0)
                 return;
 
-           AppendAddonsToDatabase(files);
+            AppendAddonsToDatabase(files);
         }
 
 
@@ -1091,19 +1215,318 @@ namespace MSAddonChecker
                 Cursor = currentCursor;
             }
 
-            AddonDatabaseInitialization();
+            RefreshCatalogueAddonTable();
+            if(cbAutoSave.Checked && (_addonPackageSet.LastUpdate > _addonPackageSetTimeStamp))
+                SaveCurrentAddonDatabase();
         }
 
         private void lblTipTable_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
-                "Drag and drop on the grid: addon files, folders, and/or ZIP/RAR/7z archives for adding to the Database\nRight-click for options");
+                @"Drag and drop on the grid: addon files, folders, and/or ZIP/RAR/7z archives for adding to the Catalogue\nRight-click for options\nDouble-click row for listing addon contents");
         }
 
         private void cmiCredits_Click(object sender, EventArgs e)
         {
             CreditsForm creditsForm = new CreditsForm();
             creditsForm.ShowDialog(this);
+        }
+
+
+        // ---------------------------------------------------------------------------------------------------------------------------------
+
+        private void RefreshCatalogueIndexTable(string pSelectedCatalogueName = null)
+        {
+
+            dgvCatalogueIndex.AutoGenerateColumns = false;
+
+            BindingSource source = null;
+            if ((_cataloguesIndex.Catalogues?.Count ?? 0) > 0)
+            {
+                var bindingList = new SortableBindingList<CatalogueInfo>(_cataloguesIndex.Catalogues);
+                source = new BindingSource(bindingList, null);
+            }
+
+            dgvCatalogueIndex.DataSource = source;
+            if ((source == null) || (pSelectedCatalogueName == null))
+                return;
+
+            int index = _cataloguesIndex.GetIndexByName(pSelectedCatalogueName);
+            if (index < 0)
+                return;
+            dgvCatalogueIndex.Rows[index].Selected = true;
+        }
+
+
+        private void dgvCatalogueIndex_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            int index;
+            if (_cataloguesIndex.DefaultAddonDatabase != null)
+            {
+                index = _cataloguesIndex.GetIndexByName(_cataloguesIndex.DefaultAddonDatabase);
+                if (index >= 0)
+                {
+                    dgvCatalogueIndex["colCatDefault", index].Value = "true";
+                }
+            }
+
+            if (_currentAddonDatabaseName != null)
+            {
+                index = _cataloguesIndex.GetIndexByName(_currentAddonDatabaseName);
+                if (index >= 0)
+                {
+                    dgvCatalogueIndex["colCatCurrent", index].Value = "true";
+                }
+            }
+        }
+
+
+        private void pbCatNew_Click(object sender, EventArgs e)
+        {
+            CatalogueIndexOpsForm catOpsForm = new CatalogueIndexOpsForm(CataloguesIndexOperation.NewCatalogue,
+                _moviestormPaths, _cataloguesIndex, null);
+
+            if (catOpsForm.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            _cataloguesIndex = catOpsForm.CataloguesIndex;
+            _addonPackageSet = catOpsForm.NewAddonPackageSet;
+            _currentAddonDatabaseName = catOpsForm.NewAddonPackageSetName;
+            DiskEntityBase.AddonPackageSet = _addonPackageSet;
+
+            RefreshCatalogueIndexTable(_currentAddonDatabaseName);
+
+            RefreshCatalogueAddonTable();
+
+            _logReportWriter.WriteReportLineFeed($"New addon catalogue created: {_currentAddonDatabaseName}");
+            tcMainForm.SelectedTab = tpDatabase;
+        }
+
+
+        private int GetSelectedCatalogueRowIndex()
+        {
+            if ((_cataloguesIndex?.Catalogues == null) || (_cataloguesIndex.Catalogues.Count == 0))
+                return -1;
+
+            int rowIndex = dgvCatalogueIndex.CurrentCell.RowIndex;
+            return (rowIndex < 0) ? -1 : rowIndex;
+        }
+
+        private void pbCatEdit_Click(object sender, EventArgs e)
+        {
+            string selectedCatalogueName = GetSelectedCatalogueName();
+            if (selectedCatalogueName == null)
+                return;
+
+            CatalogueIndexOpsForm catOpsForm = new CatalogueIndexOpsForm(CataloguesIndexOperation.EditDescription,
+                _moviestormPaths, _cataloguesIndex, selectedCatalogueName);
+
+            if (catOpsForm.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            _cataloguesIndex = catOpsForm.CataloguesIndex;
+
+            RefreshCatalogueIndexTable(selectedCatalogueName);
+
+            RefreshCatalogueAddonTable();
+        }
+
+
+        private void pbCatRename_Click(object sender, EventArgs e)
+        {
+            string selectedCatalogueName = GetSelectedCatalogueName();
+            if (selectedCatalogueName == null)
+                return;
+
+            bool renamingCurrent = ((_currentAddonDatabaseName != null) &&
+                                    (_currentAddonDatabaseName == selectedCatalogueName));
+
+            CatalogueIndexOpsForm catOpsForm = new CatalogueIndexOpsForm(CataloguesIndexOperation.RenameCatalogue,
+                _moviestormPaths, _cataloguesIndex, selectedCatalogueName);
+
+            if (catOpsForm.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            _cataloguesIndex = catOpsForm.CataloguesIndex;
+            if (_cataloguesIndex.DefaultAddonDatabase == selectedCatalogueName)
+            {
+                _cataloguesIndex.DefaultAddonDatabase = catOpsForm.NewAddonPackageSetName;
+                string errorText;
+                _cataloguesIndex.Save(CataloguesIndex.CataloguesIndexFilePath, out errorText);
+            }
+
+            if (renamingCurrent)
+            {
+                _currentAddonDatabaseName = catOpsForm.NewAddonPackageSetName;
+            }
+
+            RefreshCatalogueIndexTable(catOpsForm.NewAddonPackageSetName);
+
+            RefreshCatalogueAddonTable();
+        }
+
+
+
+        private void pbCatDelete_Click(object sender, EventArgs e)
+        {
+            
+            if ((_cataloguesIndex?.Catalogues.Count ?? 0) == 0)
+            {
+                // MessageBox.Show("There must be at least one Catalogue left at any time", "Operation denied",MessageBoxButtons.OK);
+                return;
+            }
+
+            string selectedCatalogueName = GetSelectedCatalogueName();
+            if (selectedCatalogueName == null)
+                return;
+
+            if (MessageBox.Show($"Please confirm deletion of addon catalogue '{selectedCatalogueName}'", "Confirmation",
+                    MessageBoxButtons.OKCancel) != DialogResult.OK)
+                return;
+
+            bool isLast = _cataloguesIndex.Catalogues.Count == 1;
+            bool isLoaded = selectedCatalogueName == _currentAddonDatabaseName;
+            bool isDefault = selectedCatalogueName == _cataloguesIndex.DefaultAddonDatabase;
+
+            _cataloguesIndex.Delete(selectedCatalogueName);
+            File.Delete(selectedCatalogueName + AddonPackageSet.AddonPackageSetFileExtension);
+
+            string errorText;
+
+            if (isLast)
+            {
+                _cataloguesIndex.DefaultAddonDatabase = AddonPackageSet.DefaultAddonPackageSet;
+                _cataloguesIndex.Update(AddonPackageSet.DefaultAddonPackageSetName, "Default addon catalogue");
+                
+                _addonPackageSet = new AddonPackageSet(_moviestormPaths, null, "Default addon catalogue");
+                _addonPackageSet.Save(out errorText);
+
+                UpdateCurrentAddonDatabaseInfo(AddonPackageSet.DefaultAddonPackageSetName, _addonPackageSet);
+            }
+            else
+            {
+
+                if (isDefault)
+                {
+                    _cataloguesIndex.DefaultAddonDatabase = _cataloguesIndex.Catalogues[0].Name;
+                    _cataloguesIndex.Save(CataloguesIndex.CataloguesIndexFilePath, out errorText);
+                    // RefreshCatalogueAddonTable();
+                }
+
+                if (isLoaded)
+                {
+                    LoadAddonDatabase(_cataloguesIndex.DefaultAddonDatabase);
+                }
+            }
+
+            RefreshCatalogueIndexTable(_currentAddonDatabaseName);
+        }
+
+        private void pbCatCopy_Click(object sender, EventArgs e)
+        {
+            string selectedCatalogueName = GetSelectedCatalogueName();
+            if (selectedCatalogueName == null)
+                return;
+
+            CatalogueIndexOpsForm catOpsForm = new CatalogueIndexOpsForm(CataloguesIndexOperation.CopyCatalogue,
+                _moviestormPaths, _cataloguesIndex, selectedCatalogueName);
+
+            if (catOpsForm.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            _cataloguesIndex = catOpsForm.CataloguesIndex;
+            RefreshCatalogueIndexTable(_currentAddonDatabaseName);
+        }
+
+
+        private void pbCatLoad_Click(object sender, EventArgs e)
+        {
+
+            string catalogueName = GetSelectedCatalogueName();
+            if (string.IsNullOrEmpty(catalogueName))
+                return;
+
+            // if (catalogueName == _currentAddonDatabaseName)
+            //    return;
+            if ((_addonPackageSetTimeStamp < _addonPackageSet.LastUpdate) &&
+                (catalogueName != _currentAddonDatabaseName))
+            {
+                if(MessageBox.Show("Would you like to save changes to the current catalogue before loading the new one?", "Confirmation", MessageBoxButtons.YesNo) != DialogResult.No)
+                    SaveCurrentAddonDatabase();
+            }
+
+            LoadAddonDatabase(catalogueName);
+
+            RefreshCatalogueIndexTable(catalogueName);
+
+            tcMainForm.SelectedTab = tpDatabase;
+        }
+
+
+        private void pbCatSetDefault_Click(object sender, EventArgs e)
+        {
+            string catalogueName = GetSelectedCatalogueName();
+            if (string.IsNullOrEmpty(catalogueName))
+                return;
+
+            _cataloguesIndex.DefaultAddonDatabase = catalogueName;
+            string errorText;
+            _cataloguesIndex.Save(CataloguesIndex.CataloguesIndexFilePath, out errorText);
+            RefreshCatalogueIndexTable(catalogueName);
+        }
+
+
+        private void pbCatSave_Click(object sender, EventArgs e)
+        {
+            SaveCurrentAddonDatabase();
+        }
+
+
+        private string GetSelectedCatalogueName()
+        {
+            if (GetSelectedCatalogueRowIndex() < 0)
+                return null;
+
+            return (string)dgvCatalogueIndex.SelectedRows[0].Cells["colCatName"].Value;
+        }
+
+        private void pbRefreshIndex_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Please confirm you want to re-create the Catalogue Index.", "Confirmation",
+                    MessageBoxButtons.YesNo) != DialogResult.Yes)
+                return;
+
+            string errorText;
+            _cataloguesIndex = CataloguesIndex.Initialize(_moviestormPaths, out errorText);
+
+            if ((_cataloguesIndex.Catalogues?.Count ?? 0) == 0)
+            {
+                _currentAddonDatabaseName = null;
+                _addonPackageSet = null;
+                DiskEntityBase.AddonPackageSet = null;
+
+                RefreshCatalogueIndexTable();
+                RefreshCatalogueAddonTable();
+                return;
+            }
+
+            string catalogueToLoad = _cataloguesIndex.DefaultAddonDatabase ?? _cataloguesIndex.Catalogues[0].Name;
+
+            LoadAddonDatabase(catalogueToLoad);
+            RefreshCatalogueIndexTable(catalogueToLoad);
+            RefreshCatalogueAddonTable();
+        }
+
+        private void dgvCatalogueIndex_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string catalogueName = GetSelectedCatalogueName();
+            if (string.IsNullOrEmpty(catalogueName))
+                return;
+
+            LoadAddonDatabase(catalogueName);
+            RefreshCatalogueIndexTable(catalogueName);
+            RefreshCatalogueAddonTable();
+            tcMainForm.SelectedTab = tpDatabase;
         }
     }
 }

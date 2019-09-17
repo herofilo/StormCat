@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MSAddonChecker")]
-[assembly: AssemblyDescription("Quick-and-dirty checker of Moviestorm addon files")]
+[assembly: AssemblyTitle("StormCat")]
+[assembly: AssemblyDescription("Cataloguing and checking of Moviestorm addon files")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MSAddonChecker")]
+[assembly: AssemblyProduct("StormCat")]
 [assembly: AssemblyCopyright("Copyright ©  2017-2019 Exception Raised Software")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("78dea5f7-1332-4f5d-bd25-dc31a818c9fb")]
+[assembly: Guid("e053bf70-fe70-48e8-a86b-ca6a9b77eafb")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.5.0.0")]
-[assembly: AssemblyFileVersion("1.5.0.0")]
+[assembly: AssemblyVersion("1.7.1.0")]
+[assembly: AssemblyFileVersion("1.7.1.0")]

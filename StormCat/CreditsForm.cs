@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using MSAddonLib.Util;
 
-namespace MSAddonChecker
+namespace StormCat
 {
     public partial class CreditsForm : Form
     {

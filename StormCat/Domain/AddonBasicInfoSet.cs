@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MSAddonLib.Domain.Addon;
 
-namespace MSAddonChecker.Domain
+namespace StormCat.Domain
 {
     public sealed class AddonBasicInfoSet
     {

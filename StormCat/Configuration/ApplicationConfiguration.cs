@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
 using System.Xml.Serialization;
-using Microsoft.SqlServer.Server;
+using MSAddonLib.Persistence.AddonDB;
 using MSAddonLib.Util;
 
-namespace MSAddonChecker.Configuration
+namespace StormCat.Configuration
 {
     public class ApplicationConfiguration : ConfigurationFileBase
     {
@@ -16,8 +12,9 @@ namespace MSAddonChecker.Configuration
 
         public string MoviestormUserDataPath { get; set; }
 
+        public static string ConfigurationFilePath => Path.Combine(Utils.GetExecutableDirectory(), "StormCat.cfg");
 
-        public static string ConfigurationFilePath => Path.Combine(Utils.GetExecutableDirectory(), "MSAddonChecker.cfg");
+        public static string OldConfigurarionFilePath => Path.Combine(Utils.GetExecutableDirectory(), "MSAddonChecker.cfg");
 
 
         // ----------------------------------------------------------------------------
@@ -43,7 +40,22 @@ namespace MSAddonChecker.Configuration
         public static ApplicationConfiguration Load(out string pErrorText)
         {
             pErrorText = null;
-            if (!File.Exists(ConfigurationFilePath))
+
+            string configurationFilename = ConfigurationFilePath;
+            if (File.Exists(OldConfigurarionFilePath))
+            {
+                try
+                {
+                    File.Move(OldConfigurarionFilePath, ConfigurationFilePath);
+                }
+                catch (Exception exception)
+                {
+                    configurationFilename = OldConfigurarionFilePath;
+                }
+            }
+            
+
+            if (!File.Exists(configurationFilename))
             {
                 return null;
             }
@@ -53,7 +65,7 @@ namespace MSAddonChecker.Configuration
             try
             {
                 XmlSerializer serializer = new XmlSerializer(configurationInfo.GetType());
-                using (StreamReader reader = new StreamReader(ConfigurationFilePath))
+                using (StreamReader reader = new StreamReader(configurationFilename))
                 {
                     configurationInfo = (ApplicationConfiguration)serializer.Deserialize(reader);
                     reader.Close();

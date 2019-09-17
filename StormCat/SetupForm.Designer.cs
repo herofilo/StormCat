@@ -1,4 +1,4 @@
-﻿namespace MSAddonChecker
+﻿namespace StormCat
 {
     partial class SetupForm
     {

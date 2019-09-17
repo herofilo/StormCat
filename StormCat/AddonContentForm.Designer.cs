@@ -1,4 +1,4 @@
-﻿namespace MSAddonChecker
+﻿namespace StormCat
 {
     partial class AddonContentForm
     {
@@ -29,18 +29,21 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddonContentForm));
             this.dgvAssets = new System.Windows.Forms.DataGridView();
-            this.colAssetType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAssetSubtype = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTags = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colExtraInfo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cmAssetTable = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmiSaveToExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.sfdExportExcel = new System.Windows.Forms.SaveFileDialog();
             this.lblSummary = new System.Windows.Forms.Label();
             this.pbSaveToExcel = new System.Windows.Forms.Button();
+            this.colAssetType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAssetSubtype = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTags = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colExtraInfo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAssets)).BeginInit();
             this.cmAssetTable.SuspendLayout();
             this.SuspendLayout();
@@ -66,51 +69,6 @@
             this.dgvAssets.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAssets.Size = new System.Drawing.Size(923, 457);
             this.dgvAssets.TabIndex = 0;
-            // 
-            // colAssetType
-            // 
-            this.colAssetType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colAssetType.DataPropertyName = "AssetType";
-            this.colAssetType.HeaderText = "Asset Type";
-            this.colAssetType.Name = "colAssetType";
-            this.colAssetType.ReadOnly = true;
-            this.colAssetType.Width = 85;
-            // 
-            // colAssetSubtype
-            // 
-            this.colAssetSubtype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colAssetSubtype.DataPropertyName = "AssetSubType";
-            this.colAssetSubtype.HeaderText = "Subtype";
-            this.colAssetSubtype.Name = "colAssetSubtype";
-            this.colAssetSubtype.ReadOnly = true;
-            this.colAssetSubtype.Width = 71;
-            // 
-            // colName
-            // 
-            this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colName.DataPropertyName = "Name";
-            this.colName.HeaderText = "Name";
-            this.colName.Name = "colName";
-            this.colName.ReadOnly = true;
-            this.colName.Width = 60;
-            // 
-            // colTags
-            // 
-            this.colTags.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colTags.DataPropertyName = "Tags";
-            this.colTags.HeaderText = "Tags";
-            this.colTags.Name = "colTags";
-            this.colTags.ReadOnly = true;
-            this.colTags.Width = 56;
-            // 
-            // colExtraInfo
-            // 
-            this.colExtraInfo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colExtraInfo.DataPropertyName = "ExtraInfo";
-            this.colExtraInfo.HeaderText = "Extra Info";
-            this.colExtraInfo.Name = "colExtraInfo";
-            this.colExtraInfo.ReadOnly = true;
-            this.colExtraInfo.Width = 77;
             // 
             // cmAssetTable
             // 
@@ -154,6 +112,58 @@
             this.pbSaveToExcel.UseVisualStyleBackColor = true;
             this.pbSaveToExcel.Click += new System.EventHandler(this.pbSaveToExcel_Click);
             // 
+            // colAssetType
+            // 
+            this.colAssetType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colAssetType.DataPropertyName = "AssetType";
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.colAssetType.DefaultCellStyle = dataGridViewCellStyle1;
+            this.colAssetType.HeaderText = "Asset Type";
+            this.colAssetType.Name = "colAssetType";
+            this.colAssetType.ReadOnly = true;
+            this.colAssetType.Width = 85;
+            // 
+            // colAssetSubtype
+            // 
+            this.colAssetSubtype.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colAssetSubtype.DataPropertyName = "AssetSubType";
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.colAssetSubtype.DefaultCellStyle = dataGridViewCellStyle2;
+            this.colAssetSubtype.HeaderText = "Subtype";
+            this.colAssetSubtype.Name = "colAssetSubtype";
+            this.colAssetSubtype.ReadOnly = true;
+            this.colAssetSubtype.Width = 71;
+            // 
+            // colName
+            // 
+            this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colName.DataPropertyName = "Name";
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.colName.DefaultCellStyle = dataGridViewCellStyle3;
+            this.colName.HeaderText = "Name";
+            this.colName.Name = "colName";
+            this.colName.ReadOnly = true;
+            this.colName.Width = 60;
+            // 
+            // colTags
+            // 
+            this.colTags.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colTags.DataPropertyName = "Tags";
+            this.colTags.HeaderText = "Tags";
+            this.colTags.Name = "colTags";
+            this.colTags.ReadOnly = true;
+            this.colTags.Width = 56;
+            // 
+            // colExtraInfo
+            // 
+            this.colExtraInfo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colExtraInfo.DataPropertyName = "ExtraInfo";
+            this.colExtraInfo.HeaderText = "Extra Info";
+            this.colExtraInfo.Name = "colExtraInfo";
+            this.colExtraInfo.ReadOnly = true;
+            this.colExtraInfo.Width = 77;
+            // 
             // AddonContentForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -176,15 +186,15 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dgvAssets;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAssetType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAssetSubtype;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTags;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colExtraInfo;
         private System.Windows.Forms.ContextMenuStrip cmAssetTable;
         private System.Windows.Forms.ToolStripMenuItem cmiSaveToExcel;
         private System.Windows.Forms.SaveFileDialog sfdExportExcel;
         private System.Windows.Forms.Label lblSummary;
         private System.Windows.Forms.Button pbSaveToExcel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colAssetType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colAssetSubtype;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTags;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colExtraInfo;
     }
 }

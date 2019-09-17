@@ -1,123 +1,31 @@
 
-MSAddonChecker - Version History
---------------------------------
+StormCat - Version History
+--------------------------
+* v1.7.1 (20190917):
+	- Changed GUID of application. 
+	- Root namespace changed to 'StormCat'
+	- Better and more complete catalogue management
+	- New types of "assets" listed and searchable:
+		Animations
+		Stocks
+		Demo/Start Movies
+	- Addon catalogue table:
+		- Double-click: shows contents for selected row
+		- New option in contextual menu: export to Excel
+		- Added columns (AddonBasicInfo): 
+			Description
+			Statiscs of assets 
+		- Autosave
+	- Configuration:
+		- Configuration file renamed automatically
+		- Added property: DefaultAddonDatabase
+	- Bugs fixed:
+		- Searching assets: 
+			- when an asset name is specified
+			- when the type of addon is specified (official content pack/third-party addon)
+
 * v1.5.0 (20190907):
-	Support for multiple independent databases of Moviestorm addons.
-
-* v1.3.0 (20190831): [INTERNAL]
-	Syncing version number with MSAddonLib's
-
-* v1.2.1 (20190827):
-	Display the last date of compilation of an addon
-
-* v1.2.0 (20190819):
-	- Application setup: Moviestorm folders (installation and user data) can now be explicitly specified (required when it has been installed in its location by default)
-	- Processing options by default can now be saved and retrieved. 
-	  Options saved will apply whenever the application is launched, except if any option is specified in the command line. 
-
-* v1.1.0.1 (20190818):
-	- ModdersWorkshop excluded from automatic scan of user addons
-	- Now correctly identifying valid addons with no Data folder
-	- Some minor improvements of the UI
-
-* v1.1.0 (20190818):
-	- Direct support of installed addons (folders)
-	- Fixed a bug with the Gestures/Gaits seach criteria
-	- PuppetSummary:
-		If no animation files at all, no Animations section is listed
-	- New options:
-		- Compact the list of verbs by name
-		- Restoration of addons disguised as archives (and delete source archive if restoration succeeds)
-	- Tooltips for every control in the UI
-	- A new button for scanning every addon installed in the system
+	First public release
 
 
-* v1.0.8 (20190815):
-	- Renamed some of the ProcessingFlags
-	- README file redaction modified
-	- Business logic classes exported to an external library (MSAddonLib)
-	- Weird gestures and gaits labelled as !?
-	- New processing flag List Weird Gestures/Gaits (gesture animations for props)
-	- New option in the UI for listing Weird Gestures/Gaits verbs
-	- Some code cleaning chores
-
-* v1.0.7.1 (20190813): 
-	Fixed a bug in BodyModelsSummary.ToString() which raised an exception if no gesture/gaits animations were found
-
-* v1.0.7 (20190813): 
-	- Output text: 
-		Archive names are preceded by a plus (+) character
-		Addon names are preceded by an asterisk (*) character
-	- Listing of Gestures/Gaits verbs now includes info about the puppets ('?' meaning this information couldn't be determined - the animation file referenced in the verbs couldn't be found inside the addon)
-	- Decal listing improvements:
-		- Only decals whose files actually exists in the addon are listed
-		- No more duplicates
-		- Decals are now listed ordered by type and name
-	- Verbs: duplicated verbs are listed as a single line, specifying the number of iterations
-	- Options in the UI for listing animation files: 
-		List All Animation Files
-		List Gesture/Gaits Animations Files for Bodyparts
-
-* v1.0.6 (20190813): 
-	- A bug in the VerbsSummary for Puppet Interaction verbs extraction method -AppendPuppetMutualVerbs()- has been fixed
-
-* v1.0.5 (20190812) [INTERNAL]: 
-	-> A quick hack for checking Moviestorm addons and content packages already installed (folders) (can be slow)
-	- New class: AssetAddonFolder
-	- Modified interface: IAsset
-	- Some cleaning of the code (renaming identifiers, commenting, etc)
-	- It nows can check and offer information about the contents of installed addons and content packages (slow so far)
-
-* v1.0.0.0 (20190811):
-	- Added icon to executable and main form
-	- Created utility library MSAddonUtilLibs, to be shared with other projects (in another separate solution)
-	- Temporary folder now inside the executable home folder
-	- Removed some redundant classes
-	- Extensive code cleaning and re-engineering
-	- Detection of contents added: thumbnail, materials, special effects
-	- Complete overhaul of the Bodypart, Props and animations info summary
-	- Added Sky textures info
-
-
-* v0.9.5.1 (20190502) [INTERNAL]:
-	- Relocated SevenZipSharp.dll so it can be included as part of the source code distribution.
-
-* v0.9.5 (20190501):
-	- Addon files: detailed information (names) of demo movies and stock assets
-	- Output contextual menú: copy to clipboard, clear, wordwrap on/off, increase/decrease font size
-
-* v0.9.2.1 (20190501):
-	- Addon files: when bad and option ShowContents, add blank line after
-
-* v0.9.2 (20190501):
-	- Fixed an error when Description is null and Blurb not null
-	- Checks if the addon includes stock assets
-
-* v0.9.1 (20190501):
-	- Some corrections to the README file
-	- Some optimizations analyzing the contents of the addons
-	- Checks the addon has contents data 
-	- Checks if the addon includes demo movies
-
-* v0.9.0 (20190501):
-	- Much cleaner and elegant output generation
-	- Added an error identifying token string to the output
-
-* v0.8.0 (20190501):
-	- added: option 'Show contents of addon files'
-	- added: read options from command line
-
-* v0.7.0 (20171129):
-	- added filter: report only files with issues
-	- additional info about addons: publisher and licencing status
-	- minor UI enhancements
-
-* v0.6.0 (20171129):
-	- added support for .RAR and 7z archives
-	- detection of addon files disguised as archives
-
-* v0.5.1 (20171128):
-	- added support for Sketchup files and checking of their version
-
-* v0.5.0 (20171128): first public release
 	

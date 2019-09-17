@@ -1,0 +1,21 @@
+- Descripción contenido:
+	- Materials: no aparecen en MANIFEST, sino en un fichero Materials.materials
+		\Data\Materials\<loc>
+		donde <loc>::= Wall | Floor | Ceiling
+		Es un vector de materiales, con nombre, descripción y texturas asociadas
+		Ver: 
+			TODO general de Devel
+			Folder !Tools
+	- SFX
+	- Decals: bodypart decals HEAD and exists in addon
+	- Props: tipo (en DESCRIPTOR): prop/autoanim/pyroprop...
+	- Has animation info (StateMachine, Verb)
+	- Props: animations
+	Skys - Data/Sky/* (No *_preview.*)
+	=> DOCUMENTAR EN BIBLIA!
+
++ description file analyzer (from assetData.jar - traer mirror extracting code from MSAddonHacker)
+	Bodypart: basic|morph
+	Materials (no en assetData.jar)
+	Verbs (no en assetData.jar)
+	DESCRIPTOR (props)
