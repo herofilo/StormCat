@@ -2,10 +2,8 @@
 StormCat - TO-DO
 ----------------
 
-AddonLib: 
-	AddonPackage: 
-		- Más coherencia en la captura de errores -> Issues
-		- ToString(): si HasIssues: print!
+Search: 
+	Name y Publisher: multiple
 
 Al importar: Si alguno issues: show:
 	

@@ -1,7 +1,7 @@
 StormCat, by jamoram
 
-Current version: 1.7.1 
-Last Update: 2019/09/17
+Current version: 1.8.0
+Last Update: 2019/09/18
 
 A little tool for:
 	1) Creating and managing multiple independent catalogues of Moviestorm addons, both installed and as addon files:
@@ -13,27 +13,18 @@ A little tool for:
 	3) Checking the version of the Sketchup files to be imported in Moviestorm with the Modder's Workshop
 	4) Optionally restoring Moviestorm addon files disguised as archive files
 
+PLEASE NOTE: a full User's Guide is currently under production and will be released ASAP.
 
-WHAT'S NEW (1.7.1):
+
+WHAT'S NEW (1.8.0):
 -----------
-* Major overhaul of the User Interface
-* (Hopefully) Much better and more complete catalogue management
-* New types of "assets" listed and searchable:
-	Animations
-	Stocks
-	Demo/Start Movies
-* Addon catalogue table:
-	- Double-click: shows contents for selected row
-	- New option in contextual menu: export to Excel
-	- Added columns (AddonBasicInfo): 
-		Description
-		Statiscs of assets 
-	- Autosave
-* Bugs fixed:
-	- Searching assets: 
-		- when an asset name is specified
-		- when the type of addon is specified (official content pack/third-party addon)
-	- Some other minor bugs
+* Contextual menu now available for the Catalogue Index table
+* Multiple catalogues can be loaded at the same time in different windows (instances) of the application
+* More coherent and complete recollection and reporting of issues
+* Asset info: Prop variant names listed in Extra Info.
+* Asset Search:
+	- Filtering by ExtraInfo
+	- Fixed problem with filtering by tags
 
 Please refer to the VERSION HISTORY section for a complete history of changes in the program
 
@@ -100,6 +91,16 @@ Suggestions for improvements and bug reports can be addressed to the email accou
 
 VERSION HISTORY
 ---------------
+* v1.8.0 (20190918)
+	- Contextual menu now available for the Catalogue Index table
+	- Multiple catalogues can be loaded at the same time in different windows (instances) of the application
+	- More coherent and complete recollection and reporting of issues
+	- Asset info:
+		- Prop variant names listed in Extra Info.
+	- Asset Search:
+		- Filtering by ExtraInfo
+		- Fixed problem with filtering by tags
+
 * v1.7.1 (20190917):
 	- Major overhaul of the User Interface
 	- (Hopefully) Much better and more complete catalogue management

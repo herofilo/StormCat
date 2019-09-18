@@ -1,6 +1,16 @@
 
 StormCat - Version History
 --------------------------
+* v1.8.0 (20190918)
+	- Contextual menu now available for the Catalogue Index table
+	- Multiple catalogues can be loaded at the same time in different windows (instances) of the application
+	- More coherent and complete recollection and reporting of issues
+	- Asset info:
+		- Prop variant names listed in Extra Info.
+	- Asset Search:
+		- Filtering by ExtraInfo
+		- Fixed problem with filtering by tags
+
 * v1.7.1 (20190917):
 	- Changed GUID of application. 
 	- Root namespace changed to 'StormCat'

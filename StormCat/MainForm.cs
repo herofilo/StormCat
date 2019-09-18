@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Media;
@@ -41,6 +42,14 @@ namespace StormCat
 
         private AddonBasicInfoSet _addons = null;
 
+        // ...........................
+
+        private bool _isChildProcess = false;
+
+        private string _childCatalogue = null;
+
+        private List<TabPage> _childHiddenPages = null;
+
 
         // ----------------------------------------------------------------------------------------------------------------------
 
@@ -73,37 +82,84 @@ namespace StormCat
                 new object[] { tbLog }
             );
 
+            PreScanCmdLineArguments();
+            if (_isChildProcess)
+            {
+                if (_childCatalogue == null)
+                {
+                    Close();
+                    return;
+                }
+
+                ChildControlInitialization();
+            }
+
             LoadConfiguration();
 
             string errorText;
             Utils.ResetTempFolder(out errorText);
 
-            LoadCataloguesInfo();
+            if(!_isChildProcess)
+                LoadCataloguesInfo();
 
             LoadAddonDatabase();
 
-            RefreshCatalogueIndexTable(_cataloguesIndex.DefaultAddonDatabase);
-
-            ControlsInitialization();
-
-
-            if (_arguments != null && _arguments.Length > 0)
+            if (!_isChildProcess)
             {
-                if (PreScanArguments())
+                RefreshCatalogueIndexTable(_cataloguesIndex.DefaultAddonDatabase);
+
+                ControlsInitialization();
+
+
+                if (_arguments != null && _arguments.Length > 0)
                 {
-                    tcMainForm.SelectedTab = tpChecking;
-                    ProcessArguments(_arguments);
+                    if (ScanCmdLineArguments())
+                    {
+                        tcMainForm.SelectedTab = tpChecking;
+                        ProcessArguments(_arguments);
+                    }
                 }
             }
-
-
+            else
+            {
+                RefreshCatalogueAddonTable();
+            }
         }
 
 
 
+        private void PreScanCmdLineArguments()
+        {
+            if ((_arguments == null) || (_arguments.Length == 0))
+                return;
+
+            const string childOption = "-child:";
+
+            foreach (string argument in _arguments)
+            {
+                string lwrArgument = argument?.ToLower()?.Trim();
+                if (string.IsNullOrEmpty(lwrArgument))
+                    continue;
+                if (!lwrArgument.StartsWith(childOption) || (lwrArgument.Length <= childOption.Length))
+                    continue;
+
+                _isChildProcess = true;
+                string catalogue = argument.Substring(childOption.Length);
+                if (File.Exists(catalogue + AddonPackageSet.AddonPackageSetFileExtension))
+                    _childCatalogue = catalogue;
+                break;
+            }
+
+            if(_isChildProcess)
+                _arguments = null;
+        }
+
 
         private void LoadCataloguesInfo()
         {
+            if (_childCatalogue != null)
+                return;
+
             string errorText;
             if (!File.Exists(CataloguesIndex.CataloguesIndexFilePath))
             {
@@ -130,6 +186,12 @@ namespace StormCat
 
         private void LoadAddonDatabase()
         {
+            if (_childCatalogue != null)
+            {
+                LoadChildAddonDatabase();
+                return;
+            }
+
             string errorText;
 
             string defaultCatalogue = _cataloguesIndex?.DefaultAddonDatabaseFilename ??
@@ -156,6 +218,31 @@ namespace StormCat
 
 
             tbLog.AppendText($"   Addon Catalogue '{defaultCatalogueName}' successfully loaded:\n");
+            tbLog.AppendText($"     Addons registered: {_addonPackageSet.Addons?.Count ?? 0}\n");
+            tbLog.AppendText($"     Last updated: {_addonPackageSet.LastUpdate.ToString("s")}\n");
+
+            _addonPackageSetTimeStamp = _addonPackageSet.LastUpdate;
+            DiskEntityBase.AddonPackageSet = _addonPackageSet;
+        }
+
+
+        private void LoadChildAddonDatabase()
+        {
+            _currentAddonDatabaseName = _childCatalogue;
+            string catalogueFilename = _childCatalogue + AddonPackageSet.AddonPackageSetFileExtension;
+
+            string errorText;
+            tbLog.AppendText($"Loading default Addon Catalogue ({_currentAddonDatabaseName})...\n");
+            _addonPackageSet = AddonPackageSet.Load(out errorText, catalogueFilename);
+            if (_addonPackageSet == null)
+            {
+                tbLog.AppendText($"  ERROR: loading Addon Catalogue: {errorText}\n");
+                InitializeAddonDatabase(true, "Catalogue couldn't be loaded");
+                return;
+            }
+
+
+            tbLog.AppendText($"   Addon Catalogue '{_currentAddonDatabaseName}' successfully loaded:\n");
             tbLog.AppendText($"     Addons registered: {_addonPackageSet.Addons?.Count ?? 0}\n");
             tbLog.AppendText($"     Last updated: {_addonPackageSet.LastUpdate.ToString("s")}\n");
 
@@ -217,6 +304,25 @@ namespace StormCat
         }
 
 
+        private void ChildControlInitialization()
+        {
+            tcMainForm.SelectedTab = tpDatabase;
+
+            lblAddonDbFilename.Text = _childCatalogue;
+
+            SetToolTips();
+
+            pbSetup1.Enabled = false;
+
+            _childHiddenPages = new List<TabPage>();
+
+            tcMainForm.TabPages.Remove(tpCatalogueManagement);
+            _childHiddenPages.Add(tpCatalogueManagement);
+
+            tcMainForm.TabPages.Remove(tpChecking);
+            _childHiddenPages.Add(tpChecking);
+        }
+
 
         private void LoadConfiguration()
         {
@@ -247,7 +353,7 @@ namespace StormCat
         }
 
 
-        private bool PreScanArguments()
+        private bool ScanCmdLineArguments()
         {
             List<string> arguments = new List<string>();
             bool firstOption = true;
@@ -391,6 +497,7 @@ namespace StormCat
             formToolTip.SetToolTip(tbsAssetName, "Asset Name (ignores case and accepts regular expressions)");
             formToolTip.SetToolTip(tbAssetSubTypes, "List of Asset Subtype literals, separated by blanks (ignores case)");
             formToolTip.SetToolTip(tbsAssetTags, "List of Asset Tags, separated by blanks (ignores case)");
+            formToolTip.SetToolTip(tbsAssetExtraInfo, "List of words to search for, separated by blanks (ignores case)");
             formToolTip.SetToolTip(cbascInstalled, "Filter addons: installed/not installed/all");
             formToolTip.SetToolTip(cbascType, "Filter addons: official content packs/third party addons/both");
 
@@ -404,6 +511,7 @@ namespace StormCat
             formToolTip.SetToolTip(pbCatCopy, "Create a copy of the selected catalogue");
             formToolTip.SetToolTip(pbCatDelete, "Delete the selected catalogue");
             formToolTip.SetToolTip(pbCatLoad, "Load from file the selected catalogue, replacing the currently active");
+            formToolTip.SetToolTip(pbCatLoadChild, "Load from file the selected catalogue in another instance of the application (window)");
             formToolTip.SetToolTip(pbCatSave, "Save to file the currently active catalogue");
             formToolTip.SetToolTip(pbCatSetDefault, "Mark the selected catalogue as the one loaded when the program is launched");
             formToolTip.SetToolTip(pbRefreshIndex, "Refresh the Index of Addon catalogues, according to the catalogue files found");
@@ -790,9 +898,12 @@ namespace StormCat
 
             dgvAddons.DataSource = source;
             lblAddonDbFilename.Text = _currentAddonDatabaseName;
-            Text = !string.IsNullOrEmpty(_currentAddonDatabaseName)
+            string mainFormText = !string.IsNullOrEmpty(_currentAddonDatabaseName)
                 ? $@"StormCat     (version {Utils.GetExecutableVersion()})  -  {_currentAddonDatabaseName}"
                 : $@"StormCat     (version {Utils.GetExecutableVersion()})";
+            if (_isChildProcess)
+                mainFormText += "  [Child]";
+            Text = mainFormText;
             lblAddonCount.Text = $@"{_addons.Addons?.Count ?? 0}";
         }
 
@@ -867,7 +978,7 @@ namespace StormCat
             if(!cbListAlwaysAnimations.Checked && (package.AssetSummary.Verbs > 0))
             {
                 AddonAssetType types = AddonAssetType.Any ^ AddonAssetType.Animation;
-                criteria = new AssetSearchCriteria(null, types, null, null);
+                criteria = new AssetSearchCriteria(null, types, null, null, null);
             }
             
             List<AssetSearchResultItem> assets = _addonPackageSet.SearchAsset(new List<AddonPackage>() { package }, criteria);
@@ -988,7 +1099,7 @@ namespace StormCat
 
         private void pbsResetAssetCriteria_Click(object sender, EventArgs e)
         {
-            tbsAssetName.Text = tbsAssetTags.Text = tbAssetSubTypes.Text = null;
+            tbsAssetName.Text = tbsAssetTags.Text = tbAssetSubTypes.Text = tbsAssetExtraInfo.Text = null;
             SelectAllAssetTypes(true);
             cbatAnimation.Checked = false;
         }
@@ -1033,7 +1144,7 @@ namespace StormCat
             if (cbatStock.Checked) assetType |= AddonAssetType.Stock;
             if (cbatMovie.Checked) assetType |= AddonAssetType.StartMovie;
 
-            AssetSearchCriteria assetSearchCriteria = new AssetSearchCriteria(tbsAssetName.Text, assetType, tbAssetSubTypes.Text?.Trim(), tbsAssetTags.Text?.Trim());
+            AssetSearchCriteria assetSearchCriteria = new AssetSearchCriteria(tbsAssetName.Text, assetType, tbAssetSubTypes.Text?.Trim(), tbsAssetTags.Text?.Trim(), tbsAssetExtraInfo.Text?.Trim());
 
             List<AssetSearchResultItem> searchOutput = _addonPackageSet.Search(addonSearchCriteria, assetSearchCriteria);
 
@@ -1281,7 +1392,31 @@ namespace StormCat
         }
 
 
+        private void cmCatManager_Opening(object sender, CancelEventArgs e)
+        {
+            if ((_cataloguesIndex?.Catalogues == null) || (_cataloguesIndex.Catalogues.Count == 0))
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            e.Cancel = false;
+        }
+
+
         private void pbCatNew_Click(object sender, EventArgs e)
+        {
+            CatManagerNew();
+        }
+
+
+        private void cmiCatManNew_Click(object sender, EventArgs e)
+        {
+            CatManagerNew();
+        }
+
+
+        private void CatManagerNew()
         {
             CatalogueIndexOpsForm catOpsForm = new CatalogueIndexOpsForm(CataloguesIndexOperation.NewCatalogue,
                 _moviestormPaths, _cataloguesIndex, null);
@@ -1302,6 +1437,8 @@ namespace StormCat
             tcMainForm.SelectedTab = tpDatabase;
         }
 
+        // ......................
+
 
         private int GetSelectedCatalogueRowIndex()
         {
@@ -1312,7 +1449,20 @@ namespace StormCat
             return (rowIndex < 0) ? -1 : rowIndex;
         }
 
+        // ...................
+
         private void pbCatEdit_Click(object sender, EventArgs e)
+        {
+            CatManagerEdit();
+        }
+
+
+        private void cmiCatManEdit_Click(object sender, EventArgs e)
+        {
+            CatManagerEdit();
+        }
+
+        private void CatManagerEdit()
         {
             string selectedCatalogueName = GetSelectedCatalogueName();
             if (selectedCatalogueName == null)
@@ -1331,8 +1481,19 @@ namespace StormCat
             RefreshCatalogueAddonTable();
         }
 
+        // .....................
 
         private void pbCatRename_Click(object sender, EventArgs e)
+        {
+            CatManagerRename();
+        }
+
+        private void cmiCatManRename_Click(object sender, EventArgs e)
+        {
+            CatManagerRename();
+        }
+
+        private void CatManagerRename()
         {
             string selectedCatalogueName = GetSelectedCatalogueName();
             if (selectedCatalogueName == null)
@@ -1365,11 +1526,20 @@ namespace StormCat
             RefreshCatalogueAddonTable();
         }
 
-
+        // ............................
 
         private void pbCatDelete_Click(object sender, EventArgs e)
         {
-            
+            CatManagerDelete();
+        }
+
+        private void cmiCatManDelete_Click(object sender, EventArgs e)
+        {
+            CatManagerDelete();
+        }
+
+        private void CatManagerDelete()
+        {
             if ((_cataloguesIndex?.Catalogues.Count ?? 0) == 0)
             {
                 // MessageBox.Show("There must be at least one Catalogue left at any time", "Operation denied",MessageBoxButtons.OK);
@@ -1397,7 +1567,7 @@ namespace StormCat
             {
                 _cataloguesIndex.DefaultAddonDatabase = AddonPackageSet.DefaultAddonPackageSet;
                 _cataloguesIndex.Update(AddonPackageSet.DefaultAddonPackageSetName, "Default addon catalogue");
-                
+
                 _addonPackageSet = new AddonPackageSet(_moviestormPaths, null, "Default addon catalogue");
                 _addonPackageSet.Save(out errorText);
 
@@ -1422,7 +1592,22 @@ namespace StormCat
             RefreshCatalogueIndexTable(_currentAddonDatabaseName);
         }
 
+
+        // ....................................
+
         private void pbCatCopy_Click(object sender, EventArgs e)
+        {
+            CatManagerCopy();
+        }
+
+
+        private void cmiCatManCopy_Click(object sender, EventArgs e)
+        {
+            CatManagerCopy();
+        }
+
+
+        private void CatManagerCopy()
         {
             string selectedCatalogueName = GetSelectedCatalogueName();
             if (selectedCatalogueName == null)
@@ -1438,10 +1623,21 @@ namespace StormCat
             RefreshCatalogueIndexTable(_currentAddonDatabaseName);
         }
 
+        // .................................................................
 
         private void pbCatLoad_Click(object sender, EventArgs e)
         {
+            CatManagerLoad();
+        }
 
+        private void cmiCatManLoad_Click(object sender, EventArgs e)
+        {
+            CatManagerLoad();
+        }
+
+
+        private void CatManagerLoad()
+        {
             string catalogueName = GetSelectedCatalogueName();
             if (string.IsNullOrEmpty(catalogueName))
                 return;
@@ -1451,7 +1647,7 @@ namespace StormCat
             if ((_addonPackageSetTimeStamp < _addonPackageSet.LastUpdate) &&
                 (catalogueName != _currentAddonDatabaseName))
             {
-                if(MessageBox.Show("Would you like to save changes to the current catalogue before loading the new one?", "Confirmation", MessageBoxButtons.YesNo) != DialogResult.No)
+                if (MessageBox.Show("Would you like to save changes to the current catalogue before loading the new one?", "Confirmation", MessageBoxButtons.YesNo) != DialogResult.No)
                     SaveCurrentAddonDatabase();
             }
 
@@ -1462,8 +1658,59 @@ namespace StormCat
             tcMainForm.SelectedTab = tpDatabase;
         }
 
+        // ........................................................
+
+        private void pbCatLoadChild_Click(object sender, EventArgs e)
+        {
+            CatManagerLoadInChild();
+        }
+
+
+        private void cmiCatManLoadChild_Click(object sender, EventArgs e)
+        {
+            CatManagerLoadInChild();
+        }
+
+        private void CatManagerLoadInChild()
+        {
+            string catalogueName = GetSelectedCatalogueName();
+            if (string.IsNullOrEmpty(catalogueName))
+                return;
+
+            if (!File.Exists(catalogueName + AddonPackageSet.AddonPackageSetFileExtension))
+                return;
+
+            string executablePath = Utils.GetExecutableFullPath();
+
+            ProcessStartInfo processStartInfo = new ProcessStartInfo()
+            {
+                CreateNoWindow = false,
+                UseShellExecute = false,
+                FileName = executablePath,
+                WindowStyle = ProcessWindowStyle.Normal,
+                Arguments = $"-child:{catalogueName}"
+            };
+
+            Process childProcess = Process.Start(processStartInfo);
+        }
+
+
+        // ........................................................
+
+
 
         private void pbCatSetDefault_Click(object sender, EventArgs e)
+        {
+            CatManagerSetDefault();
+        }
+
+
+        private void cmiCatManSetDefault_Click(object sender, EventArgs e)
+        {
+            CatManagerSetDefault();
+        }
+
+        private void CatManagerSetDefault()
         {
             string catalogueName = GetSelectedCatalogueName();
             if (string.IsNullOrEmpty(catalogueName))
@@ -1476,10 +1723,22 @@ namespace StormCat
         }
 
 
+        // ....................................................
+
+
         private void pbCatSave_Click(object sender, EventArgs e)
         {
             SaveCurrentAddonDatabase();
         }
+
+
+        private void cmiCatManSave_Click(object sender, EventArgs e)
+        {
+            SaveCurrentAddonDatabase();
+        }
+
+
+        // ................................................
 
 
         private string GetSelectedCatalogueName()
@@ -1527,6 +1786,17 @@ namespace StormCat
             RefreshCatalogueIndexTable(catalogueName);
             RefreshCatalogueAddonTable();
             tcMainForm.SelectedTab = tpDatabase;
+        }
+
+
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (_childHiddenPages != null)
+            {
+                foreach(TabPage page in _childHiddenPages)
+                    page.Dispose();
+            }
         }
     }
 }
