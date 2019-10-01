@@ -73,9 +73,7 @@ namespace StormCat.Configuration
             }
             catch (Exception exception)
             {
-                pErrorText = exception.Message;
-                if (exception.InnerException != null)
-                    pErrorText += $" ({exception.InnerException.Message})";
+                pErrorText = Utils.GetExceptionExtendedMessage(exception);
                 configurationInfo = null;
             }
             return configurationInfo;

@@ -117,15 +117,19 @@
             this.cmiRefreshAddon = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiDeleteAddon = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.cmiCredits = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmiCopyClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmiPasteClipboard = new System.Windows.Forms.ToolStripMenuItem();
             this.lblAddonCount = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tpSearchAssets = new System.Windows.Forms.TabPage();
+            this.tbSearchLog = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pbsResetCriteria = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.tbsAssetExtraInfo = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.tbsAssetTags = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.pbsSearch = new System.Windows.Forms.Button();
             this.pbsResetAssetCriteria = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cbatAnimation = new System.Windows.Forms.CheckBox();
@@ -158,7 +162,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.pbsSearch = new System.Windows.Forms.Button();
             this.tpCatalogueManagement = new System.Windows.Forms.TabPage();
+            this.pbCatLoadChild = new System.Windows.Forms.Button();
             this.pbRefreshIndex = new System.Windows.Forms.Button();
             this.pbCatSetDefault = new System.Windows.Forms.Button();
             this.pbCatSave = new System.Windows.Forms.Button();
@@ -173,25 +179,23 @@
             this.colCatDefault = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colCatName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCatDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label11 = new System.Windows.Forms.Label();
-            this.tpChecking = new System.Windows.Forms.TabPage();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.sfdAddonListExportExcel = new System.Windows.Forms.SaveFileDialog();
             this.cmCatManager = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmiCatManNew = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiCatManEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiCatManRename = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiCatManCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiCatManDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.cmiCatManLoad = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiCatManLoadChild = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiCatManSave = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmiCatManSetDefault = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.pbCatLoadChild = new System.Windows.Forms.Button();
-            this.label13 = new System.Windows.Forms.Label();
-            this.tbsAssetExtraInfo = new System.Windows.Forms.TextBox();
+            this.cmiCatManSetDefault = new System.Windows.Forms.ToolStripMenuItem();
+            this.label11 = new System.Windows.Forms.Label();
+            this.tpChecking = new System.Windows.Forms.TabPage();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.sfdAddonListExportExcel = new System.Windows.Forms.SaveFileDialog();
+            this.pbCredits = new System.Windows.Forms.Button();
             this.outputContextMenu.SuspendLayout();
             this.pDragFiles.SuspendLayout();
             this.pnlDisplayContents.SuspendLayout();
@@ -206,9 +210,9 @@
             this.groupBox1.SuspendLayout();
             this.tpCatalogueManagement.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCatalogueIndex)).BeginInit();
+            this.cmCatManager.SuspendLayout();
             this.tpChecking.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
-            this.cmCatManager.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbOutput
@@ -497,6 +501,7 @@
             // 
             // tpDatabase
             // 
+            this.tpDatabase.Controls.Add(this.pbCredits);
             this.tpDatabase.Controls.Add(this.cbListAlwaysAnimations);
             this.tpDatabase.Controls.Add(this.cbAutoSave);
             this.tpDatabase.Controls.Add(this.label10);
@@ -651,7 +656,6 @@
             this.dgvAddonLocation});
             this.dgvAddons.ContextMenuStrip = this.cmAddonTable;
             this.dgvAddons.Location = new System.Drawing.Point(6, 19);
-            this.dgvAddons.MultiSelect = false;
             this.dgvAddons.Name = "dgvAddons";
             this.dgvAddons.ReadOnly = true;
             dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -918,9 +922,10 @@
             this.cmiRefreshAddon,
             this.cmiDeleteAddon,
             this.toolStripSeparator4,
-            this.cmiCredits});
+            this.cmiCopyClipboard,
+            this.cmiPasteClipboard});
             this.cmAddonTable.Name = "cmAddonTable";
-            this.cmAddonTable.Size = new System.Drawing.Size(296, 154);
+            this.cmAddonTable.Size = new System.Drawing.Size(296, 176);
             this.cmAddonTable.Opening += new System.ComponentModel.CancelEventHandler(this.cmAddonTable_Opening);
             // 
             // cmiDisplayReport
@@ -958,14 +963,14 @@
             // 
             this.cmiRefreshAddon.Name = "cmiRefreshAddon";
             this.cmiRefreshAddon.Size = new System.Drawing.Size(295, 22);
-            this.cmiRefreshAddon.Text = "Refresh selected Addon";
+            this.cmiRefreshAddon.Text = "Refresh selected Addon(s)";
             this.cmiRefreshAddon.Click += new System.EventHandler(this.cmiRefreshAddon_Click);
             // 
             // cmiDeleteAddon
             // 
             this.cmiDeleteAddon.Name = "cmiDeleteAddon";
             this.cmiDeleteAddon.Size = new System.Drawing.Size(295, 22);
-            this.cmiDeleteAddon.Text = "Delete selected Addon";
+            this.cmiDeleteAddon.Text = "Delete selected Addon(s)";
             this.cmiDeleteAddon.Click += new System.EventHandler(this.cmiDeleteAddon_Click);
             // 
             // toolStripSeparator4
@@ -973,12 +978,19 @@
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(292, 6);
             // 
-            // cmiCredits
+            // cmiCopyClipboard
             // 
-            this.cmiCredits.Name = "cmiCredits";
-            this.cmiCredits.Size = new System.Drawing.Size(295, 22);
-            this.cmiCredits.Text = "Credits";
-            this.cmiCredits.Click += new System.EventHandler(this.cmiCredits_Click);
+            this.cmiCopyClipboard.Name = "cmiCopyClipboard";
+            this.cmiCopyClipboard.Size = new System.Drawing.Size(295, 22);
+            this.cmiCopyClipboard.Text = "Copy selected Addon(s) to Clipboard";
+            this.cmiCopyClipboard.Click += new System.EventHandler(this.cmiCopyClipboard_Click);
+            // 
+            // cmiPasteClipboard
+            // 
+            this.cmiPasteClipboard.Name = "cmiPasteClipboard";
+            this.cmiPasteClipboard.Size = new System.Drawing.Size(295, 22);
+            this.cmiPasteClipboard.Text = "Paste Addon(s) from Clipboard";
+            this.cmiPasteClipboard.Click += new System.EventHandler(this.cmiPasteClipboard_Click);
             // 
             // lblAddonCount
             // 
@@ -1002,6 +1014,7 @@
             // 
             // tpSearchAssets
             // 
+            this.tpSearchAssets.Controls.Add(this.tbSearchLog);
             this.tpSearchAssets.Controls.Add(this.panel1);
             this.tpSearchAssets.Location = new System.Drawing.Point(4, 22);
             this.tpSearchAssets.Name = "tpSearchAssets";
@@ -1010,14 +1023,37 @@
             this.tpSearchAssets.Text = "Search Assets";
             this.tpSearchAssets.UseVisualStyleBackColor = true;
             // 
+            // tbSearchLog
+            // 
+            this.tbSearchLog.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbSearchLog.Location = new System.Drawing.Point(3, 290);
+            this.tbSearchLog.Multiline = true;
+            this.tbSearchLog.Name = "tbSearchLog";
+            this.tbSearchLog.ReadOnly = true;
+            this.tbSearchLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tbSearchLog.Size = new System.Drawing.Size(1000, 296);
+            this.tbSearchLog.TabIndex = 19;
+            // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.pbsResetCriteria);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.groupBox1);
+            this.panel1.Controls.Add(this.pbsSearch);
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1000, 308);
+            this.panel1.Size = new System.Drawing.Size(1000, 281);
             this.panel1.TabIndex = 18;
+            // 
+            // pbsResetCriteria
+            // 
+            this.pbsResetCriteria.Location = new System.Drawing.Point(825, 247);
+            this.pbsResetCriteria.Name = "pbsResetCriteria";
+            this.pbsResetCriteria.Size = new System.Drawing.Size(75, 23);
+            this.pbsResetCriteria.TabIndex = 11;
+            this.pbsResetCriteria.Text = "Reset All";
+            this.pbsResetCriteria.UseVisualStyleBackColor = true;
+            this.pbsResetCriteria.Click += new System.EventHandler(this.pbsResetCriteria_Click);
             // 
             // groupBox2
             // 
@@ -1025,7 +1061,6 @@
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.tbsAssetTags);
             this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Controls.Add(this.pbsSearch);
             this.groupBox2.Controls.Add(this.pbsResetAssetCriteria);
             this.groupBox2.Controls.Add(this.groupBox3);
             this.groupBox2.Controls.Add(this.tbsAssetName);
@@ -1037,11 +1072,27 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Asset Search Criteria";
             // 
+            // tbsAssetExtraInfo
+            // 
+            this.tbsAssetExtraInfo.Location = new System.Drawing.Point(73, 202);
+            this.tbsAssetExtraInfo.Name = "tbsAssetExtraInfo";
+            this.tbsAssetExtraInfo.Size = new System.Drawing.Size(408, 20);
+            this.tbsAssetExtraInfo.TabIndex = 14;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(12, 205);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(55, 13);
+            this.label13.TabIndex = 13;
+            this.label13.Text = "Extra Info:";
+            // 
             // tbsAssetTags
             // 
             this.tbsAssetTags.Location = new System.Drawing.Point(52, 166);
             this.tbsAssetTags.Name = "tbsAssetTags";
-            this.tbsAssetTags.Size = new System.Drawing.Size(313, 20);
+            this.tbsAssetTags.Size = new System.Drawing.Size(429, 20);
             this.tbsAssetTags.TabIndex = 12;
             // 
             // label9
@@ -1053,20 +1104,9 @@
             this.label9.TabIndex = 11;
             this.label9.Text = "Tags:";
             // 
-            // pbsSearch
-            // 
-            this.pbsSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pbsSearch.Location = new System.Drawing.Point(406, 16);
-            this.pbsSearch.Name = "pbsSearch";
-            this.pbsSearch.Size = new System.Drawing.Size(75, 23);
-            this.pbsSearch.TabIndex = 10;
-            this.pbsSearch.Text = "Search";
-            this.pbsSearch.UseVisualStyleBackColor = true;
-            this.pbsSearch.Click += new System.EventHandler(this.pbsSearch_Click);
-            // 
             // pbsResetAssetCriteria
             // 
-            this.pbsResetAssetCriteria.Location = new System.Drawing.Point(406, 200);
+            this.pbsResetAssetCriteria.Location = new System.Drawing.Point(406, 13);
             this.pbsResetAssetCriteria.Name = "pbsResetAssetCriteria";
             this.pbsResetAssetCriteria.Size = new System.Drawing.Size(75, 23);
             this.pbsResetAssetCriteria.TabIndex = 9;
@@ -1094,7 +1134,7 @@
             this.groupBox3.Controls.Add(this.cbatBodyPart);
             this.groupBox3.Location = new System.Drawing.Point(9, 40);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(388, 120);
+            this.groupBox3.Size = new System.Drawing.Size(472, 120);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Asset Type";
@@ -1102,7 +1142,7 @@
             // cbatAnimation
             // 
             this.cbatAnimation.AutoSize = true;
-            this.cbatAnimation.Location = new System.Drawing.Point(6, 41);
+            this.cbatAnimation.Location = new System.Drawing.Point(306, 19);
             this.cbatAnimation.Name = "cbatAnimation";
             this.cbatAnimation.Size = new System.Drawing.Size(72, 17);
             this.cbatAnimation.TabIndex = 15;
@@ -1114,7 +1154,7 @@
             this.cbatMovie.AutoSize = true;
             this.cbatMovie.Checked = true;
             this.cbatMovie.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbatMovie.Location = new System.Drawing.Point(160, 64);
+            this.cbatMovie.Location = new System.Drawing.Point(89, 64);
             this.cbatMovie.Name = "cbatMovie";
             this.cbatMovie.Size = new System.Drawing.Size(55, 17);
             this.cbatMovie.TabIndex = 14;
@@ -1126,7 +1166,7 @@
             this.cbatStock.AutoSize = true;
             this.cbatStock.Checked = true;
             this.cbatStock.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbatStock.Location = new System.Drawing.Point(90, 64);
+            this.cbatStock.Location = new System.Drawing.Point(6, 64);
             this.cbatStock.Name = "cbatStock";
             this.cbatStock.Size = new System.Drawing.Size(59, 17);
             this.cbatStock.TabIndex = 13;
@@ -1137,7 +1177,7 @@
             // 
             this.tbAssetSubTypes.Location = new System.Drawing.Point(66, 94);
             this.tbAssetSubTypes.Name = "tbAssetSubTypes";
-            this.tbAssetSubTypes.Size = new System.Drawing.Size(284, 20);
+            this.tbAssetSubTypes.Size = new System.Drawing.Size(400, 20);
             this.tbAssetSubTypes.TabIndex = 12;
             // 
             // label12
@@ -1151,9 +1191,9 @@
             // 
             // pbatClearAll
             // 
-            this.pbatClearAll.Location = new System.Drawing.Point(306, 42);
+            this.pbatClearAll.Location = new System.Drawing.Point(397, 42);
             this.pbatClearAll.Name = "pbatClearAll";
-            this.pbatClearAll.Size = new System.Drawing.Size(75, 23);
+            this.pbatClearAll.Size = new System.Drawing.Size(69, 23);
             this.pbatClearAll.TabIndex = 10;
             this.pbatClearAll.Text = "Clear All";
             this.pbatClearAll.UseVisualStyleBackColor = true;
@@ -1161,9 +1201,9 @@
             // 
             // pbatSetAll
             // 
-            this.pbatSetAll.Location = new System.Drawing.Point(306, 13);
+            this.pbatSetAll.Location = new System.Drawing.Point(397, 13);
             this.pbatSetAll.Name = "pbatSetAll";
-            this.pbatSetAll.Size = new System.Drawing.Size(75, 23);
+            this.pbatSetAll.Size = new System.Drawing.Size(69, 23);
             this.pbatSetAll.TabIndex = 9;
             this.pbatSetAll.Text = "Set All";
             this.pbatSetAll.UseVisualStyleBackColor = true;
@@ -1174,7 +1214,7 @@
             this.cbatSfx.AutoSize = true;
             this.cbatSfx.Checked = true;
             this.cbatSfx.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbatSfx.Location = new System.Drawing.Point(6, 64);
+            this.cbatSfx.Location = new System.Drawing.Point(223, 41);
             this.cbatSfx.Name = "cbatSfx";
             this.cbatSfx.Size = new System.Drawing.Size(77, 17);
             this.cbatSfx.TabIndex = 8;
@@ -1186,7 +1226,7 @@
             this.cbatSky.AutoSize = true;
             this.cbatSky.Checked = true;
             this.cbatSky.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbatSky.Location = new System.Drawing.Point(223, 64);
+            this.cbatSky.Location = new System.Drawing.Point(306, 42);
             this.cbatSky.Name = "cbatSky";
             this.cbatSky.Size = new System.Drawing.Size(79, 17);
             this.cbatSky.TabIndex = 7;
@@ -1198,7 +1238,7 @@
             this.cbatSound.AutoSize = true;
             this.cbatSound.Checked = true;
             this.cbatSound.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbatSound.Location = new System.Drawing.Point(160, 41);
+            this.cbatSound.Location = new System.Drawing.Point(90, 42);
             this.cbatSound.Name = "cbatSound";
             this.cbatSound.Size = new System.Drawing.Size(57, 17);
             this.cbatSound.TabIndex = 6;
@@ -1210,7 +1250,7 @@
             this.cbatFilter.AutoSize = true;
             this.cbatFilter.Checked = true;
             this.cbatFilter.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbatFilter.Location = new System.Drawing.Point(223, 41);
+            this.cbatFilter.Location = new System.Drawing.Point(160, 41);
             this.cbatFilter.Name = "cbatFilter";
             this.cbatFilter.Size = new System.Drawing.Size(48, 17);
             this.cbatFilter.TabIndex = 5;
@@ -1222,7 +1262,7 @@
             this.cbatMaterial.AutoSize = true;
             this.cbatMaterial.Checked = true;
             this.cbatMaterial.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbatMaterial.Location = new System.Drawing.Point(90, 41);
+            this.cbatMaterial.Location = new System.Drawing.Point(6, 41);
             this.cbatMaterial.Name = "cbatMaterial";
             this.cbatMaterial.Size = new System.Drawing.Size(63, 17);
             this.cbatMaterial.TabIndex = 4;
@@ -1415,6 +1455,17 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "Name:";
             // 
+            // pbsSearch
+            // 
+            this.pbsSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pbsSearch.Location = new System.Drawing.Point(916, 247);
+            this.pbsSearch.Name = "pbsSearch";
+            this.pbsSearch.Size = new System.Drawing.Size(75, 23);
+            this.pbsSearch.TabIndex = 10;
+            this.pbsSearch.Text = "Search";
+            this.pbsSearch.UseVisualStyleBackColor = true;
+            this.pbsSearch.Click += new System.EventHandler(this.pbsSearch_Click);
+            // 
             // tpCatalogueManagement
             // 
             this.tpCatalogueManagement.Controls.Add(this.pbCatLoadChild);
@@ -1435,6 +1486,16 @@
             this.tpCatalogueManagement.TabIndex = 3;
             this.tpCatalogueManagement.Text = "Catalogue Management";
             this.tpCatalogueManagement.UseVisualStyleBackColor = true;
+            // 
+            // pbCatLoadChild
+            // 
+            this.pbCatLoadChild.Location = new System.Drawing.Point(918, 242);
+            this.pbCatLoadChild.Name = "pbCatLoadChild";
+            this.pbCatLoadChild.Size = new System.Drawing.Size(75, 23);
+            this.pbCatLoadChild.TabIndex = 11;
+            this.pbCatLoadChild.Text = "Load Child";
+            this.pbCatLoadChild.UseVisualStyleBackColor = true;
+            this.pbCatLoadChild.Click += new System.EventHandler(this.pbCatLoadChild_Click);
             // 
             // pbRefreshIndex
             // 
@@ -1590,45 +1651,6 @@
             this.colCatDescription.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colCatDescription.Width = 66;
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(5, 11);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(109, 13);
-            this.label11.TabIndex = 0;
-            this.label11.Text = "Catalogues Available:";
-            // 
-            // tpChecking
-            // 
-            this.tpChecking.Controls.Add(this.pbCheckInstalled);
-            this.tpChecking.Controls.Add(this.cbRefreshItemsInDatabase);
-            this.tpChecking.Controls.Add(this.tbOutput);
-            this.tpChecking.Controls.Add(this.pDragFiles);
-            this.tpChecking.Controls.Add(this.cbAppendToDatabase);
-            this.tpChecking.Controls.Add(this.cbAssetsToCheck);
-            this.tpChecking.Controls.Add(this.pbSetup);
-            this.tpChecking.Controls.Add(this.cbDeleteSourceArchive);
-            this.tpChecking.Controls.Add(this.pbSaveDefaultOptions);
-            this.tpChecking.Controls.Add(this.cbCorrectDisguisedAddonFiles);
-            this.tpChecking.Controls.Add(this.pbLoadDefaultOptions);
-            this.tpChecking.Controls.Add(this.cbShowContents);
-            this.tpChecking.Controls.Add(this.cbOnlyIssues);
-            this.tpChecking.Controls.Add(this.pnlDisplayContents);
-            this.tpChecking.Location = new System.Drawing.Point(4, 22);
-            this.tpChecking.Name = "tpChecking";
-            this.tpChecking.Padding = new System.Windows.Forms.Padding(3);
-            this.tpChecking.Size = new System.Drawing.Size(1012, 592);
-            this.tpChecking.TabIndex = 0;
-            this.tpChecking.Text = "Checking";
-            this.tpChecking.UseVisualStyleBackColor = true;
-            // 
-            // sfdAddonListExportExcel
-            // 
-            this.sfdAddonListExportExcel.DefaultExt = "*.xlsx";
-            this.sfdAddonListExportExcel.FileName = "Asset_Search_Result.xlsx";
-            this.sfdAddonListExportExcel.Filter = "Excel files|*.xlsx";
-            // 
             // cmCatManager
             // 
             this.cmCatManager.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1682,6 +1704,11 @@
             this.cmiCatManDelete.Text = "Delete catalogue";
             this.cmiCatManDelete.Click += new System.EventHandler(this.cmiCatManDelete_Click);
             // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(265, 6);
+            // 
             // cmiCatManLoad
             // 
             this.cmiCatManLoad.Name = "cmiCatManLoad";
@@ -1703,6 +1730,11 @@
             this.cmiCatManSave.Text = "Save catalogue";
             this.cmiCatManSave.Click += new System.EventHandler(this.cmiCatManSave_Click);
             // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(265, 6);
+            // 
             // cmiCatManSetDefault
             // 
             this.cmiCatManSetDefault.Name = "cmiCatManSetDefault";
@@ -1710,41 +1742,54 @@
             this.cmiCatManSetDefault.Text = "Set default catalogue";
             this.cmiCatManSetDefault.Click += new System.EventHandler(this.cmiCatManSetDefault_Click);
             // 
-            // toolStripSeparator6
+            // label11
             // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(265, 6);
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(5, 11);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(109, 13);
+            this.label11.TabIndex = 0;
+            this.label11.Text = "Catalogues Available:";
             // 
-            // toolStripSeparator7
+            // tpChecking
             // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(265, 6);
+            this.tpChecking.Controls.Add(this.pbCheckInstalled);
+            this.tpChecking.Controls.Add(this.cbRefreshItemsInDatabase);
+            this.tpChecking.Controls.Add(this.tbOutput);
+            this.tpChecking.Controls.Add(this.pDragFiles);
+            this.tpChecking.Controls.Add(this.cbAppendToDatabase);
+            this.tpChecking.Controls.Add(this.cbAssetsToCheck);
+            this.tpChecking.Controls.Add(this.pbSetup);
+            this.tpChecking.Controls.Add(this.cbDeleteSourceArchive);
+            this.tpChecking.Controls.Add(this.pbSaveDefaultOptions);
+            this.tpChecking.Controls.Add(this.cbCorrectDisguisedAddonFiles);
+            this.tpChecking.Controls.Add(this.pbLoadDefaultOptions);
+            this.tpChecking.Controls.Add(this.cbShowContents);
+            this.tpChecking.Controls.Add(this.cbOnlyIssues);
+            this.tpChecking.Controls.Add(this.pnlDisplayContents);
+            this.tpChecking.Location = new System.Drawing.Point(4, 22);
+            this.tpChecking.Name = "tpChecking";
+            this.tpChecking.Padding = new System.Windows.Forms.Padding(3);
+            this.tpChecking.Size = new System.Drawing.Size(1012, 592);
+            this.tpChecking.TabIndex = 0;
+            this.tpChecking.Text = "Checking";
+            this.tpChecking.UseVisualStyleBackColor = true;
             // 
-            // pbCatLoadChild
+            // sfdAddonListExportExcel
             // 
-            this.pbCatLoadChild.Location = new System.Drawing.Point(918, 242);
-            this.pbCatLoadChild.Name = "pbCatLoadChild";
-            this.pbCatLoadChild.Size = new System.Drawing.Size(75, 23);
-            this.pbCatLoadChild.TabIndex = 11;
-            this.pbCatLoadChild.Text = "Load Child";
-            this.pbCatLoadChild.UseVisualStyleBackColor = true;
-            this.pbCatLoadChild.Click += new System.EventHandler(this.pbCatLoadChild_Click);
+            this.sfdAddonListExportExcel.DefaultExt = "*.xlsx";
+            this.sfdAddonListExportExcel.FileName = "Asset_Search_Result.xlsx";
+            this.sfdAddonListExportExcel.Filter = "Excel files|*.xlsx";
             // 
-            // label13
+            // pbCredits
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(12, 205);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(55, 13);
-            this.label13.TabIndex = 13;
-            this.label13.Text = "Extra Info:";
-            // 
-            // tbsAssetExtraInfo
-            // 
-            this.tbsAssetExtraInfo.Location = new System.Drawing.Point(73, 202);
-            this.tbsAssetExtraInfo.Name = "tbsAssetExtraInfo";
-            this.tbsAssetExtraInfo.Size = new System.Drawing.Size(292, 20);
-            this.tbsAssetExtraInfo.TabIndex = 14;
+            this.pbCredits.Image = ((System.Drawing.Image)(resources.GetObject("pbCredits.Image")));
+            this.pbCredits.Location = new System.Drawing.Point(957, 390);
+            this.pbCredits.Name = "pbCredits";
+            this.pbCredits.Size = new System.Drawing.Size(39, 39);
+            this.pbCredits.TabIndex = 24;
+            this.pbCredits.UseVisualStyleBackColor = true;
+            this.pbCredits.Click += new System.EventHandler(this.pbCredits_Click);
             // 
             // MainForm
             // 
@@ -1771,6 +1816,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvAddons)).EndInit();
             this.cmAddonTable.ResumeLayout(false);
             this.tpSearchAssets.ResumeLayout(false);
+            this.tpSearchAssets.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -1781,10 +1827,10 @@
             this.tpCatalogueManagement.ResumeLayout(false);
             this.tpCatalogueManagement.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCatalogueIndex)).EndInit();
+            this.cmCatManager.ResumeLayout(false);
             this.tpChecking.ResumeLayout(false);
             this.tpChecking.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
-            this.cmCatManager.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1838,7 +1884,6 @@
         private System.Windows.Forms.Label lblAddonDbFilename;
         private System.Windows.Forms.Label lblTipTable;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem cmiCredits;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem cmiExportExcel;
         private System.Windows.Forms.SaveFileDialog sfdAddonListExportExcel;
@@ -1935,6 +1980,11 @@
         private System.Windows.Forms.Button pbCatLoadChild;
         private System.Windows.Forms.TextBox tbsAssetExtraInfo;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button pbsResetCriteria;
+        private System.Windows.Forms.TextBox tbSearchLog;
+        private System.Windows.Forms.ToolStripMenuItem cmiCopyClipboard;
+        private System.Windows.Forms.ToolStripMenuItem cmiPasteClipboard;
+        private System.Windows.Forms.Button pbCredits;
     }
 }
 

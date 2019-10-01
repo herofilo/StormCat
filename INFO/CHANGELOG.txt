@@ -1,6 +1,21 @@
 
 StormCat - Version History
 --------------------------
+* v1.9.0 (20191001):
+	- Asset Search Result view: double-clicking a row (asset) opens up a new form with the full contents of the addon the selected asset belongs to.
+	- Can select multiple addons in a Catalogue for deleting or refreshing in an unique operation
+	- Information about multiple addons can be copied and pasted between different Catalogues.
+
+
+* v1.8.1 (20190919):
+	Asset Search: 
+		- Multiple substrings can be searched for at once for:
+			Addon Name
+			Addon Publisher
+			Asset Name 
+		New 'Reset all search criteria'
+		Statistics for search results
+
 * v1.8.0 (20190918)
 	- Contextual menu now available for the Catalogue Index table
 	- Multiple catalogues can be loaded at the same time in different windows (instances) of the application

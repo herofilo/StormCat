@@ -38,11 +38,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AssetSearchResultForm));
             this.dgvAssets = new System.Windows.Forms.DataGridView();
-            this.cmAssetTable = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cmiSaveToExcel = new System.Windows.Forms.ToolStripMenuItem();
-            this.sfdExportExcel = new System.Windows.Forms.SaveFileDialog();
-            this.lblSummary = new System.Windows.Forms.Label();
-            this.pbSaveToExcel = new System.Windows.Forms.Button();
             this.colAddonName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAddonPublisher = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAssetType = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -54,6 +49,11 @@
             this.colInstalled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colContentPack = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cmAssetTable = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmiSaveToExcel = new System.Windows.Forms.ToolStripMenuItem();
+            this.sfdExportExcel = new System.Windows.Forms.SaveFileDialog();
+            this.lblSummary = new System.Windows.Forms.Label();
+            this.pbSaveToExcel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAssets)).BeginInit();
             this.cmAssetTable.SuspendLayout();
             this.SuspendLayout();
@@ -80,53 +80,13 @@
             this.colLocation});
             this.dgvAssets.ContextMenuStrip = this.cmAssetTable;
             this.dgvAssets.Location = new System.Drawing.Point(0, 38);
+            this.dgvAssets.MultiSelect = false;
             this.dgvAssets.Name = "dgvAssets";
             this.dgvAssets.ReadOnly = true;
             this.dgvAssets.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAssets.Size = new System.Drawing.Size(860, 533);
             this.dgvAssets.TabIndex = 1;
-            // 
-            // cmAssetTable
-            // 
-            this.cmAssetTable.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmiSaveToExcel});
-            this.cmAssetTable.Name = "cmAssetTable";
-            this.cmAssetTable.Size = new System.Drawing.Size(166, 26);
-            this.cmAssetTable.Opening += new System.ComponentModel.CancelEventHandler(this.cmAssetTable_Opening);
-            // 
-            // cmiSaveToExcel
-            // 
-            this.cmiSaveToExcel.Name = "cmiSaveToExcel";
-            this.cmiSaveToExcel.Size = new System.Drawing.Size(165, 22);
-            this.cmiSaveToExcel.Text = "Save To Excel File";
-            this.cmiSaveToExcel.Click += new System.EventHandler(this.cmiSaveToExcel_Click);
-            // 
-            // sfdExportExcel
-            // 
-            this.sfdExportExcel.DefaultExt = "*.xlsx";
-            this.sfdExportExcel.FileName = "Asset_Search_Result.xlsx";
-            this.sfdExportExcel.Filter = "Excel files|*.xlsx";
-            // 
-            // lblSummary
-            // 
-            this.lblSummary.AutoSize = true;
-            this.lblSummary.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSummary.Location = new System.Drawing.Point(12, 9);
-            this.lblSummary.Name = "lblSummary";
-            this.lblSummary.Size = new System.Drawing.Size(88, 13);
-            this.lblSummary.TabIndex = 2;
-            this.lblSummary.Text = "Assets found: ";
-            // 
-            // pbSaveToExcel
-            // 
-            this.pbSaveToExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbSaveToExcel.Location = new System.Drawing.Point(743, 9);
-            this.pbSaveToExcel.Name = "pbSaveToExcel";
-            this.pbSaveToExcel.Size = new System.Drawing.Size(106, 23);
-            this.pbSaveToExcel.TabIndex = 3;
-            this.pbSaveToExcel.Text = "Save to Excel";
-            this.pbSaveToExcel.UseVisualStyleBackColor = true;
-            this.pbSaveToExcel.Click += new System.EventHandler(this.pbSaveToExcel_Click);
+            this.dgvAssets.DoubleClick += new System.EventHandler(this.dgvAssets_DoubleClick);
             // 
             // colAddonName
             // 
@@ -247,6 +207,48 @@
             this.colLocation.Name = "colLocation";
             this.colLocation.ReadOnly = true;
             this.colLocation.Width = 73;
+            // 
+            // cmAssetTable
+            // 
+            this.cmAssetTable.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmiSaveToExcel});
+            this.cmAssetTable.Name = "cmAssetTable";
+            this.cmAssetTable.Size = new System.Drawing.Size(166, 26);
+            this.cmAssetTable.Opening += new System.ComponentModel.CancelEventHandler(this.cmAssetTable_Opening);
+            // 
+            // cmiSaveToExcel
+            // 
+            this.cmiSaveToExcel.Name = "cmiSaveToExcel";
+            this.cmiSaveToExcel.Size = new System.Drawing.Size(165, 22);
+            this.cmiSaveToExcel.Text = "Save To Excel File";
+            this.cmiSaveToExcel.Click += new System.EventHandler(this.cmiSaveToExcel_Click);
+            // 
+            // sfdExportExcel
+            // 
+            this.sfdExportExcel.DefaultExt = "*.xlsx";
+            this.sfdExportExcel.FileName = "Asset_Search_Result.xlsx";
+            this.sfdExportExcel.Filter = "Excel files|*.xlsx";
+            // 
+            // lblSummary
+            // 
+            this.lblSummary.AutoSize = true;
+            this.lblSummary.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSummary.Location = new System.Drawing.Point(12, 9);
+            this.lblSummary.Name = "lblSummary";
+            this.lblSummary.Size = new System.Drawing.Size(88, 13);
+            this.lblSummary.TabIndex = 2;
+            this.lblSummary.Text = "Assets found: ";
+            // 
+            // pbSaveToExcel
+            // 
+            this.pbSaveToExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbSaveToExcel.Location = new System.Drawing.Point(743, 9);
+            this.pbSaveToExcel.Name = "pbSaveToExcel";
+            this.pbSaveToExcel.Size = new System.Drawing.Size(106, 23);
+            this.pbSaveToExcel.TabIndex = 3;
+            this.pbSaveToExcel.Text = "Save to Excel";
+            this.pbSaveToExcel.UseVisualStyleBackColor = true;
+            this.pbSaveToExcel.Click += new System.EventHandler(this.pbSaveToExcel_Click);
             // 
             // AssetSearchResultForm
             // 

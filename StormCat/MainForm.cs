@@ -479,6 +479,7 @@ namespace StormCat
 
             formToolTip.SetToolTip(cbAppendToDatabase, "Append valid addons to current catalogue");
             formToolTip.SetToolTip(cbRefreshItemsInDatabase, "Refresh valid addons in current catalogue");
+            formToolTip.SetToolTip(pbCredits, "Credits Information");
 
             formToolTip.SetToolTip(pbClearAddonDatabase, "Clear content of the Addon catalogue");
             formToolTip.SetToolTip(pbInitAddonDatabase, "Initialize Addon catalogue with the addons currently installed");
@@ -487,17 +488,18 @@ namespace StormCat
 
             formToolTip.SetToolTip(pbsResetAddonCriteria, "Reset Addon Search Criteria");
             formToolTip.SetToolTip(pbsResetAssetCriteria, "Reset Asset Search Criteria");
+            formToolTip.SetToolTip(pbsResetCriteria, "Reset Search Criteria (addon and asset)");
             formToolTip.SetToolTip(pbatClearAll, "Uncheck (deselect) every type of asset");
             formToolTip.SetToolTip(pbatSetAll, "Check (select) every type of asset");
             formToolTip.SetToolTip(pbsSearch, "Search assets according to the addon and asset criteria specified");
 
-            formToolTip.SetToolTip(tbsAddonName, "Addon Name (ignores case and accepts regular expressions)");
-            formToolTip.SetToolTip(tbsAddonPublisher, "Addon Publisher (ignores case and accepts regular expressions)");
+            formToolTip.SetToolTip(tbsAddonName, "Addon Name: list of strings to search for, separated by commas (preferably) or spaces (ignores case)");
+            formToolTip.SetToolTip(tbsAddonPublisher, "Addon Publisher: list of strings to search for, separated by commas (preferably) or spaces (ignores case)");
             formToolTip.SetToolTip(tbsAddonLocation, "Addon location (ignores case)");
-            formToolTip.SetToolTip(tbsAssetName, "Asset Name (ignores case and accepts regular expressions)");
-            formToolTip.SetToolTip(tbAssetSubTypes, "List of Asset Subtype literals, separated by blanks (ignores case)");
-            formToolTip.SetToolTip(tbsAssetTags, "List of Asset Tags, separated by blanks (ignores case)");
-            formToolTip.SetToolTip(tbsAssetExtraInfo, "List of words to search for, separated by blanks (ignores case)");
+            formToolTip.SetToolTip(tbsAssetName, "Asset Name: list of strings to search for, separated by commas (preferably) or spaces (ignores case)");
+            formToolTip.SetToolTip(tbAssetSubTypes, "List of Asset Subtype literals, separated by commas (preferably) or spaces (ignores case)");
+            formToolTip.SetToolTip(tbsAssetTags, "List of Asset Tags, separated by commas (preferably) or spaces (ignores case)");
+            formToolTip.SetToolTip(tbsAssetExtraInfo, "List of words to search for, separated by commas (preferably) or spaces (ignores case)");
             formToolTip.SetToolTip(cbascInstalled, "Filter addons: installed/not installed/all");
             formToolTip.SetToolTip(cbascType, "Filter addons: official content packs/third party addons/both");
 
@@ -930,17 +932,32 @@ namespace StormCat
 
         private void cmAddonTable_Opening(object sender, CancelEventArgs e)
         {
-            cmiDisplayReport.Enabled =
-                cmiShowContents.Enabled = cmiRefreshAddon.Enabled = cmiDeleteAddon.Enabled = false;
+            cmiDisplayReport.Enabled = cmiShowContents.Enabled = 
+                cmiRefreshAddon.Enabled = cmiDeleteAddon.Enabled = 
+                    cmiExportExcel.Enabled = 
+                    cmiCopyClipboard.Enabled = // cmiPasteClipboard.Enabled =
+                    false;
+
+
+            string text = Clipboard.GetText();
+            string errorText;
+            List<AddonPackage> subSet = AddonPackageSetOperator.DeserializeAddonPackageList(text, out errorText);
+            cmiPasteClipboard.Enabled = (subSet != null);
 
             int rowIndex = GetAddonSelectedRowIndex();
             if (rowIndex < 0)
             {
-                e.Cancel = true;
+                e.Cancel = !cmiPasteClipboard.Enabled;
                 return;
             }
-            cmiDisplayReport.Enabled =
-                cmiShowContents.Enabled = cmiRefreshAddon.Enabled = cmiDeleteAddon.Enabled = true;
+
+            // int countSelected = dgvAddons.SelectedRows.Count;
+
+            cmiDisplayReport.Enabled = cmiShowContents.Enabled = 
+                    cmiRefreshAddon.Enabled = cmiDeleteAddon.Enabled = 
+                    cmiExportExcel.Enabled =
+                    cmiCopyClipboard.Enabled =
+                    true;
         }
 
 
@@ -949,6 +966,25 @@ namespace StormCat
             pLocation = (string)dgvAddons.SelectedRows[0].Cells["dgvAddonLocation"].Value;
             return (string)dgvAddons.SelectedRows[0].Cells["dgvAddonPublisher"].Value + "." + (string)dgvAddons.SelectedRows[0].Cells["dgvAddonName"].Value;
         }
+
+
+        private List<string> GetSelectedAddonNamesLocations(out List<string> pLocations)
+        {
+            pLocations = null;
+            if ((dgvAddons.SelectedRows == null) || (dgvAddons.SelectedRows.Count == 0))
+                return null;
+
+            List<string> names = new List<string>();
+            pLocations = new List<string>();
+            foreach (DataGridViewRow row in dgvAddons.SelectedRows)
+            {
+                pLocations.Add((string) row.Cells["dgvAddonLocation"].Value);
+                names.Add((string)row.Cells["dgvAddonPublisher"].Value + "." + (string)row.Cells["dgvAddonName"].Value);
+            }
+
+            return names;
+        }
+
 
         private void cmiDisplayReport_Click(object sender, EventArgs e)
         {
@@ -1024,18 +1060,34 @@ namespace StormCat
 
         private void cmiRefreshAddon_Click(object sender, EventArgs e)
         {
-            string location;
-            string name = GetSelectedAddonNameLocation(out location);
+            // string location;
+            // string name = GetSelectedAddonNameLocation(out location);
 
+            List<string> locations;
+            List<string> names = GetSelectedAddonNamesLocations(out locations);
+            if ((locations == null) || (locations.Count == 0))
+                return;
+            
+            for (int index = 0; index < names.Count; ++index)
+                RefreshAddon(names[index], locations[index]);
+
+            RefreshCatalogueAddonTable();
+            if (cbAutoSave.Checked && (_addonPackageSet.LastUpdate > _addonPackageSetTimeStamp))
+                SaveCurrentAddonDatabase();
+        }
+
+
+        private void RefreshAddon(string pName, string pLocation)
+        {
             // Determine if inside an archive:
-            int archiveIndex = location.LastIndexOf(("#"));
+            int archiveIndex = pLocation.LastIndexOf(("#"));
             if (archiveIndex > 0)
-                location = location.Substring(0, archiveIndex);
+                pLocation = pLocation.Substring(0, archiveIndex);
 
             ProcessingFlags processingFlags = ProcessingFlags.AppendToAddonPackageSet |
                                               ProcessingFlags.AppendToAddonPackageSetForceRefresh;
 
-            IDiskEntity asset = DiskEntityHelper.GetEntity(location, null, new NullReportWriter());
+            IDiskEntity asset = DiskEntityHelper.GetEntity(pLocation, null, new NullReportWriter());
 
             if (asset == null)
             {
@@ -1043,29 +1095,90 @@ namespace StormCat
             }
             asset.CheckEntity(processingFlags);
 
-            RefreshCatalogueAddonTable();
-            tbLog.AppendText($"Addon '{name}' refreshed\n");
-            if (cbAutoSave.Checked && (_addonPackageSet.LastUpdate > _addonPackageSetTimeStamp))
-                SaveCurrentAddonDatabase();
+            tbLog.AppendText($"Addon '{pName}' refreshed\n");
         }
+
 
         private void cmiDeleteAddon_Click(object sender, EventArgs e)
         {
-            string location;
-            string name = GetSelectedAddonNameLocation(out location);
+            List<string> locations;
+            List<string> names = GetSelectedAddonNamesLocations(out locations);
+            if ((locations == null) || (locations.Count == 0))
+                return;
 
-            if (MessageBox.Show($"Delete addon {name} from Catalogue. Please Confirm?", "Clear Addon Catalogue",
+            string messageText =
+                (locations.Count == 1)
+                    ? $"Delete addon {names[0]} from Catalogue. Please Confirm?"
+                    : $"Delete {locations.Count} addons from Catalogue. Please Confirm?";
+
+            if (MessageBox.Show(messageText, "Delete Addon(s) from Catalogue",
                     MessageBoxButtons.YesNo) != DialogResult.Yes)
                 return;
 
-            if (_addonPackageSet.DeleteByLocation(location))
+            bool deletedAny = false;
+
+            for (int index = 0; index < names.Count; ++index)
+            {
+                if (_addonPackageSet.DeleteByLocation(locations[index]))
+                {
+                    deletedAny = true;
+                    tbLog.AppendText($"Addon '{names[index]}' deleted\n");
+                }
+            }
+
+            if (deletedAny)
             {
                 RefreshCatalogueAddonTable();
-                tbLog.AppendText($"Addon '{name}' deleted\n");
                 if (cbAutoSave.Checked)
                     SaveCurrentAddonDatabase();
             }
         }
+
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        private void cmiCopyClipboard_Click(object sender, EventArgs e)
+        {
+            List<string> locations;
+            List<string> names = GetSelectedAddonNamesLocations(out locations);
+            if ((locations == null) || (locations.Count == 0))
+                return;
+
+            AddonPackageSetOperator setOperator = new AddonPackageSetOperator(_addonPackageSet);
+            string text = setOperator.GetAddonSubSetText(names);
+            if (string.IsNullOrEmpty(text))
+                return;
+
+            Clipboard.SetText(text);
+            tbLog.AppendText($"Subset of {names.Count} Addons copied to the clipboard\n");
+        }
+
+
+
+        private void cmiPasteClipboard_Click(object sender, EventArgs e)
+        {
+            string text = Clipboard.GetText();
+            string errorText;
+            List<AddonPackage> subSet = AddonPackageSetOperator.DeserializeAddonPackageList(text, out errorText);
+            if (subSet == null)
+            {
+                tbLog.AppendText("No valid addon data in the clipboard\n");
+                return;
+            }
+
+            AddonPackageSetOperator setOperator = new AddonPackageSetOperator(_addonPackageSet);
+            int count = setOperator.AppendAddonSubSet(subSet);
+
+            tbLog.AppendText($"{count} addons appended to the Catalogue\n");
+            if (count > 0)
+            {
+                RefreshCatalogueAddonTable();
+                if (cbAutoSave.Checked)
+                    SaveCurrentAddonDatabase();
+            }
+        }
+
+
 
 
         // ---------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1073,10 +1186,15 @@ namespace StormCat
 
         private void pbsResetAddonCriteria_Click(object sender, EventArgs e)
         {
-            tbsAddonName.Text = tbsAddonPublisher.Text = tbsAddonLocation.Text = null;
-            cbascInstalled.SelectedIndex = cbascType.SelectedIndex = 0;
+            ResetAddonCriteria();
         }
 
+        private void ResetAddonCriteria()
+        {
+            tbsAddonName.Text = tbsAddonPublisher.Text = tbsAddonLocation.Text = null;
+            cbascInstalled.SelectedIndex = cbascType.SelectedIndex = 0;
+
+        }
 
         private void pbatClearAll_Click(object sender, EventArgs e)
         {
@@ -1099,10 +1217,23 @@ namespace StormCat
 
         private void pbsResetAssetCriteria_Click(object sender, EventArgs e)
         {
+            ResetAssetCriteria();
+        }
+
+        private void ResetAssetCriteria()
+        {
             tbsAssetName.Text = tbsAssetTags.Text = tbAssetSubTypes.Text = tbsAssetExtraInfo.Text = null;
             SelectAllAssetTypes(true);
             cbatAnimation.Checked = false;
         }
+
+        private void pbsResetCriteria_Click(object sender, EventArgs e)
+        {
+            ResetAddonCriteria();
+            ResetAssetCriteria();
+        }
+
+
 
         private void pbsSearch_Click(object sender, EventArgs e)
         {
@@ -1148,10 +1279,60 @@ namespace StormCat
 
             List<AssetSearchResultItem> searchOutput = _addonPackageSet.Search(addonSearchCriteria, assetSearchCriteria);
 
-            AssetSearchResultForm resultForm = new AssetSearchResultForm(searchOutput);
+            if (!ReportSearchSummary(searchOutput))
+                return;
+
+            AssetSearchResultForm resultForm = new AssetSearchResultForm(searchOutput, _addonPackageSet, cbListAlwaysAnimations.Checked);
             resultForm.Show(this);
         }
 
+
+        private bool ReportSearchSummary(List<AssetSearchResultItem> pSearchOutput)
+        {
+            tbSearchLog.Clear();
+            tbSearchLog.AppendText("Search result summary.\n");
+            if ((pSearchOutput == null) || (pSearchOutput.Count == 0))
+            {
+                tbSearchLog.AppendText("    No assets found.");
+                return false;
+            }
+
+            SearchStatistics searchStatistics = new SearchStatistics(pSearchOutput);
+            
+            if (searchStatistics.TotalAssets == 0)
+            {
+                tbSearchLog.AppendText("    No assets found.");
+                return false;
+            }
+
+            tbSearchLog.AppendText($"FOUND: {searchStatistics.TotalAssets} Assets in {searchStatistics.Addons} Addons by {searchStatistics.Publishers} Publishers:\n");
+            if(searchStatistics.Bodyparts > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.Bodyparts,6} Bodyparts\n");
+            if (searchStatistics.Decals > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.Decals,6} Decals\n");
+            if (searchStatistics.Props > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.Props,6} Props\n");
+            if (searchStatistics.Verbs > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.Verbs,6} Verbs\n");
+            if (searchStatistics.Animations > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.Animations,6} Animations\n");
+            if (searchStatistics.Materials > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.Materials,6} Materials\n");
+            if (searchStatistics.Sounds > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.Sounds,6} Sounds\n");
+            if (searchStatistics.Filters > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.Filters,6} Filters\n");
+            if (searchStatistics.SpecialEffects > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.SpecialEffects,6} Special Effects\n");
+            if (searchStatistics.SkyTextures > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.SkyTextures,6} Sky Textures\n");
+            if (searchStatistics.Stocks > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.Stocks,6} Stocks\n");
+            if (searchStatistics.StartMovies > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.StartMovies,6} Demo Movies\n");
+
+            return true;
+        }
 
 
 
@@ -1334,15 +1515,9 @@ namespace StormCat
         private void lblTipTable_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
-                @"Drag and drop on the grid: addon files, folders, and/or ZIP/RAR/7z archives for adding to the Catalogue\nRight-click for options\nDouble-click row for listing addon contents");
+                "Drag and drop on the grid: addon files, folders, and/or ZIP/RAR/7z archives for adding to the Catalogue.\nRight-click for options.\nDouble-click row for listing addon contents.",
+                "Addons in Catalogue View", MessageBoxButtons.OK);
         }
-
-        private void cmiCredits_Click(object sender, EventArgs e)
-        {
-            CreditsForm creditsForm = new CreditsForm();
-            creditsForm.ShowDialog(this);
-        }
-
 
         // ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -1797,6 +1972,12 @@ namespace StormCat
                 foreach(TabPage page in _childHiddenPages)
                     page.Dispose();
             }
+        }
+
+        private void pbCredits_Click(object sender, EventArgs e)
+        {
+            CreditsForm creditsForm = new CreditsForm();
+            creditsForm.ShowDialog(this);
         }
     }
 }

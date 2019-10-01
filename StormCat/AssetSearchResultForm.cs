@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using MSAddonLib.Domain.Addon;
 using StormCat.Misc;
 using MSAddonLib.Persistence.AddonDB;
 
@@ -16,9 +17,15 @@ namespace StormCat
 
         private List<AssetSearchResultItem> _assets;
 
-        public AssetSearchResultForm(List<AssetSearchResultItem> pAssets)
+        private AddonPackageSet _addonPackageSet;
+
+        private bool _listAlwaysAnimations;
+
+        public AssetSearchResultForm(List<AssetSearchResultItem> pAssets, AddonPackageSet pAddonPackageSet, bool pListAlwaysAnimations)
         {
             _assets = pAssets;
+            _addonPackageSet = pAddonPackageSet;
+            _listAlwaysAnimations = pListAlwaysAnimations;
             InitializeComponent();
         }
 
@@ -68,5 +75,62 @@ namespace StormCat
                 MessageBox.Show($@"An error has happened while trying to export to Excel:\n{errorText}",
                     @"Exportation error", MessageBoxButtons.OK);
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------
+
+
+        private void dgvAssets_DoubleClick(object sender, EventArgs e)
+        {
+            if (GetAssetSelectedRowIndex() < 0)
+                return;
+            ShowAddonContents();
+        }
+        
+
+        private int GetAssetSelectedRowIndex()
+        {
+            if ((_assets == null) || (_assets.Count == 0))
+                return -1;
+
+            int rowIndex = dgvAssets.CurrentCell.RowIndex;
+            return (rowIndex < 0) ? -1 : rowIndex;
+        }
+
+
+
+        private void ShowAddonContents()
+        {
+            string publisher;
+            string name = GetSelectedAddonNamePublisher(out publisher);
+
+            AddonPackage package = _addonPackageSet.FindByName(name, publisher);
+            if (package == null)
+                return;
+
+
+            AssetSearchCriteria criteria = null;
+            if (!_listAlwaysAnimations && (package.AssetSummary.Verbs > 0))
+            {
+                AddonAssetType types = AddonAssetType.Any ^ AddonAssetType.Animation;
+                criteria = new AssetSearchCriteria(null, types, null, null, null);
+            }
+
+            List<AssetSearchResultItem> assets = _addonPackageSet.SearchAsset(new List<AddonPackage>() { package }, criteria);
+
+            AddonContentForm contentForm = new AddonContentForm($"{publisher}.{name}", assets);
+            contentForm.Show(this);
+        }
+
+
+        private string GetSelectedAddonNamePublisher(out string pPublisher)
+        {
+            pPublisher = (string)dgvAssets.SelectedRows[0].Cells["colAddonPublisher"].Value;
+            return (string)dgvAssets.SelectedRows[0].Cells["colAddonName"].Value;
+        }
+
+        // ------------------------------------------------------------------------------------------------------------------------------
+
+
+
     }
 }

@@ -1,7 +1,7 @@
 StormCat, by jamoram
 
-Current version: 1.8.0
-Last Update: 2019/09/18
+Current version: 1.8.1
+Last Update: 2019/09/19
 
 A little tool for:
 	1) Creating and managing multiple independent catalogues of Moviestorm addons, both installed and as addon files:
@@ -16,15 +16,15 @@ A little tool for:
 PLEASE NOTE: a full User's Guide is currently under production and will be released ASAP.
 
 
-WHAT'S NEW (1.8.0):
+WHAT'S NEW (1.8.1):
 -----------
-* Contextual menu now available for the Catalogue Index table
-* Multiple catalogues can be loaded at the same time in different windows (instances) of the application
-* More coherent and complete recollection and reporting of issues
-* Asset info: Prop variant names listed in Extra Info.
-* Asset Search:
-	- Filtering by ExtraInfo
-	- Fixed problem with filtering by tags
+* Asset Search: 
+	- Multiple substrings can be searched for at once for:
+		Addon Name
+		Addon Publisher
+		Asset Name 
+	- New 'Reset all search criteria'
+	- Statistics for search results
 
 Please refer to the VERSION HISTORY section for a complete history of changes in the program
 
@@ -91,6 +91,15 @@ Suggestions for improvements and bug reports can be addressed to the email accou
 
 VERSION HISTORY
 ---------------
+* v1.8.1 (20190919):
+	Asset Search: 
+		- Multiple substrings can be searched for at once for:
+			Addon Name
+			Addon Publisher
+			Asset Name 
+		New 'Reset all search criteria'
+		Statistics for search results
+
 * v1.8.0 (20190918)
 	- Contextual menu now available for the Catalogue Index table
 	- Multiple catalogues can be loaded at the same time in different windows (instances) of the application
