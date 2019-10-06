@@ -36,6 +36,7 @@
             this.tbDescription = new System.Windows.Forms.TextBox();
             this.pbOk = new System.Windows.Forms.Button();
             this.pbCancel = new System.Windows.Forms.Button();
+            this.ContextHelp = new System.Windows.Forms.HelpProvider();
             this.SuspendLayout();
             // 
             // lblCurrentCat
@@ -121,9 +122,12 @@
             this.Controls.Add(this.lblNewCat);
             this.Controls.Add(this.lblCurrentCat);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.ContextHelp.SetHelpKeyword(this, "350");
+            this.ContextHelp.SetHelpNavigator(this, System.Windows.Forms.HelpNavigator.TopicId);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CatalogueIndexOpsForm";
+            this.ContextHelp.SetShowHelp(this, true);
             this.Text = "CatalogueIndexOpsForm";
             this.Load += new System.EventHandler(this.CatalogueIndexOpsForm_Load);
             this.ResumeLayout(false);
@@ -141,5 +145,6 @@
         private System.Windows.Forms.TextBox tbDescription;
         private System.Windows.Forms.Button pbOk;
         private System.Windows.Forms.Button pbCancel;
+        private System.Windows.Forms.HelpProvider ContextHelp;
     }
 }

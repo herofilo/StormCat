@@ -32,20 +32,31 @@
             this.pbSave = new System.Windows.Forms.Button();
             this.pbCancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.pbPathsDefaults = new System.Windows.Forms.Button();
             this.pbSelectUserDataFolder = new System.Windows.Forms.Button();
             this.pbSelectInstallFolder = new System.Windows.Forms.Button();
             this.tbMoviestormUserDataPath = new System.Windows.Forms.TextBox();
             this.tbMoviestormInstallPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.pbPathsDefaults = new System.Windows.Forms.Button();
             this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+            this.gbDupCriteria = new System.Windows.Forms.GroupBox();
+            this.pbDupCriteriaDefault = new System.Windows.Forms.Button();
+            this.cbDupDetMeshSize = new System.Windows.Forms.CheckBox();
+            this.cbDupDetAssetCount = new System.Windows.Forms.CheckBox();
+            this.cbDupDetRecompilable = new System.Windows.Forms.CheckBox();
+            this.cbDupDetLastPublished = new System.Windows.Forms.CheckBox();
+            this.cbDupDetName = new System.Windows.Forms.CheckBox();
+            this.ContextHelp = new System.Windows.Forms.HelpProvider();
+            this.cbDupDetPublisher = new System.Windows.Forms.CheckBox();
+            this.cbDupDetFileCount = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
+            this.gbDupCriteria.SuspendLayout();
             this.SuspendLayout();
             // 
             // pbSave
             // 
-            this.pbSave.Location = new System.Drawing.Point(399, 146);
+            this.pbSave.Location = new System.Drawing.Point(491, 192);
             this.pbSave.Name = "pbSave";
             this.pbSave.Size = new System.Drawing.Size(75, 23);
             this.pbSave.TabIndex = 0;
@@ -56,7 +67,7 @@
             // pbCancel
             // 
             this.pbCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.pbCancel.Location = new System.Drawing.Point(489, 146);
+            this.pbCancel.Location = new System.Drawing.Point(491, 221);
             this.pbCancel.Name = "pbCancel";
             this.pbCancel.Size = new System.Drawing.Size(75, 23);
             this.pbCancel.TabIndex = 1;
@@ -79,6 +90,16 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Moviestorm Folders";
+            // 
+            // pbPathsDefaults
+            // 
+            this.pbPathsDefaults.Location = new System.Drawing.Point(477, 85);
+            this.pbPathsDefaults.Name = "pbPathsDefaults";
+            this.pbPathsDefaults.Size = new System.Drawing.Size(75, 23);
+            this.pbPathsDefaults.TabIndex = 6;
+            this.pbPathsDefaults.Text = "Defaults";
+            this.pbPathsDefaults.UseVisualStyleBackColor = true;
+            this.pbPathsDefaults.Click += new System.EventHandler(this.pbPathsDefaults_Click);
             // 
             // pbSelectUserDataFolder
             // 
@@ -134,36 +155,143 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Installation Folder:";
             // 
-            // pbPathsDefaults
-            // 
-            this.pbPathsDefaults.Location = new System.Drawing.Point(477, 85);
-            this.pbPathsDefaults.Name = "pbPathsDefaults";
-            this.pbPathsDefaults.Size = new System.Drawing.Size(75, 23);
-            this.pbPathsDefaults.TabIndex = 6;
-            this.pbPathsDefaults.Text = "Defaults";
-            this.pbPathsDefaults.UseVisualStyleBackColor = true;
-            this.pbPathsDefaults.Click += new System.EventHandler(this.pbPathsDefaults_Click);
-            // 
             // folderBrowser
             // 
             this.folderBrowser.ShowNewFolderButton = false;
+            // 
+            // gbDupCriteria
+            // 
+            this.gbDupCriteria.Controls.Add(this.cbDupDetFileCount);
+            this.gbDupCriteria.Controls.Add(this.cbDupDetPublisher);
+            this.gbDupCriteria.Controls.Add(this.pbDupCriteriaDefault);
+            this.gbDupCriteria.Controls.Add(this.cbDupDetMeshSize);
+            this.gbDupCriteria.Controls.Add(this.cbDupDetAssetCount);
+            this.gbDupCriteria.Controls.Add(this.cbDupDetRecompilable);
+            this.gbDupCriteria.Controls.Add(this.cbDupDetLastPublished);
+            this.gbDupCriteria.Controls.Add(this.cbDupDetName);
+            this.gbDupCriteria.Location = new System.Drawing.Point(3, 133);
+            this.gbDupCriteria.Name = "gbDupCriteria";
+            this.gbDupCriteria.Size = new System.Drawing.Size(464, 92);
+            this.gbDupCriteria.TabIndex = 3;
+            this.gbDupCriteria.TabStop = false;
+            this.gbDupCriteria.Text = "Duplicate Detection Criteria";
+            // 
+            // pbDupCriteriaDefault
+            // 
+            this.pbDupCriteriaDefault.Location = new System.Drawing.Point(383, 61);
+            this.pbDupCriteriaDefault.Name = "pbDupCriteriaDefault";
+            this.pbDupCriteriaDefault.Size = new System.Drawing.Size(75, 23);
+            this.pbDupCriteriaDefault.TabIndex = 5;
+            this.pbDupCriteriaDefault.Text = "Defaults";
+            this.pbDupCriteriaDefault.UseVisualStyleBackColor = true;
+            this.pbDupCriteriaDefault.Click += new System.EventHandler(this.pbDupCriteriaDefault_Click);
+            // 
+            // cbDupDetMeshSize
+            // 
+            this.cbDupDetMeshSize.AutoSize = true;
+            this.cbDupDetMeshSize.Location = new System.Drawing.Point(347, 19);
+            this.cbDupDetMeshSize.Name = "cbDupDetMeshSize";
+            this.cbDupDetMeshSize.Size = new System.Drawing.Size(101, 17);
+            this.cbDupDetMeshSize.TabIndex = 4;
+            this.cbDupDetMeshSize.Text = "Mesh Data Size";
+            this.cbDupDetMeshSize.UseVisualStyleBackColor = true;
+            // 
+            // cbDupDetAssetCount
+            // 
+            this.cbDupDetAssetCount.AutoSize = true;
+            this.cbDupDetAssetCount.Location = new System.Drawing.Point(175, 42);
+            this.cbDupDetAssetCount.Name = "cbDupDetAssetCount";
+            this.cbDupDetAssetCount.Size = new System.Drawing.Size(83, 17);
+            this.cbDupDetAssetCount.TabIndex = 3;
+            this.cbDupDetAssetCount.Text = "Asset Count";
+            this.cbDupDetAssetCount.UseVisualStyleBackColor = true;
+            // 
+            // cbDupDetRecompilable
+            // 
+            this.cbDupDetRecompilable.AutoSize = true;
+            this.cbDupDetRecompilable.Checked = true;
+            this.cbDupDetRecompilable.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDupDetRecompilable.Enabled = false;
+            this.cbDupDetRecompilable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDupDetRecompilable.Location = new System.Drawing.Point(9, 65);
+            this.cbDupDetRecompilable.Name = "cbDupDetRecompilable";
+            this.cbDupDetRecompilable.Size = new System.Drawing.Size(130, 17);
+            this.cbDupDetRecompilable.TabIndex = 2;
+            this.cbDupDetRecompilable.Text = "Recompilable Flag";
+            this.cbDupDetRecompilable.UseVisualStyleBackColor = true;
+            // 
+            // cbDupDetLastPublished
+            // 
+            this.cbDupDetLastPublished.AutoSize = true;
+            this.cbDupDetLastPublished.Checked = true;
+            this.cbDupDetLastPublished.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDupDetLastPublished.Location = new System.Drawing.Point(175, 19);
+            this.cbDupDetLastPublished.Name = "cbDupDetLastPublished";
+            this.cbDupDetLastPublished.Size = new System.Drawing.Size(140, 17);
+            this.cbDupDetLastPublished.TabIndex = 1;
+            this.cbDupDetLastPublished.Text = "Last Published Datetime";
+            this.cbDupDetLastPublished.UseVisualStyleBackColor = true;
+            // 
+            // cbDupDetName
+            // 
+            this.cbDupDetName.AutoSize = true;
+            this.cbDupDetName.Checked = true;
+            this.cbDupDetName.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDupDetName.Enabled = false;
+            this.cbDupDetName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDupDetName.Location = new System.Drawing.Point(9, 19);
+            this.cbDupDetName.Name = "cbDupDetName";
+            this.cbDupDetName.Size = new System.Drawing.Size(98, 17);
+            this.cbDupDetName.TabIndex = 0;
+            this.cbDupDetName.Text = "Addon Name";
+            this.cbDupDetName.UseVisualStyleBackColor = true;
+            // 
+            // cbDupDetPublisher
+            // 
+            this.cbDupDetPublisher.AutoSize = true;
+            this.cbDupDetPublisher.Checked = true;
+            this.cbDupDetPublisher.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDupDetPublisher.Enabled = false;
+            this.cbDupDetPublisher.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDupDetPublisher.Location = new System.Drawing.Point(9, 42);
+            this.cbDupDetPublisher.Name = "cbDupDetPublisher";
+            this.cbDupDetPublisher.Size = new System.Drawing.Size(78, 17);
+            this.cbDupDetPublisher.TabIndex = 6;
+            this.cbDupDetPublisher.Text = "Publisher";
+            this.cbDupDetPublisher.UseVisualStyleBackColor = true;
+            // 
+            // cbDupDetFileCount
+            // 
+            this.cbDupDetFileCount.AutoSize = true;
+            this.cbDupDetFileCount.Location = new System.Drawing.Point(175, 65);
+            this.cbDupDetFileCount.Name = "cbDupDetFileCount";
+            this.cbDupDetFileCount.Size = new System.Drawing.Size(100, 17);
+            this.cbDupDetFileCount.TabIndex = 7;
+            this.cbDupDetFileCount.Text = "Total File Count";
+            this.cbDupDetFileCount.UseVisualStyleBackColor = true;
             // 
             // SetupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(571, 181);
+            this.ClientSize = new System.Drawing.Size(571, 256);
+            this.Controls.Add(this.gbDupCriteria);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pbCancel);
             this.Controls.Add(this.pbSave);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.ContextHelp.SetHelpKeyword(this, "1000");
+            this.ContextHelp.SetHelpNavigator(this, System.Windows.Forms.HelpNavigator.TopicId);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SetupForm";
+            this.ContextHelp.SetShowHelp(this, true);
             this.Text = "Application Setup";
             this.Load += new System.EventHandler(this.SetupForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.gbDupCriteria.ResumeLayout(false);
+            this.gbDupCriteria.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -181,5 +309,15 @@
         private System.Windows.Forms.Button pbSelectInstallFolder;
         private System.Windows.Forms.Button pbPathsDefaults;
         private System.Windows.Forms.FolderBrowserDialog folderBrowser;
+        private System.Windows.Forms.GroupBox gbDupCriteria;
+        private System.Windows.Forms.CheckBox cbDupDetName;
+        private System.Windows.Forms.CheckBox cbDupDetRecompilable;
+        private System.Windows.Forms.CheckBox cbDupDetLastPublished;
+        private System.Windows.Forms.CheckBox cbDupDetMeshSize;
+        private System.Windows.Forms.CheckBox cbDupDetAssetCount;
+        private System.Windows.Forms.Button pbDupCriteriaDefault;
+        private System.Windows.Forms.HelpProvider ContextHelp;
+        private System.Windows.Forms.CheckBox cbDupDetPublisher;
+        private System.Windows.Forms.CheckBox cbDupDetFileCount;
     }
 }

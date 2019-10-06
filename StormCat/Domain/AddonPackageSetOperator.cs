@@ -24,6 +24,8 @@ namespace StormCat.Domain
         }
 
 
+        #region CopyAndPasteRegion
+
         // ----------------------------------------------------------------------------------------------------------------------------------------------------
 
         public List<AddonPackage> GetAddonSubSet(List<string> pQualifiedNames)
@@ -153,8 +155,58 @@ namespace StormCat.Domain
             return subSet;
         }
 
+        #endregion CopyAndPasteRegion
 
+        /* Moved to AddonBasicInfoSet
+        #region CheckDupsRegion
 
+        // ---------------------------------------------------------------------------------------------------------------------------
 
+        
+        public List<AddonDupSet> CheckAddonDuplicates()
+        {
+            if ((AddonPackageSet == null) || (AddonPackageSet.Addons == null) || (AddonPackageSet.Addons.Count < 2))
+                return null;
+
+            List<AddonDupSet> tempDupSets = new List<AddonDupSet>();
+            foreach (AddonPackage addon in AddonPackageSet.Addons)
+            {
+                if (addon.AddonFormat == AddonPackageFormat.InstalledFolder)
+                    continue;
+
+                AddonDupSet dupSet = FindDupSet(tempDupSets, addon.QualifiedName) ?? new AddonDupSet(addon.Publisher, addon.Name);
+                dupSet.AddLocation(addon.Location);
+            }
+
+            List<AddonDupSet> dupSets = new List<AddonDupSet>();
+            foreach(AddonDupSet set in tempDupSets)
+                if(set.Locations.Count > 1)
+                    dupSets.Add(set);
+
+            return (dupSets.Count == 0) ? null : dupSets;
+        }
+
+        
+
+        private AddonDupSet FindDupSet(List<AddonDupSet> pDupSets, string pName)
+        {
+            foreach(AddonDupSet set in pDupSets)
+                if (pName == set.QualifiedName)
+                    return set;
+
+            return null;
+        }
+
+        #endregion CheckDupsRegion
+        */
     }
+
+
+
+
+
+
+
+
+
 }

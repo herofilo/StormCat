@@ -7,6 +7,7 @@ using System.Linq;
 using System.Media;
 using System.Text;
 using System.Windows.Forms;
+using StormCat.Misc;
 
 namespace StormCat
 {
@@ -28,6 +29,8 @@ namespace StormCat
             this.Text = _name;
             tbAddonSummary.Text = _text;
 
+            ContextHelp.HelpNamespace = Globals.HelpFilename;
+            ContextHelp.SetHelpNavigator(this, HelpNavigator.TopicId);
         }
 
         private void cmiCopyToClipboard_Click(object sender, EventArgs e)

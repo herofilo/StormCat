@@ -3,6 +3,7 @@ using System.IO;
 using System.Xml.Serialization;
 using MSAddonLib.Persistence.AddonDB;
 using MSAddonLib.Util;
+using StormCat.Domain;
 
 namespace StormCat.Configuration
 {
@@ -11,6 +12,8 @@ namespace StormCat.Configuration
         public string MoviestormInstallationPath { get; set; }
 
         public string MoviestormUserDataPath { get; set; }
+
+        public DuplicateDetectionFlag DuplicateDetectionFlag { get; set; } = AddonDupSet.DefaultDuplicateDetectionFlag;
 
         public static string ConfigurationFilePath => Path.Combine(Utils.GetExecutableDirectory(), "StormCat.cfg");
 

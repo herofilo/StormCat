@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using MSAddonLib.Persistence.AddonDB;
 using MSAddonLib.Util;
 using MSAddonLib.Util.Persistence;
+using StormCat.Misc;
 using StormCat.Persistence;
 
 namespace StormCat
@@ -73,6 +74,8 @@ namespace StormCat
             }
 
             SetToolTips();
+            ContextHelp.HelpNamespace = Globals.HelpFilename;
+            ContextHelp.SetHelpNavigator(this, HelpNavigator.TopicId);
 
             switch (_operation)
             {

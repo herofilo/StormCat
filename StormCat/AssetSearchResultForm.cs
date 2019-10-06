@@ -45,6 +45,8 @@ namespace StormCat
             }
 
             dgvAssets.DataSource = source;
+            ContextHelp.HelpNamespace = Globals.HelpFilename;
+            ContextHelp.SetHelpNavigator(this, HelpNavigator.TopicId);
         }
 
         private void cmAssetTable_Opening(object sender, CancelEventArgs e)

@@ -38,6 +38,7 @@
             this.cmiIncreaseFont = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiDecreaseFont = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextHelp = new System.Windows.Forms.HelpProvider();
             this.outputContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -115,8 +116,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(796, 514);
             this.Controls.Add(this.tbAddonSummary);
+            this.ContextHelp.SetHelpKeyword(this, "140");
+            this.ContextHelp.SetHelpNavigator(this, System.Windows.Forms.HelpNavigator.TopicId);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AddonReportForm";
+            this.ContextHelp.SetShowHelp(this, true);
             this.Text = "AddonReportForm";
             this.Load += new System.EventHandler(this.AddonReportForm_Load);
             this.outputContextMenu.ResumeLayout(false);
@@ -135,5 +139,6 @@
         private System.Windows.Forms.ToolStripMenuItem cmiIncreaseFont;
         private System.Windows.Forms.ToolStripMenuItem cmiDecreaseFont;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.HelpProvider ContextHelp;
     }
 }

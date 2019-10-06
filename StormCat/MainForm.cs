@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Deployment.Internal;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Media;
+using System.Text;
 using System.Windows.Forms;
 using StormCat.Configuration;
 using StormCat.Domain;
@@ -50,6 +53,8 @@ namespace StormCat
 
         private List<TabPage> _childHiddenPages = null;
 
+        private ToolTip formToolTip;
+
 
         // ----------------------------------------------------------------------------------------------------------------------
 
@@ -81,6 +86,10 @@ namespace StormCat
             _logReportWriter = new FormReportWriter(
                 new object[] { tbLog }
             );
+
+            HelpSystemSetup();
+
+
 
             PreScanCmdLineArguments();
             if (_isChildProcess)
@@ -126,6 +135,13 @@ namespace StormCat
             }
         }
 
+        private void HelpSystemSetup()
+        {
+            ContextHelp.HelpNamespace = Globals.HelpFilename;
+            ContextHelp.SetHelpNavigator(this, HelpNavigator.TopicId);
+            // ContextHelp.SetHelpNavigator(tpDatabase, HelpNavigator.TopicId);
+            // ContextHelp.SetHelpNavigator(tpSearchAssets, HelpNavigator.TopicId);
+        }
 
 
         private void PreScanCmdLineArguments()
@@ -336,6 +352,7 @@ namespace StormCat
             {
                 _moviestormPaths = new MoviestormPaths(_applicationConfiguration.MoviestormInstallationPath,
                     _applicationConfiguration.MoviestormUserDataPath);
+                AddonDupSet.DuplicateDetectionFlag = _applicationConfiguration.DuplicateDetectionFlag;
                 return;
             }
 
@@ -446,7 +463,7 @@ namespace StormCat
 
         private void SetToolTips()
         {
-            ToolTip formToolTip = new ToolTip();
+            formToolTip = new ToolTip();
             formToolTip.SetDefaults();
 
             // Sets up the ToolTip text for the Button and Checkbox.
@@ -809,12 +826,19 @@ namespace StormCat
 
         private bool ApplicationSetup()
         {
+            DuplicateDetectionFlag oldDuplicateDetectionFlag = _applicationConfiguration.DuplicateDetectionFlag;
             SetupForm setupForm = new SetupForm(_applicationConfiguration);
             if (setupForm.ShowDialog(this) != DialogResult.OK)
                 return false;
 
             _applicationConfiguration = setupForm.ApplicationConfiguration;
             _moviestormPaths = new MoviestormPaths(_applicationConfiguration.MoviestormInstallationPath, _applicationConfiguration.MoviestormUserDataPath);
+            if (oldDuplicateDetectionFlag != _applicationConfiguration.DuplicateDetectionFlag)
+            {
+                AddonDupSet.DuplicateDetectionFlag = _applicationConfiguration.DuplicateDetectionFlag;
+                RefreshCatalogueAddonTable();
+            }
+
             return true;
         }
 
@@ -907,8 +931,28 @@ namespace StormCat
                 mainFormText += "  [Child]";
             Text = mainFormText;
             lblAddonCount.Text = $@"{_addons.Addons?.Count ?? 0}";
+            if (_addons.DuplicatesFound == 0)
+                lblAddonDupsCount.Visible = false;
+            else
+            {
+                lblAddonDupsCount.Text = $@"Possible Duplicates: {_addons.DuplicatesFound} ({_addons.DuplicateGroups} groups)";
+                lblAddonDupsCount.Visible = true;
+                formToolTip.SetToolTip(lblAddonDupsCount, GetLabelAddonDupsCountToolTip());
+            }
         }
 
+
+        private void lblAddonDupsCount_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(GetLabelAddonDupsCountToolTip(), @"Duplicate detection criteria", MessageBoxButtons.OK);
+        }
+
+
+        private string GetLabelAddonDupsCountToolTip()
+        {
+            string text = AddonDupSet.GetDuplicateDetectionCriteria().Replace(",", "\n");
+            return $"Duplicate detection criteria:\n {text}";
+        }
 
 
         private void dgvAddons_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -1018,6 +1062,9 @@ namespace StormCat
             }
             
             List<AssetSearchResultItem> assets = _addonPackageSet.SearchAsset(new List<AddonPackage>() { package }, criteria);
+            if (assets == null)
+                return;
+            assets = assets.OrderBy(o => o.SortKey).ToList();
             
             AddonContentForm contentForm = new AddonContentForm(name, assets);
             contentForm.Show(this);
@@ -1179,8 +1226,13 @@ namespace StormCat
         }
 
 
+        // ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
+        private void pbCheckDups_Click(object sender, EventArgs e)
+        {
 
+        }
+        
         // ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -1281,6 +1333,8 @@ namespace StormCat
 
             if (!ReportSearchSummary(searchOutput))
                 return;
+
+            searchOutput = searchOutput.OrderBy(o => o.SortKey).ToList();
 
             AssetSearchResultForm resultForm = new AssetSearchResultForm(searchOutput, _addonPackageSet, cbListAlwaysAnimations.Checked);
             resultForm.Show(this);
@@ -1924,6 +1978,7 @@ namespace StormCat
             return (string)dgvCatalogueIndex.SelectedRows[0].Cells["colCatName"].Value;
         }
 
+
         private void pbRefreshIndex_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Please confirm you want to re-create the Catalogue Index.", "Confirmation",
@@ -1951,6 +2006,7 @@ namespace StormCat
             RefreshCatalogueAddonTable();
         }
 
+
         private void dgvCatalogueIndex_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             string catalogueName = GetSelectedCatalogueName();
@@ -1974,10 +2030,60 @@ namespace StormCat
             }
         }
 
+
         private void pbCredits_Click(object sender, EventArgs e)
         {
             CreditsForm creditsForm = new CreditsForm();
             creditsForm.ShowDialog(this);
         }
+
+
+
+        private void pbHelp_Click(object sender, EventArgs e)
+        {
+            /*
+            try
+            {
+                string id = null;
+                switch (tcMainForm.SelectedIndex)
+                {
+                    case 0: id = "100"; break;
+                    case 1: id = "200"; break;
+                    case 2: id = "300"; break;
+                    case 3: id = "400"; break;
+                }
+
+                if (id == null)
+                    return;
+
+                if (!string.IsNullOrEmpty(Globals.HelpFileUri))
+                    Help.ShowHelp(this, Globals.HelpFileUri, HelpNavigator.TopicId, id);
+            }
+            catch { }
+            */
+            try
+            {
+                if (!string.IsNullOrEmpty(Globals.HelpFileUri))
+                    Help.ShowHelp(this, Globals.HelpFileUri, HelpNavigator.TopicId, "10");
+            }
+            catch { }
+        }
+
+
+        private void tcMainForm_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string id = "100";
+            switch (tcMainForm.SelectedIndex)
+            {
+                case 0: id = "100"; break;
+                case 1: id = "200"; break;
+                case 2: id = "300"; break;
+                case 3: id = "400"; break;
+            }
+            ContextHelp.SetHelpKeyword(this, id);
+            ContextHelp.SetHelpKeyword(tcMainForm, id);
+        }
+
+
     }
 }

@@ -54,6 +54,7 @@
             this.sfdExportExcel = new System.Windows.Forms.SaveFileDialog();
             this.lblSummary = new System.Windows.Forms.Label();
             this.pbSaveToExcel = new System.Windows.Forms.Button();
+            this.ContextHelp = new System.Windows.Forms.HelpProvider();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAssets)).BeginInit();
             this.cmAssetTable.SuspendLayout();
             this.SuspendLayout();
@@ -258,8 +259,11 @@
             this.Controls.Add(this.pbSaveToExcel);
             this.Controls.Add(this.lblSummary);
             this.Controls.Add(this.dgvAssets);
+            this.ContextHelp.SetHelpKeyword(this, "250");
+            this.ContextHelp.SetHelpNavigator(this, System.Windows.Forms.HelpNavigator.TopicId);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AssetSearchResultForm";
+            this.ContextHelp.SetShowHelp(this, true);
             this.Text = "Assets Found";
             this.Load += new System.EventHandler(this.AssetSearchResultForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAssets)).EndInit();
@@ -288,5 +292,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn colInstalled;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colContentPack;
         private System.Windows.Forms.DataGridViewTextBoxColumn colLocation;
+        private System.Windows.Forms.HelpProvider ContextHelp;
     }
 }

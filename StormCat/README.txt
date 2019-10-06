@@ -1,7 +1,7 @@
 StormCat, by jamoram
 
-Current version: 1.8.1
-Last Update: 2019/09/19
+Current version: 1.9.0
+Last Update: 2019/10/03
 
 A little tool for:
 	1) Creating and managing multiple independent catalogues of Moviestorm addons, both installed and as addon files:
@@ -16,20 +16,36 @@ A little tool for:
 PLEASE NOTE: a full User's Guide is currently under production and will be released ASAP.
 
 
-WHAT'S NEW (1.8.1):
+WHAT'S NEW (1.9.0):
 -----------
-* Asset Search: 
-	- Multiple substrings can be searched for at once for:
-		Addon Name
-		Addon Publisher
-		Asset Name 
-	- New 'Reset all search criteria'
-	- Statistics for search results
+* The application now comes with a full offline help information system
+* Detection on (possibly) duplicate addons in the Catalogue. 
+	- Catalogue Addon View: New column 'Duplicate Group' for easily identifying possible duplicate entries in the catalogue, so addons with the same Duplicate Group ID most likely are duplicate copies of the same addon.
+	- Configurable criteria for the detection of duplicate addons (Setup form)
+* Catalogue Content View:
+	- Multiple addons in a catalogue can be selected at the same time for deleting or refreshing at once.
+	- Information about multiple addons can be copied and pasted between different Catalogues.
+* Addon Content Report:
+	- Reports about extern decals referenced
+* Addon detail information (added):
+	- Stock subtype
+	- File summary info
+* Asset Search Result view: 
+	- Double-clicking a row (asset) opens up a new form with the full contents of the addon the selected asset belongs to.
+	- Reports about extern decals referenced
+* Bug fixes:
+	Addon Content Report: some minor fixes
+	Fixed a problem with some mods (body parts) by Writerly with a unexpectedly high value of material entry index
 
 Please refer to the VERSION HISTORY section for a complete history of changes in the program
 
 
-HOW TO USE (OBSOLETE, NEEDS EXTENSIVE RE-WRITING):
+REQUIREMENTS
+------------
+Microsoft .NET runtime version 4.x must be installed for the application to be properly executed. Otherwise, an error will happen on launching.
+
+
+HOW TO USE:
 ----------
 Simply drag and drop any number of addon files, ZIP archives or folder into the zone labelled of the main form of the application. 
 Alternatively, a file or folder can be directly dropped on the program's executable (or an link)
@@ -48,33 +64,12 @@ Please also note that the program only checks and reports about the following ty
 	
 It ignores any other type of files.
 
-Command line: 
-------------
-MSAddonChecker can be invoked also passing arguments as part of its command line. The accepted syntax for calling the program this way is:
-	MSAddonChecker [options...] [source-specifications...]
-	Options: 
-		-onlyissues | -i : report only files with issues
-		-showcontents | -c : show the contents of valid addon files
-		-listallanimations | -laa : list all animation files
-		-listgestureanimations | -lga : list all gesture and gait animation files
-		-listweirdgestures | -lwg : list improper gesture verb definitions
-		-compactdupverbs | -cdv : compact duplicate verb names, even if their animation file names differ
-		-correctdisguisedaddons | -cda : correct valid addon files disguised as archives, keeping the original archive file
-		-correctdisguisedaddons+ | -cda+ : correct valid addon files disguised as archives and delete the original archive file if succeeds.
- 
-	source-specifications: any mix of files and/or folders you'd like to check
-
-PLEASE NOTE: options specified in the command line take precedence over and nullify processing options saved by default.
+Also please check the page 'Installing and Launching the Application' in the Help File for more information.
 
 
 KNOWN ISSUES:
 -------------
 When selecting the 'Report Only Issues' some spurious output may be generated as it tries to inspect folders and the contents of archive files.
-
-
-REQUIREMENTS
-------------
-Microsoft .NET runtime version 4.x must be installed for the application to be properly executed. Otherwise, an error will happen on launching.
 
 
 SOURCE CODE FOR THE APPLICATION COMPONENTS AND THIRD-PARTY LIBRARIES:
@@ -91,6 +86,26 @@ Suggestions for improvements and bug reports can be addressed to the email accou
 
 VERSION HISTORY
 ---------------
+* v1.9.0 (20191001):
+	- The application now comes with a full offline help information system
+	- Detection on (possibly) duplicate addons in the Catalogue. 
+		- Catalogue Addon View: New column 'Duplicate Group' for easily identifying possible duplicate entries in the catalogue, so addons with the same Duplicate Group ID most likely are duplicate copies of the same addon.
+		- Configurable criteria for the detection of duplicate addons (Setup form)
+	- Catalogue Content View:
+		- Multiple addons in a catalogue can be selected at the same time for deleting or refreshing at once.
+		- Information about multiple addons can be copied and pasted between different Catalogues.
+	- Addon Content Report:
+		- Reports about extern decals referenced
+	- Addon detail information (added):
+		- Stock subtype
+		- File summary info
+	- Asset Search Result view: 
+		- Double-clicking a row (asset) opens up a new form with the full contents of the addon the selected asset belongs to.
+		- Reports about extern decals referenced
+	- Bug fixes:
+		- Addon Content Report: some minor fixes
+		- Fixed a problem with some mods (body parts) by Writerly with a unexpectedly high value of material entry index
+
 * v1.8.1 (20190919):
 	Asset Search: 
 		- Multiple substrings can be searched for at once for:

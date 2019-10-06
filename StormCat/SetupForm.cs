@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using StormCat.Configuration;
 using MSAddonLib.Util;
 using MSAddonLib.Util.Persistence;
+using StormCat.Domain;
+using StormCat.Misc;
 
 namespace StormCat
 {
@@ -38,9 +40,37 @@ namespace StormCat
 
             tbMoviestormInstallPath.Text = _applicationConfiguration.MoviestormInstallationPath;
             tbMoviestormUserDataPath.Text = _applicationConfiguration.MoviestormUserDataPath;
+
+            SetDupDetectionCriteriaCheckBoxes(_applicationConfiguration.DuplicateDetectionFlag);
             // cbPreserveOptions.Checked = _applicationConfiguration.PreserveOptions;
 
             SetToolTips();
+            ContextHelp.HelpNamespace = Globals.HelpFilename;
+            ContextHelp.SetHelpNavigator(this, HelpNavigator.TopicId);
+        }
+
+        private void SetDupDetectionCriteriaCheckBoxes(DuplicateDetectionFlag pFlags)
+        {
+            SetDupDetectionCriteriaCheckBox(cbDupDetName, DuplicateDetectionFlag.Name, pFlags);
+            SetDupDetectionCriteriaCheckBox(cbDupDetPublisher, DuplicateDetectionFlag.Publisher, pFlags);
+            SetDupDetectionCriteriaCheckBox(cbDupDetRecompilable, DuplicateDetectionFlag.RecompilableFlag, pFlags);
+            SetDupDetectionCriteriaCheckBox(cbDupDetAssetCount, DuplicateDetectionFlag.AssetCount, pFlags);
+            SetDupDetectionCriteriaCheckBox(cbDupDetFileCount, DuplicateDetectionFlag.TotalFiles, pFlags);
+            SetDupDetectionCriteriaCheckBox(cbDupDetLastPublished, DuplicateDetectionFlag.LastCompiled, pFlags);
+            SetDupDetectionCriteriaCheckBox(cbDupDetMeshSize, DuplicateDetectionFlag.MeshDataSize, pFlags);
+        }
+
+        private void SetDupDetectionCriteriaCheckBox(CheckBox pCheckBox, DuplicateDetectionFlag pFlag, DuplicateDetectionFlag pFlags)
+        {
+            if (AddonDupSet.ForcedDuplicateDetectionFlags.HasFlag(pFlag))
+            {
+                pCheckBox.Checked = true;
+                pCheckBox.Enabled = false;
+                return;
+            }
+
+            pCheckBox.Enabled = true;
+            pCheckBox.Checked = pFlags.HasFlag(pFlag);
         }
 
 
@@ -56,6 +86,8 @@ namespace StormCat
             formToolTip.SetToolTip(pbSelectInstallFolder, "Select Moviestorm installation folder");
             formToolTip.SetToolTip(pbSelectUserDataFolder, "Select Moviestorm user data folder");
             formToolTip.SetToolTip(pbPathsDefaults, "Try to get Moviestorm folders by default");
+            formToolTip.SetToolTip(gbDupCriteria, "Select criteria for detection of (possibly) duplicate addons in a Catalogue");
+            formToolTip.SetToolTip(pbDupCriteriaDefault, "Restore default criteria for detection of (possibly) duplicate addons in a Catalogue");
 
             formToolTip.SetToolTip(pbSave, "Save configuration");
             formToolTip.SetToolTip(pbCancel, "Cancel changes to configuration");
@@ -83,6 +115,22 @@ namespace StormCat
 
             ApplicationConfiguration newConfiguration = new ApplicationConfiguration(moviestormInstallPath, tbMoviestormUserDataPath.Text);
 
+            newConfiguration.DuplicateDetectionFlag = AddonDupSet.ForcedDuplicateDetectionFlags;
+            if(cbDupDetName.Checked)
+                newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.Name;
+            if (cbDupDetPublisher.Checked)
+                newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.Publisher;
+            if (cbDupDetRecompilable.Checked)
+                newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.RecompilableFlag;
+            if (cbDupDetAssetCount.Checked)
+                newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.AssetCount;
+            if (cbDupDetLastPublished.Checked)
+                newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.LastCompiled;
+            if (cbDupDetMeshSize.Checked)
+                newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.MeshDataSize;
+            if (cbDupDetFileCount.Checked)
+                newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.TotalFiles;
+
             string errorText;
             if (!newConfiguration.Save(ApplicationConfiguration.ConfigurationFilePath, out errorText))
             {
@@ -96,7 +144,6 @@ namespace StormCat
 
         private void pbCancel_Click(object sender, EventArgs e)
         {
-
         }
 
 
@@ -114,6 +161,11 @@ namespace StormCat
 
             tbMoviestormInstallPath.Text = defaultMoviestormPaths.InstallationPath;
             tbMoviestormUserDataPath.Text = defaultMoviestormPaths.UserDataPath;
+        }
+
+        private void pbDupCriteriaDefault_Click(object sender, EventArgs e)
+        {
+            SetDupDetectionCriteriaCheckBoxes(AddonDupSet.DefaultDuplicateDetectionFlag);
         }
 
 

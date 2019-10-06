@@ -2,10 +2,6 @@
 StormCat - TO-DO
 ----------------
 
-Search: 
-	Name y Publisher: multiple
-
-Al importar: Si alguno issues: show:
 	
 * Better inline documentation of code
 ----

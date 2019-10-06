@@ -19,6 +19,8 @@ namespace StormCat.Domain
 
         public bool ContentPack { get; private set; }
 
+        public int? DuplicateGroup { get; set; }
+
         public string Description { get; private set; }
 
         public int? BodyPartCount { get; private set; }
@@ -46,6 +48,8 @@ namespace StormCat.Domain
         public int? DemoMovieCount { get; private set; }
 
         public string Location { get; private set; }
+
+        public AddonPackage AddonPackage { get; private set; }
         
 
         public AddonBasicInfo(AddonPackage pPackage)
@@ -73,6 +77,7 @@ namespace StormCat.Domain
             Location = pPackage.Location;
             if (MoviestormContentPackPath != null)
                 ContentPack = Location.ToLower().StartsWith(MoviestormContentPackPath.ToLower());
+            AddonPackage = pPackage;
         }
 
         private int? GetCountValue(int? pCount)

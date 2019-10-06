@@ -93,6 +93,7 @@
     </Compile>
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Domain\AddonPackageSetOperator.cs" />
+    <Compile Include="Misc\Globals.cs" />
     <Compile Include="Persistence\CataloguesIndex.cs" />
     <Compile Include="Configuration\ConfigurationFileBase.cs" />
     <Compile Include="Configuration\ProcessingOptions.cs" />
@@ -161,6 +162,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="StormCat.chm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="StormCat.ico" />
