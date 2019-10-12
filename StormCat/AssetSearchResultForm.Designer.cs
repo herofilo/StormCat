@@ -55,6 +55,9 @@
             this.lblSummary = new System.Windows.Forms.Label();
             this.pbSaveToExcel = new System.Windows.Forms.Button();
             this.ContextHelp = new System.Windows.Forms.HelpProvider();
+            this.cmiDisplayAddonReport = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmiListAddonContents = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAssets)).BeginInit();
             this.cmAssetTable.SuspendLayout();
             this.SuspendLayout();
@@ -212,15 +215,18 @@
             // cmAssetTable
             // 
             this.cmAssetTable.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmiDisplayAddonReport,
+            this.cmiListAddonContents,
+            this.toolStripSeparator1,
             this.cmiSaveToExcel});
             this.cmAssetTable.Name = "cmAssetTable";
-            this.cmAssetTable.Size = new System.Drawing.Size(166, 26);
+            this.cmAssetTable.Size = new System.Drawing.Size(252, 98);
             this.cmAssetTable.Opening += new System.ComponentModel.CancelEventHandler(this.cmAssetTable_Opening);
             // 
             // cmiSaveToExcel
             // 
             this.cmiSaveToExcel.Name = "cmiSaveToExcel";
-            this.cmiSaveToExcel.Size = new System.Drawing.Size(165, 22);
+            this.cmiSaveToExcel.Size = new System.Drawing.Size(251, 22);
             this.cmiSaveToExcel.Text = "Save To Excel File";
             this.cmiSaveToExcel.Click += new System.EventHandler(this.cmiSaveToExcel_Click);
             // 
@@ -250,6 +256,25 @@
             this.pbSaveToExcel.Text = "Save to Excel";
             this.pbSaveToExcel.UseVisualStyleBackColor = true;
             this.pbSaveToExcel.Click += new System.EventHandler(this.pbSaveToExcel_Click);
+            // 
+            // cmiDisplayAddonReport
+            // 
+            this.cmiDisplayAddonReport.Name = "cmiDisplayAddonReport";
+            this.cmiDisplayAddonReport.Size = new System.Drawing.Size(251, 22);
+            this.cmiDisplayAddonReport.Text = "Display Report for the Addon";
+            this.cmiDisplayAddonReport.Click += new System.EventHandler(this.cmiDisplayAddonReport_Click);
+            // 
+            // cmiListAddonContents
+            // 
+            this.cmiListAddonContents.Name = "cmiListAddonContents";
+            this.cmiListAddonContents.Size = new System.Drawing.Size(251, 22);
+            this.cmiListAddonContents.Text = "List (table) contents of the Addon";
+            this.cmiListAddonContents.Click += new System.EventHandler(this.cmiListAddonContents_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(248, 6);
             // 
             // AssetSearchResultForm
             // 
@@ -293,5 +318,8 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn colContentPack;
         private System.Windows.Forms.DataGridViewTextBoxColumn colLocation;
         private System.Windows.Forms.HelpProvider ContextHelp;
+        private System.Windows.Forms.ToolStripMenuItem cmiDisplayAddonReport;
+        private System.Windows.Forms.ToolStripMenuItem cmiListAddonContents;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }

@@ -1,6 +1,15 @@
 
 StormCat - TO-DO
 ----------------
++ Info de:
+	Other: 
+		Scenarios 
+		Terrain_masks (.jpg)
+	CuttingRoom: 
+		Filters asset.info (<name>) <description> <tagList>
+		TextStyles  asset.info (<name>) <description>
+		Transitions	asset.info (<name>) <description>
+
 
 	
 * Better inline documentation of code

@@ -75,9 +75,18 @@ namespace StormCat.Domain
             DemoMovieCount = GetCountValue(pPackage.AssetSummary?.StartMovies);
 
             Location = pPackage.Location;
-            if (MoviestormContentPackPath != null)
-                ContentPack = Location.ToLower().StartsWith(MoviestormContentPackPath.ToLower());
+            ContentPack = IsOfficialPack(pPackage);
+            // if (MoviestormContentPackPath != null)
+            //    ContentPack = Location.ToLower().StartsWith(MoviestormContentPackPath.ToLower());
             AddonPackage = pPackage;
+        }
+
+        private bool IsOfficialPack(AddonPackage pPackage)
+        {
+            if (pPackage.Publisher.ToLower() != "shortfuze")
+                return false;
+
+            return (!pPackage.Free || (pPackage.Name == "Core") || (pPackage.Name == "Base01"));
         }
 
         private int? GetCountValue(int? pCount)

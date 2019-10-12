@@ -32,11 +32,16 @@ WHAT'S NEW (1.9.0):
 	- File summary info
 * Asset Search Result view: 
 	- Double-clicking a row (asset) opens up a new form with the full contents of the addon the selected asset belongs to.
+	- Contextual menu: new items:
+		- Display report for addon
+		- List contents of the addon (see above)
 	- Reports about extern decals referenced
 * Bug fixes:
 	Addon Content Report: some minor fixes
 	Fixed a problem with some mods (body parts) by Writerly with a unexpectedly high value of material entry index
 
+IMPORTANT: for fully benefiting from all the new features in this version, is advisable to rebuild from scratch the Catalogues created with previous versions of the application.
+	
 Please refer to the VERSION HISTORY section for a complete history of changes in the program
 
 
@@ -101,6 +106,9 @@ VERSION HISTORY
 		- File summary info
 	- Asset Search Result view: 
 		- Double-clicking a row (asset) opens up a new form with the full contents of the addon the selected asset belongs to.
+		- Contextual menu: new items:
+			- Display report for addon
+			- List contents of the addon (see above)
 		- Reports about extern decals referenced
 	- Bug fixes:
 		- Addon Content Report: some minor fixes

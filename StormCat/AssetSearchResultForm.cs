@@ -51,7 +51,7 @@ namespace StormCat
 
         private void cmAssetTable_Opening(object sender, CancelEventArgs e)
         {
-            cmiSaveToExcel.Enabled = (_assets != null) && (_assets.Count > 0);
+            e.Cancel = (_assets == null) || (_assets.Count == 0);
         }
 
 
@@ -80,14 +80,41 @@ namespace StormCat
 
         // ------------------------------------------------------------------------------------------------------------------------------
 
+        private void cmiDisplayAddonReport_Click(object sender, EventArgs e)
+        {
+            if (GetAssetSelectedRowIndex() < 0)
+                return;
+
+            string publisher;
+            string name = GetSelectedAddonNamePublisher(out publisher);
+
+            AddonPackage package = _addonPackageSet.FindByName(name, publisher);
+            if (package == null)
+                return;
+
+            AddonReportForm reportForm = new AddonReportForm(name, package.ToString());
+            reportForm.Show(this);
+        }
+
+
+        private void cmiListAddonContents_Click(object sender, EventArgs e)
+        {
+            ListAddonContents();
+        }
+
 
         private void dgvAssets_DoubleClick(object sender, EventArgs e)
+        {
+            ListAddonContents();
+        }
+
+        private void ListAddonContents()
         {
             if (GetAssetSelectedRowIndex() < 0)
                 return;
             ShowAddonContents();
         }
-        
+
 
         private int GetAssetSelectedRowIndex()
         {
@@ -129,6 +156,8 @@ namespace StormCat
             pPublisher = (string)dgvAssets.SelectedRows[0].Cells["colAddonPublisher"].Value;
             return (string)dgvAssets.SelectedRows[0].Cells["colAddonName"].Value;
         }
+
+
 
         // ------------------------------------------------------------------------------------------------------------------------------
 

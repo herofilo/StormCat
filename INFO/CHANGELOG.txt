@@ -1,9 +1,12 @@
 
 StormCat - Version History
 --------------------------
-* v1.9.0 (20191006):
+* v1.9.0 (20191008):
 	- Asset Search Result view: 
 		- Double-clicking a row (asset) opens up a new form with the full contents of the addon the selected asset belongs to.
+		- Contextual menu: new items:
+			- Display report for addon
+			- List contents of the addon (see above)
 		- Reports about extern decals referenced
 	- Addon Content Report:
 		- Some minor fixes
@@ -15,6 +18,7 @@ StormCat - Version History
 	- Can select multiple addons in a Catalogue for deleting or refreshing in an unique operation
 	- Information about multiple addons can be copied and pasted between different Catalogues.
 	- Support for a full offline help information system
+	- Modified the criteria for detecting official content packs
 	- Detection on (possibly) duplicate addons in the Catalogue. 
 		- Catalogue Addon View: New column 'Duplicate Group'
 		- ApplicationConfiguration: new property DuplicateDetectionFlag
