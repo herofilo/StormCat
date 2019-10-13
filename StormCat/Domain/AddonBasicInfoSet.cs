@@ -217,7 +217,7 @@ namespace StormCat.Domain
             {
                 AddonAssetSummary summary = pAddonBasicInfo.AddonPackage.AssetSummary;
                 fingerprintBuilder.Append(
-                    $"A:{summary.Animations}_{summary.Bodyparts}_{summary.Decals}_{summary.Filters}_{summary.Materials}_{summary.Props}:{summary.PropVariants}_{summary.SkyTextures}_{summary.Sounds}_{summary.SpecialEffects}_{summary.StartMovies}_{summary.Stocks}_{summary.Verbs}^");
+                    $"A:{summary.Animations}_{summary.Bodyparts}_{summary.Decals}_{summary.CuttingRoomAssets}_{summary.Materials}_{summary.Props}:{summary.PropVariants}_{summary.SkyTextures}_{summary.Sounds}_{summary.SpecialEffects}_{summary.OtherAssets}_{summary.StartMovies}_{summary.Stocks}_{summary.Verbs}^");
             }
             if (DuplicateDetectionFlag.HasFlag(DuplicateDetectionFlag.TotalFiles))
             {

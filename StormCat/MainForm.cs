@@ -1263,7 +1263,7 @@ namespace StormCat
         {
             cbatBodyPart.Checked = cbatDecal.Checked = cbatProp.Checked = cbatVerb.Checked = cbatAnimation.Checked = 
             cbatMaterial.Checked =
-                cbatSound.Checked = cbatFilter.Checked = cbatSky.Checked = cbatSfx.Checked = cbatStock.Checked = cbatMovie.Checked = pSelect;
+                cbatSound.Checked = cbatCuttingRoom.Checked = cbatSky.Checked = cbatSfx.Checked = cbatOther.Checked = cbatStock.Checked = cbatMovie.Checked = pSelect;
         }
 
 
@@ -1321,9 +1321,10 @@ namespace StormCat
             if (cbatAnimation.Checked) assetType |= AddonAssetType.Animation;
             if (cbatMaterial.Checked) assetType |= AddonAssetType.Material;
             if (cbatSound.Checked) assetType |= AddonAssetType.Sound;
-            if (cbatFilter.Checked) assetType |= AddonAssetType.Filter;
+            if (cbatCuttingRoom.Checked) assetType |= AddonAssetType.CuttingRoomAsset;
             if (cbatSky.Checked) assetType |= AddonAssetType.SkyTexture;
             if (cbatSfx.Checked) assetType |= AddonAssetType.SpecialEffect;
+            if (cbatOther.Checked) assetType |= AddonAssetType.OtherAsset;
             if (cbatStock.Checked) assetType |= AddonAssetType.Stock;
             if (cbatMovie.Checked) assetType |= AddonAssetType.StartMovie;
 
@@ -1374,12 +1375,14 @@ namespace StormCat
                 tbSearchLog.AppendText($"    {searchStatistics.Materials,6} Materials\n");
             if (searchStatistics.Sounds > 0)
                 tbSearchLog.AppendText($"    {searchStatistics.Sounds,6} Sounds\n");
-            if (searchStatistics.Filters > 0)
-                tbSearchLog.AppendText($"    {searchStatistics.Filters,6} Filters\n");
+            if (searchStatistics.CuttingRoomAssets > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.CuttingRoomAssets,6} Filters\n");
             if (searchStatistics.SpecialEffects > 0)
                 tbSearchLog.AppendText($"    {searchStatistics.SpecialEffects,6} Special Effects\n");
             if (searchStatistics.SkyTextures > 0)
                 tbSearchLog.AppendText($"    {searchStatistics.SkyTextures,6} Sky Textures\n");
+            if (searchStatistics.OtherAssets > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.OtherAssets,6} Other Assets\n");
             if (searchStatistics.Stocks > 0)
                 tbSearchLog.AppendText($"    {searchStatistics.Stocks,6} Stocks\n");
             if (searchStatistics.StartMovies > 0)

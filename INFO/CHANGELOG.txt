@@ -1,7 +1,10 @@
 
 StormCat - Version History
 --------------------------
-* v1.9.0 (20191008):
+* v1.9.0 (20191013):
+	- New assets recognized:
+		- Cutting Room Assets (including Filters)
+		- Other Assets: Scenarios and Terrain Masks
 	- Asset Search Result view: 
 		- Double-clicking a row (asset) opens up a new form with the full contents of the addon the selected asset belongs to.
 		- Contextual menu: new items:

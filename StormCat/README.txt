@@ -1,7 +1,7 @@
 StormCat, by jamoram
 
 Current version: 1.9.0
-Last Update: 2019/10/03
+Last Update: 2019/10/13
 
 A little tool for:
 	1) Creating and managing multiple independent catalogues of Moviestorm addons, both installed and as addon files:
@@ -25,6 +25,9 @@ WHAT'S NEW (1.9.0):
 * Catalogue Content View:
 	- Multiple addons in a catalogue can be selected at the same time for deleting or refreshing at once.
 	- Information about multiple addons can be copied and pasted between different Catalogues.
+* New assets recognized:
+	- Cutting Room Assets (including Filters)
+	- Other Assets: Scenarios and Terrain Masks
 * Addon Content Report:
 	- Reports about extern decals referenced
 * Addon detail information (added):
@@ -91,7 +94,7 @@ Suggestions for improvements and bug reports can be addressed to the email accou
 
 VERSION HISTORY
 ---------------
-* v1.9.0 (20191001):
+* v1.9.0 (20191013):
 	- The application now comes with a full offline help information system
 	- Detection on (possibly) duplicate addons in the Catalogue. 
 		- Catalogue Addon View: New column 'Duplicate Group' for easily identifying possible duplicate entries in the catalogue, so addons with the same Duplicate Group ID most likely are duplicate copies of the same addon.
@@ -99,6 +102,9 @@ VERSION HISTORY
 	- Catalogue Content View:
 		- Multiple addons in a catalogue can be selected at the same time for deleting or refreshing at once.
 		- Information about multiple addons can be copied and pasted between different Catalogues.
+	- New assets recognized:
+		- Cutting Room Assets (including Filters)
+		- Other Assets: Scenarios and Terrain Masks
 	- Addon Content Report:
 		- Reports about extern decals referenced
 	- Addon detail information (added):

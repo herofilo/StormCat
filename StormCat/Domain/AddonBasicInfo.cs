@@ -1,4 +1,5 @@
-﻿using MSAddonLib.Domain.Addon;
+﻿using System.Runtime.Remoting;
+using MSAddonLib.Domain.Addon;
 
 namespace StormCat.Domain
 {
@@ -37,11 +38,13 @@ namespace StormCat.Domain
 
         public int? SoundCount { get; private set; }
 
-        public int? FilterCount { get; private set; }
+        public int? CuttingRoomAssetCount { get; private set; }
 
         public int? SpecialEffectCount { get; private set; }
 
         public int? SkyTextureCount { get; private set; }
+
+        public int? OtherAssetsCount { get; private set; }
 
         public int? StockCount { get; private set; }
 
@@ -67,10 +70,11 @@ namespace StormCat.Domain
             AnimationCount = GetCountValue(pPackage.AssetSummary?.Animations);
             VerbCount = GetCountValue(pPackage.AssetSummary?.Verbs);
             SoundCount = GetCountValue(pPackage.AssetSummary?.Sounds);
-            FilterCount = GetCountValue(pPackage.AssetSummary?.Filters);
+            CuttingRoomAssetCount = GetCountValue(pPackage.AssetSummary?.CuttingRoomAssets);
             SpecialEffectCount = GetCountValue(pPackage.AssetSummary?.SpecialEffects);
             MaterialCount = GetCountValue(pPackage.AssetSummary?.Materials);
             SkyTextureCount = GetCountValue(pPackage.AssetSummary?.SkyTextures);
+            OtherAssetsCount = GetCountValue(pPackage.AssetSummary?.OtherAssets);
             StockCount = GetCountValue(pPackage.AssetSummary?.Stocks);
             DemoMovieCount = GetCountValue(pPackage.AssetSummary?.StartMovies);
 

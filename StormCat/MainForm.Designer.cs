@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -49,6 +49,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tbOutput = new System.Windows.Forms.TextBox();
             this.outputContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmiCopyToClipboard = new System.Windows.Forms.ToolStripMenuItem();
@@ -126,7 +127,7 @@
             this.cbatSfx = new System.Windows.Forms.CheckBox();
             this.cbatSky = new System.Windows.Forms.CheckBox();
             this.cbatSound = new System.Windows.Forms.CheckBox();
-            this.cbatFilter = new System.Windows.Forms.CheckBox();
+            this.cbatCuttingRoom = new System.Windows.Forms.CheckBox();
             this.cbatMaterial = new System.Windows.Forms.CheckBox();
             this.cbatVerb = new System.Windows.Forms.CheckBox();
             this.cbatProp = new System.Windows.Forms.CheckBox();
@@ -180,6 +181,7 @@
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.sfdAddonListExportExcel = new System.Windows.Forms.SaveFileDialog();
             this.ContextHelp = new System.Windows.Forms.HelpProvider();
+            this.cbatOther = new System.Windows.Forms.CheckBox();
             this.dgvAddonName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvAddonPublisher = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvAddonInstalled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -197,6 +199,7 @@
             this.colSpecialEffectCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colFilterCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSkyTextureCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colOtherAssetsCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colStockCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDemoMovieCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvAddonDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -698,6 +701,7 @@
             this.colSpecialEffectCount,
             this.colFilterCount,
             this.colSkyTextureCount,
+            this.colOtherAssetsCount,
             this.colStockCount,
             this.colDemoMovieCount,
             this.dgvAddonDescription,
@@ -706,14 +710,14 @@
             this.dgvAddons.Location = new System.Drawing.Point(6, 19);
             this.dgvAddons.Name = "dgvAddons";
             this.dgvAddons.ReadOnly = true;
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAddons.RowHeadersDefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAddons.RowHeadersDefaultCellStyle = dataGridViewCellStyle20;
             this.dgvAddons.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAddons.Size = new System.Drawing.Size(909, 410);
             this.dgvAddons.TabIndex = 2;
@@ -931,6 +935,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.cbatOther);
             this.groupBox3.Controls.Add(this.cbatAnimation);
             this.groupBox3.Controls.Add(this.cbatMovie);
             this.groupBox3.Controls.Add(this.cbatStock);
@@ -941,7 +946,7 @@
             this.groupBox3.Controls.Add(this.cbatSfx);
             this.groupBox3.Controls.Add(this.cbatSky);
             this.groupBox3.Controls.Add(this.cbatSound);
-            this.groupBox3.Controls.Add(this.cbatFilter);
+            this.groupBox3.Controls.Add(this.cbatCuttingRoom);
             this.groupBox3.Controls.Add(this.cbatMaterial);
             this.groupBox3.Controls.Add(this.cbatVerb);
             this.groupBox3.Controls.Add(this.cbatProp);
@@ -969,7 +974,7 @@
             this.cbatMovie.AutoSize = true;
             this.cbatMovie.Checked = true;
             this.cbatMovie.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbatMovie.Location = new System.Drawing.Point(89, 64);
+            this.cbatMovie.Location = new System.Drawing.Point(306, 64);
             this.cbatMovie.Name = "cbatMovie";
             this.cbatMovie.Size = new System.Drawing.Size(55, 17);
             this.cbatMovie.TabIndex = 14;
@@ -981,7 +986,7 @@
             this.cbatStock.AutoSize = true;
             this.cbatStock.Checked = true;
             this.cbatStock.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbatStock.Location = new System.Drawing.Point(6, 64);
+            this.cbatStock.Location = new System.Drawing.Point(223, 64);
             this.cbatStock.Name = "cbatStock";
             this.cbatStock.Size = new System.Drawing.Size(59, 17);
             this.cbatStock.TabIndex = 13;
@@ -1029,7 +1034,7 @@
             this.cbatSfx.AutoSize = true;
             this.cbatSfx.Checked = true;
             this.cbatSfx.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbatSfx.Location = new System.Drawing.Point(223, 41);
+            this.cbatSfx.Location = new System.Drawing.Point(306, 41);
             this.cbatSfx.Name = "cbatSfx";
             this.cbatSfx.Size = new System.Drawing.Size(77, 17);
             this.cbatSfx.TabIndex = 8;
@@ -1041,7 +1046,7 @@
             this.cbatSky.AutoSize = true;
             this.cbatSky.Checked = true;
             this.cbatSky.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbatSky.Location = new System.Drawing.Point(306, 42);
+            this.cbatSky.Location = new System.Drawing.Point(6, 64);
             this.cbatSky.Name = "cbatSky";
             this.cbatSky.Size = new System.Drawing.Size(79, 17);
             this.cbatSky.TabIndex = 7;
@@ -1060,17 +1065,17 @@
             this.cbatSound.Text = "Sound";
             this.cbatSound.UseVisualStyleBackColor = true;
             // 
-            // cbatFilter
+            // cbatCuttingRoom
             // 
-            this.cbatFilter.AutoSize = true;
-            this.cbatFilter.Checked = true;
-            this.cbatFilter.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbatFilter.Location = new System.Drawing.Point(160, 41);
-            this.cbatFilter.Name = "cbatFilter";
-            this.cbatFilter.Size = new System.Drawing.Size(48, 17);
-            this.cbatFilter.TabIndex = 5;
-            this.cbatFilter.Text = "Filter";
-            this.cbatFilter.UseVisualStyleBackColor = true;
+            this.cbatCuttingRoom.AutoSize = true;
+            this.cbatCuttingRoom.Checked = true;
+            this.cbatCuttingRoom.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbatCuttingRoom.Location = new System.Drawing.Point(160, 41);
+            this.cbatCuttingRoom.Name = "cbatCuttingRoom";
+            this.cbatCuttingRoom.Size = new System.Drawing.Size(124, 17);
+            this.cbatCuttingRoom.TabIndex = 5;
+            this.cbatCuttingRoom.Text = "Cutting Room Assets";
+            this.cbatCuttingRoom.UseVisualStyleBackColor = true;
             // 
             // cbatMaterial
             // 
@@ -1604,6 +1609,18 @@
             this.sfdAddonListExportExcel.FileName = "Asset_Search_Result.xlsx";
             this.sfdAddonListExportExcel.Filter = "Excel files|*.xlsx";
             // 
+            // cbatOther
+            // 
+            this.cbatOther.AutoSize = true;
+            this.cbatOther.Checked = true;
+            this.cbatOther.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbatOther.Location = new System.Drawing.Point(90, 64);
+            this.cbatOther.Name = "cbatOther";
+            this.cbatOther.Size = new System.Drawing.Size(86, 17);
+            this.cbatOther.TabIndex = 16;
+            this.cbatOther.Text = "Other Assets";
+            this.cbatOther.UseVisualStyleBackColor = true;
+            // 
             // dgvAddonName
             // 
             this.dgvAddonName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -1793,14 +1810,14 @@
             // colFilterCount
             // 
             this.colFilterCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colFilterCount.DataPropertyName = "FilterCount";
+            this.colFilterCount.DataPropertyName = "CuttingRoomAssetCount";
             dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             dataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.colFilterCount.DefaultCellStyle = dataGridViewCellStyle15;
-            this.colFilterCount.HeaderText = "Filters";
+            this.colFilterCount.HeaderText = "Cut Room";
             this.colFilterCount.Name = "colFilterCount";
             this.colFilterCount.ReadOnly = true;
-            this.colFilterCount.Width = 59;
+            this.colFilterCount.Width = 79;
             // 
             // colSkyTextureCount
             // 
@@ -1814,13 +1831,25 @@
             this.colSkyTextureCount.ReadOnly = true;
             this.colSkyTextureCount.Width = 94;
             // 
+            // colOtherAssetsCount
+            // 
+            this.colOtherAssetsCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colOtherAssetsCount.DataPropertyName = "OtherAssetsCount";
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.colOtherAssetsCount.DefaultCellStyle = dataGridViewCellStyle17;
+            this.colOtherAssetsCount.HeaderText = "Other";
+            this.colOtherAssetsCount.Name = "colOtherAssetsCount";
+            this.colOtherAssetsCount.ReadOnly = true;
+            this.colOtherAssetsCount.Width = 58;
+            // 
             // colStockCount
             // 
             this.colStockCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.colStockCount.DataPropertyName = "StockCount";
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colStockCount.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colStockCount.DefaultCellStyle = dataGridViewCellStyle18;
             this.colStockCount.HeaderText = "Stocks";
             this.colStockCount.Name = "colStockCount";
             this.colStockCount.ReadOnly = true;
@@ -1830,9 +1859,9 @@
             // 
             this.colDemoMovieCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.colDemoMovieCount.DataPropertyName = "DemoMovieCount";
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colDemoMovieCount.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colDemoMovieCount.DefaultCellStyle = dataGridViewCellStyle19;
             this.colDemoMovieCount.HeaderText = "Movies";
             this.colDemoMovieCount.Name = "colDemoMovieCount";
             this.colDemoMovieCount.ReadOnly = true;
@@ -1971,7 +2000,7 @@
         private System.Windows.Forms.CheckBox cbatSfx;
         private System.Windows.Forms.CheckBox cbatSky;
         private System.Windows.Forms.CheckBox cbatSound;
-        private System.Windows.Forms.CheckBox cbatFilter;
+        private System.Windows.Forms.CheckBox cbatCuttingRoom;
         private System.Windows.Forms.CheckBox cbatMaterial;
         private System.Windows.Forms.CheckBox cbatVerb;
         private System.Windows.Forms.CheckBox cbatProp;
@@ -2037,6 +2066,7 @@
         private System.Windows.Forms.HelpProvider ContextHelp;
         private System.Windows.Forms.Button pbHelpCatalogue;
         private System.Windows.Forms.Label lblAddonDupsCount;
+        private System.Windows.Forms.CheckBox cbatOther;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvAddonName;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvAddonPublisher;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dgvAddonInstalled;
@@ -2054,6 +2084,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colSpecialEffectCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFilterCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSkyTextureCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colOtherAssetsCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn colStockCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDemoMovieCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvAddonDescription;
