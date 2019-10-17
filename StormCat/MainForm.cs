@@ -39,6 +39,20 @@ namespace StormCat
 
         private string _currentAddonDatabaseName = Path.GetFileNameWithoutExtension(AddonPackageSet.DefaultAddonPackageSetFileName);
 
+        /// <summary>
+        /// Current addon needs to save changes to file
+        /// </summary>
+        private bool CurrentAddonDirty
+        {
+            get { return _currentAddonDirty; }
+            set
+            {
+                _currentAddonDirty = value;
+                lblAddonDbFilename.ForeColor = _currentAddonDirty ? Color.Red : Color.Black;
+            }
+        }
+        private bool _currentAddonDirty = false;
+
         private AddonPackageSet _addonPackageSet = null;
 
         private DateTime _addonPackageSetTimeStamp = DateTime.Now;
@@ -54,6 +68,7 @@ namespace StormCat
         private List<TabPage> _childHiddenPages = null;
 
         private ToolTip formToolTip;
+        
 
 
         // ----------------------------------------------------------------------------------------------------------------------
@@ -291,12 +306,14 @@ namespace StormCat
 
             string errorText;
             if (!_addonPackageSet.Save(out errorText))
+            {
                 tbLog.AppendText($"  ERROR: Addon Catalogue couldn't be saved: {errorText}\n");
+                CurrentAddonDirty = true;
+            }
 
+            CurrentAddonDirty = false;
             _addonPackageSetTimeStamp = _addonPackageSet.LastUpdate;
         }
-
-
 
 
         /// <summary>
@@ -1118,6 +1135,9 @@ namespace StormCat
             for (int index = 0; index < names.Count; ++index)
                 RefreshAddon(names[index], locations[index]);
 
+            if(names.Count > 0)
+                CurrentAddonDirty = true;
+
             RefreshCatalogueAddonTable();
             if (cbAutoSave.Checked && (_addonPackageSet.LastUpdate > _addonPackageSetTimeStamp))
                 SaveCurrentAddonDatabase();
@@ -1175,6 +1195,7 @@ namespace StormCat
 
             if (deletedAny)
             {
+                CurrentAddonDirty = true;
                 RefreshCatalogueAddonTable();
                 if (cbAutoSave.Checked)
                     SaveCurrentAddonDatabase();
@@ -1213,10 +1234,13 @@ namespace StormCat
                 return;
             }
 
+            int oldCount = _addonPackageSet.Addons.Count;
             AddonPackageSetOperator setOperator = new AddonPackageSetOperator(_addonPackageSet);
             int count = setOperator.AppendAddonSubSet(subSet);
 
             tbLog.AppendText($"{count} addons appended to the Catalogue\n");
+            if(oldCount < _addonPackageSet.Addons.Count)
+                CurrentAddonDirty = true;
             if (count > 0)
             {
                 RefreshCatalogueAddonTable();
@@ -1402,7 +1426,10 @@ namespace StormCat
                 return;
 
             tbLog.AppendText("Clearing Addon Catalogue...\n");
+            int oldCount = _addonPackageSet.Addons.Count;
             _addonPackageSet.Clear();
+            if(oldCount > 0)
+                CurrentAddonDirty = true;
             RefreshCatalogueAddonTable();
             tbLog.AppendText("   Addon Catalogue cleared.\n");
             // _currentAddonDatabaseName = null;
@@ -1419,7 +1446,7 @@ namespace StormCat
 
             tbLog.AppendText("Initializing Addon Catalogue (it can take a while)...\n");
             _addonPackageSet.InitializeDatabase();
-
+            CurrentAddonDirty = true;
             RefreshCatalogueAddonTable();
             tbLog.AppendText("   Addon Catalogue initialized\n");
 
@@ -1445,6 +1472,7 @@ namespace StormCat
                 return;
             }
 
+            CurrentAddonDirty = false;
             UpdateCurrentAddonDatabaseInfo(pDatabaseName, addonSet);
             _logReportWriter.WriteReportLineFeed($"Catalogue loaded from file '{_currentAddonDatabaseName}'");
             _logReportWriter.WriteReportLineFeed($"    Addons registered: {_addonPackageSet.Addons?.Count ?? 0}");
@@ -1485,6 +1513,12 @@ namespace StormCat
 
             _addonPackageSetTimeStamp = _addonPackageSet.LastUpdate;
             _logReportWriter.WriteReportLineFeed($"Catalogue '{_currentAddonDatabaseName}' saved to file");
+            CurrentAddonDirty = false;
+
+            _cataloguesIndex.Update(_currentAddonDatabaseName, _addonPackageSet.Description,
+                _addonPackageSet.Addons?.Count ?? 0, _addonPackageSet.LastUpdate, _addonPackageSet.CatalogueVersion);
+
+            RefreshCatalogueIndexTable(_currentAddonDatabaseName);
         }
         
 
@@ -1553,6 +1587,8 @@ namespace StormCat
                     asset.CheckEntity(processingFlags);
                 }
                 _logReportWriter.WriteReportLineFeed("\n*** OPERATION FINISHED ****...");
+                if(pArgs.Length > 0)
+                    CurrentAddonDirty = true;
             }
             catch (Exception exception)
             {
@@ -1661,6 +1697,7 @@ namespace StormCat
             _currentAddonDatabaseName = catOpsForm.NewAddonPackageSetName;
             DiskEntityBase.AddonPackageSet = _addonPackageSet;
 
+            CurrentAddonDirty = false;
             RefreshCatalogueIndexTable(_currentAddonDatabaseName);
 
             RefreshCatalogueAddonTable();
@@ -1700,11 +1737,20 @@ namespace StormCat
             if (selectedCatalogueName == null)
                 return;
 
+
+
             CatalogueIndexOpsForm catOpsForm = new CatalogueIndexOpsForm(CataloguesIndexOperation.EditDescription,
                 _moviestormPaths, _cataloguesIndex, selectedCatalogueName);
 
             if (catOpsForm.ShowDialog(this) != DialogResult.OK)
                 return;
+
+            if (selectedCatalogueName == _currentAddonDatabaseName)
+            {
+                _addonPackageSet.Description = catOpsForm.NewAddonPackageSet.Description;
+                // _addonPackageSet.LastUpdate = catOpsForm.NewAddonPackageSet.LastUpdate;
+                CurrentAddonDirty = true;
+            }
 
             _cataloguesIndex = catOpsForm.CataloguesIndex;
 
@@ -1798,10 +1844,11 @@ namespace StormCat
             if (isLast)
             {
                 _cataloguesIndex.DefaultAddonDatabase = AddonPackageSet.DefaultAddonPackageSet;
-                _cataloguesIndex.Update(AddonPackageSet.DefaultAddonPackageSetName, "Default addon catalogue");
 
                 _addonPackageSet = new AddonPackageSet(_moviestormPaths, null, "Default addon catalogue");
                 _addonPackageSet.Save(out errorText);
+
+                _cataloguesIndex.Update(AddonPackageSet.DefaultAddonPackageSetName, "Default addon catalogue", _addonPackageSet.Addons?.Count ?? 0, _addonPackageSet.LastUpdate, _addonPackageSet.CatalogueVersion);
 
                 UpdateCurrentAddonDatabaseInfo(AddonPackageSet.DefaultAddonPackageSetName, _addonPackageSet);
             }

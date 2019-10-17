@@ -78,39 +78,60 @@ namespace StormCat.Persistence
 
 
 
-        public int Update(string pName, string pDescription, bool pAutoSave = true)
+        public int Update(string pName, string pDescription = null, int? pAddonCount = null,
+            DateTime? pLastUpdate = null, string pVersion = null, bool pAutoSave = true)
         {
             if (string.IsNullOrEmpty(pName = pName?.Trim()))
                 return -1;
 
-            pDescription = pDescription.Trim();
             int index = GetIndexByName(pName);
 
-            CatalogueInfo catalogue;
-            string errorText;
-            if (index >= 0)
-            {
-                if (pDescription == Catalogues[index].Description)
-                    return index;
+            bool newCatalogue = (index < 0);
 
-                catalogue = Catalogues[index];
-                catalogue.Description = pDescription;
-                if (pAutoSave)
-                    Save(CataloguesIndexFilePath, out errorText);
-                return index;
+            CatalogueInfo updatedCatalogueInfo = newCatalogue
+                    ? new CatalogueInfo() {Name = pName}
+                    : (CatalogueInfo)Catalogues[index].Clone();
+            bool needsToSave = false;
+            if (!string.IsNullOrEmpty(pDescription = pDescription?.Trim()))
+            {
+                if (newCatalogue || (pDescription != updatedCatalogueInfo.Description))
+                {
+                    updatedCatalogueInfo.Description = pDescription;
+                    needsToSave = true;
+                }
             }
 
-            catalogue = new CatalogueInfo()
+            if (pAddonCount.HasValue && (newCatalogue || pAddonCount.Value != updatedCatalogueInfo.AddonCount))
             {
-                Name = pName.Trim(),
-                Description = pDescription
-            };
+                updatedCatalogueInfo.AddonCount = pAddonCount.Value;
+                needsToSave = true;
+            }
 
-            Catalogues.Add(catalogue);
+            if (pLastUpdate.HasValue && (newCatalogue || pLastUpdate.Value != updatedCatalogueInfo.LastUpdateDateTime))
+            {
+                updatedCatalogueInfo.LastUpdateDateTime = pLastUpdate.Value;
+                needsToSave = true;
+            }
+
+            if(!string.IsNullOrEmpty(pVersion = pVersion?.Trim()) && (newCatalogue || (pVersion != updatedCatalogueInfo.Version)))
+            {
+                updatedCatalogueInfo.Version = pVersion;
+                needsToSave = true;
+            }
+
+
+            if (!needsToSave)
+                return index;
+
+            if (newCatalogue)
+                Catalogues.Add(updatedCatalogueInfo);
+            else
+                Catalogues[index] = updatedCatalogueInfo;
 
             List<CatalogueInfo> catalogues = Catalogues.OrderBy(o => o.Name).ToList();
             Catalogues = catalogues;
 
+            string errorText;
             if (pAutoSave)
                 Save(CataloguesIndexFilePath, out errorText);
 
@@ -127,7 +148,7 @@ namespace StormCat.Persistence
             Catalogues.RemoveAt(index);
 
             string errorText;
-            if(pAutoSave)
+            if (pAutoSave)
                 Save(CataloguesIndexFilePath, out errorText);
             return true;
         }
@@ -146,7 +167,7 @@ namespace StormCat.Persistence
 
             int defaultIndex = -1;
             int index = 0;
-            
+
             List<CatalogueInfo> catalogues = new List<CatalogueInfo>();
             foreach (string file in catalogueFiles)
             {
@@ -161,10 +182,15 @@ namespace StormCat.Persistence
                 if ((catalogue.FilePath.ToLower() == AddonPackageSet.DefaultAddonPackageSetFileName.ToLower()) ||
                     (catalogueFiles.Count == 1))
                 {
-                    if(catalogue.Description == null)
+                    if (catalogue.Description == null)
                         catalogue.Description = "Default catalogue";
                     defaultIndex = index;
                 }
+
+                catalogue.LastUpdateDateTime = packageSet.LastUpdate;
+                catalogue.AddonCount = packageSet?.Addons.Count ?? 0;
+                catalogue.Version = packageSet.CatalogueVersion;
+
                 catalogues.Add(catalogue);
                 index++;
             }
@@ -196,7 +222,10 @@ namespace StormCat.Persistence
             CatalogueInfo catalogue = new CatalogueInfo()
             {
                 Name = cataloguesIndex.DefaultAddonDatabase,
-                Description = "Default catalogue"
+                Description = "Default catalogue",
+                AddonCount = 0,
+                LastUpdateDateTime = packageSet.LastUpdate,
+                Version = packageSet.CatalogueVersion
             };
 
             cataloguesIndex.Catalogues.Add(catalogue);
@@ -250,7 +279,7 @@ namespace StormCat.Persistence
 
 
     [Serializable]
-    public sealed class CatalogueInfo
+    public sealed class CatalogueInfo : ICloneable
     {
         public string FilePath => _name == null ? null : _name + AddonPackageSet.AddonPackageSetFileExtension;
 
@@ -275,5 +304,15 @@ namespace StormCat.Persistence
 
         public string Description { get; set; }
 
+        public string Version { get; set; }
+
+        public DateTime? LastUpdateDateTime { get; set; }
+
+        public int AddonCount { get; set; }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
     }
 }

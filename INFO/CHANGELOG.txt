@@ -1,6 +1,14 @@
 
 StormCat - Version History
 --------------------------
+* v1.9.1 (20191016):
+	- Some minor bug fixes
+	- The name of the current Catalogue is now displayed in red whenever any change has been made to it that needs to be saved to file.
+	- The table of catalogues in the Catalogue Management page now offers new information about the catalogues in the Catalogue Index:
+		- Count of addons
+		- Last updated
+		- Version
+
 * v1.9.0 (20191013):
 	- New assets recognized:
 		- Cutting Room Assets (including Filters)

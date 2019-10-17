@@ -1,7 +1,7 @@
 StormCat, by jamoram
 
-Current version: 1.9.0
-Last Update: 2019/10/13
+Current version: 1.9.1
+Last Update: 2019/10/17
 
 A little tool for:
 	1) Creating and managing multiple independent catalogues of Moviestorm addons, both installed and as addon files:
@@ -16,35 +16,17 @@ A little tool for:
 PLEASE NOTE: a full User's Guide is currently under production and will be released ASAP.
 
 
-WHAT'S NEW (1.9.0):
+WHAT'S NEW:
 -----------
-* The application now comes with a full offline help information system
-* Detection on (possibly) duplicate addons in the Catalogue. 
-	- Catalogue Addon View: New column 'Duplicate Group' for easily identifying possible duplicate entries in the catalogue, so addons with the same Duplicate Group ID most likely are duplicate copies of the same addon.
-	- Configurable criteria for the detection of duplicate addons (Setup form)
-* Catalogue Content View:
-	- Multiple addons in a catalogue can be selected at the same time for deleting or refreshing at once.
-	- Information about multiple addons can be copied and pasted between different Catalogues.
-* New assets recognized:
-	- Cutting Room Assets (including Filters)
-	- Other Assets: Scenarios and Terrain Masks
-* Addon Content Report:
-	- Reports about extern decals referenced
-* Addon detail information (added):
-	- Stock subtype
-	- File summary info
-* Asset Search Result view: 
-	- Double-clicking a row (asset) opens up a new form with the full contents of the addon the selected asset belongs to.
-	- Contextual menu: new items:
-		- Display report for addon
-		- List contents of the addon (see above)
-	- Reports about extern decals referenced
-* Bug fixes:
-	Addon Content Report: some minor fixes
-	Fixed a problem with some mods (body parts) by Writerly with a unexpectedly high value of material entry index
-
-IMPORTANT: for fully benefiting from all the new features in this version, is advisable to rebuild from scratch the Catalogues created with previous versions of the application.
+* The name of the current Catalogue is now displayed in red whenever any change has been made to it that needs to be saved to file.
+* The table of catalogues in the Catalogue Management page now offers new information about the catalogues in the Catalogue Index:
+	- Count of addons
+	- Last updated
+	- Version
+* Some minor bug fixes
 	
+NOTE: you'll need to use the 'Refresh Index' on the Catalogue Management page for updating the new information about the catalogues in the index.
+
 Please refer to the VERSION HISTORY section for a complete history of changes in the program
 
 
@@ -94,6 +76,15 @@ Suggestions for improvements and bug reports can be addressed to the email accou
 
 VERSION HISTORY
 ---------------
+* v1.9.1 (20191016):
+	- The name of the current Catalogue is now displayed in red whenever any change has been made to it that needs to be saved to file.
+	- The table of catalogues in the Catalogue Management page now offers new information about the catalogues in the Catalogue Index:
+		- Count of addons
+		- Last updated
+		- Version
+	- Some minor bug fixes
+
+
 * v1.9.0 (20191013):
 	- The application now comes with a full offline help information system
 	- Detection on (possibly) duplicate addons in the Catalogue. 

@@ -193,7 +193,7 @@ namespace StormCat
             string errorText;
             NewAddonPackageSet.Save(out errorText, newCatalogueFilename);
 
-            CataloguesIndex.Update(newCatalogueName, tbDescription.Text);
+            CataloguesIndex.Update(newCatalogueName, tbDescription.Text, NewAddonPackageSet.Addons?.Count ?? 0, NewAddonPackageSet.LastUpdate, NewAddonPackageSet.CatalogueVersion);
             NewAddonPackageSetName = newCatalogueName;
 
             return true;
@@ -296,7 +296,7 @@ namespace StormCat
                 return false;
             }
 
-            CataloguesIndex.Update(newCatalogueName, tbDescription.Text.Trim());
+            CataloguesIndex.Update(newCatalogueName, tbDescription.Text.Trim(), newPackageSet.Addons?.Count ?? 0, newPackageSet.LastUpdate, newPackageSet.CatalogueVersion);
 
             NewAddonPackageSet = newPackageSet;
             NewAddonPackageSetName = newCatalogueName;
