@@ -2,9 +2,7 @@
 StormCat - TO-DO
 ----------------
 
-+ CatalogueIndex: añadir:
-	- Actualizar cada vez que se salva el catálogo
-	
+
 * Better inline documentation of code
 ----
 

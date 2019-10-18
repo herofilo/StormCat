@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Security.RightsManagement;
@@ -157,52 +158,117 @@ namespace StormCat.Domain
 
         #endregion CopyAndPasteRegion
 
-        /* Moved to AddonBasicInfoSet
-        #region CheckDupsRegion
 
         // ---------------------------------------------------------------------------------------------------------------------------
 
-        
-        public List<AddonDupSet> CheckAddonDuplicates()
+        public static List<CatalogueContentComparisionItem> CompareCataloguesContents(AddonPackageSet pPackageSet0, AddonPackageSet pPackageSet1)
         {
-            if ((AddonPackageSet == null) || (AddonPackageSet.Addons == null) || (AddonPackageSet.Addons.Count < 2))
-                return null;
+            List<string> addonsCatalogue0 = GetAddonsInPackageSorted(pPackageSet0);
+            List<string> addonsCatalogue1 = GetAddonsInPackageSorted(pPackageSet1);
 
-            List<AddonDupSet> tempDupSets = new List<AddonDupSet>();
-            foreach (AddonPackage addon in AddonPackageSet.Addons)
+            List<CatalogueContentComparisionItem> comparisionItems = new List<CatalogueContentComparisionItem>();
+
+            if (addonsCatalogue0.Count == 0)
             {
-                if (addon.AddonFormat == AddonPackageFormat.InstalledFolder)
-                    continue;
+                foreach (string addon1 in addonsCatalogue1)
+                    comparisionItems.Add(new CatalogueContentComparisionItem() { AddonCatalogue1 = addon1 });
 
-                AddonDupSet dupSet = FindDupSet(tempDupSets, addon.QualifiedName) ?? new AddonDupSet(addon.Publisher, addon.Name);
-                dupSet.AddLocation(addon.Location);
+                return comparisionItems;
+            }
+            if (addonsCatalogue1.Count == 0)
+            {
+                foreach (string addon0 in addonsCatalogue0)
+                    comparisionItems.Add(new CatalogueContentComparisionItem() { AddonCatalogue0 = addon0 });
+
+                return comparisionItems;
             }
 
-            List<AddonDupSet> dupSets = new List<AddonDupSet>();
-            foreach(AddonDupSet set in tempDupSets)
-                if(set.Locations.Count > 1)
-                    dupSets.Add(set);
+            do
+            {
+                string addon0 = addonsCatalogue0.Count > 0 ? addonsCatalogue0[0] : "";
+                string addon1 = addonsCatalogue1.Count > 0 ? addonsCatalogue1[0] : "";
+                if (addon0 == "")
+                {
+                    if (addon1 == "")
+                        break;          // it shoudn't happen
+                    foreach(string addon in addonsCatalogue1) 
+                        comparisionItems.Add(new CatalogueContentComparisionItem() {AddonCatalogue1 = addon});
+                    break;
+                }
+                if (addon1 == "")
+                {
+                    foreach (string addon in addonsCatalogue0)
+                        comparisionItems.Add(new CatalogueContentComparisionItem() { AddonCatalogue0 = addon });
+                    break;
+                }
 
-            return (dupSets.Count == 0) ? null : dupSets;
+                int stringCompare = string.Compare(addon0, addon1, StringComparison.InvariantCulture);
+                if (stringCompare == 0)
+                {
+                    comparisionItems.Add(new CatalogueContentComparisionItem() { AddonCatalogue0 = addon0, AddonCatalogue1 = addon1});
+                    addonsCatalogue0.RemoveAt(0);
+                    addonsCatalogue1.RemoveAt(0);
+                    continue;
+                }
+
+                if (stringCompare < 0)
+                {
+                    comparisionItems.Add(new CatalogueContentComparisionItem() { AddonCatalogue0 = addon0 });
+                    addonsCatalogue0.RemoveAt(0);
+                    continue;
+                }
+
+                comparisionItems.Add(new CatalogueContentComparisionItem() { AddonCatalogue1 = addon1 });
+                addonsCatalogue1.RemoveAt(0);
+
+
+            } while ((addonsCatalogue0.Count > 0) || (addonsCatalogue1.Count > 0));
+
+            return comparisionItems;
         }
 
-        
 
-        private AddonDupSet FindDupSet(List<AddonDupSet> pDupSets, string pName)
+        private static List<string> GetAddonsInPackageSorted(AddonPackageSet pPackageSet)
         {
-            foreach(AddonDupSet set in pDupSets)
-                if (pName == set.QualifiedName)
-                    return set;
+            List<string> addons = new List<string>();
+            if ((pPackageSet.Addons?.Count ?? 0) == 0)
+                return addons;
 
-            return null;
+            foreach (AddonPackage addon in pPackageSet.Addons)
+            {
+                addons.Add($"{addon.Name} [{addon.Publisher}]");
+            }
+
+            addons.Sort();
+
+            // Removes duplicated...
+
+            List<string> notDups = new List<string>();
+            string last = "xxx";
+            foreach (string item in addons)
+            {
+                if (item == last)
+                    continue;
+                notDups.Add(item);
+                last = item;
+            }
+
+            return notDups;
         }
 
-        #endregion CheckDupsRegion
-        */
+
+
+
+
     }
 
 
+    public sealed class CatalogueContentComparisionItem
+    {
+        public string AddonCatalogue0 { get; set; }
 
+        public string AddonCatalogue1 { get; set; }
+    }
 
 
 

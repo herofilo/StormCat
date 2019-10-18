@@ -1,7 +1,7 @@
 StormCat, by jamoram
 
 Current version: 1.9.1
-Last Update: 2019/10/17
+Last Update: 2019/10/18
 
 A little tool for:
 	1) Creating and managing multiple independent catalogues of Moviestorm addons, both installed and as addon files:
@@ -23,6 +23,7 @@ WHAT'S NEW:
 	- Count of addons
 	- Last updated
 	- Version
+* Comparison of Catalogues, between the current Catalogue and any other selected in the Catalogue Management table
 * Some minor bug fixes
 	
 NOTE: you'll need to use the 'Refresh Index' on the Catalogue Management page for updating the new information about the catalogues in the index.
@@ -82,6 +83,7 @@ VERSION HISTORY
 		- Count of addons
 		- Last updated
 		- Version
+	- Comparison of Catalogues, between the current Catalogue and any other selected in the Catalogue Management table
 	- Some minor bug fixes
 
 

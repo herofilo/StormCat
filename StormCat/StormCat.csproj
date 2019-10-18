@@ -85,6 +85,12 @@
     <Compile Include="AssetSearchResultForm.Designer.cs">
       <DependentUpon>AssetSearchResultForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CatalogueComparisonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CatalogueComparisonForm.Designer.cs">
+      <DependentUpon>CatalogueComparisonForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CatalogueIndexOpsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AssetSearchResultForm.resx">
       <DependentUpon>AssetSearchResultForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CatalogueComparisonForm.resx">
+      <DependentUpon>CatalogueComparisonForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CatalogueIndexOpsForm.resx">
       <DependentUpon>CatalogueIndexOpsForm.cs</DependentUpon>

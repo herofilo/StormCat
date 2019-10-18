@@ -8,6 +8,7 @@ StormCat - Version History
 		- Count of addons
 		- Last updated
 		- Version
+	- Comparison of Catalogues, between the current Catalogue and any other selected in the Catalogue Management table
 
 * v1.9.0 (20191013):
 	- New assets recognized:

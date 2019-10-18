@@ -20,6 +20,7 @@ using MSAddonLib.Util;
 using MSAddonLib.Util.Persistence;
 using StormCat.Persistence;
 
+
 namespace StormCat
 {
     public partial class MainForm : Form
@@ -1234,7 +1235,7 @@ namespace StormCat
                 return;
             }
 
-            int oldCount = _addonPackageSet.Addons.Count;
+            int oldCount = _addonPackageSet.Addons?.Count ?? 0;
             AddonPackageSetOperator setOperator = new AddonPackageSetOperator(_addonPackageSet);
             int count = setOperator.AppendAddonSubSet(subSet);
 
@@ -2017,6 +2018,63 @@ namespace StormCat
         }
 
 
+
+        // -------------------------------------------------------------------------------------------
+
+        private void pbCatCompareTo_Click(object sender, EventArgs e)
+        {
+            string catalogueName = GetSelectedCatalogueName();
+            if (string.IsNullOrEmpty(catalogueName))
+                return;
+
+            if (catalogueName == _currentAddonDatabaseName)
+                return;
+
+            CompareCurrentCatalogueTo(catalogueName);
+        }
+
+
+        private void CompareCurrentCatalogueTo(string pCatalogueName)
+        {
+            string fileName = pCatalogueName + AddonPackageSet.AddonPackageSetFileExtension;
+            if (!File.Exists(fileName))
+                return;
+
+            string errorText;
+            AddonPackageSet addonSet = AddonPackageSet.Load(out errorText, fileName);
+            if (addonSet == null)
+            {
+                _logReportWriter.WriteReportLineFeed($"ERROR trying to load Addon Catalogue fron file: {errorText}");
+                return;
+            }
+
+            List<CatalogueContentComparisionItem>  comparisionResult = AddonPackageSetOperator.CompareCataloguesContents(_addonPackageSet, addonSet);
+            if (comparisionResult == null)
+                return;
+
+            bool identical = true;
+            foreach (CatalogueContentComparisionItem item in comparisionResult)
+            {
+                if ((item.AddonCatalogue0 == null) || (item.AddonCatalogue1 == null))
+                {
+                    identical = false;
+                    break;
+                }
+            }
+
+            if (identical)
+            {
+                MessageBox.Show(
+                    $"Both Catalogues ({_currentAddonDatabaseName} and {pCatalogueName}) contain the same addons.",
+                    "No differences found", MessageBoxButtons.OK);
+                return;
+            }
+
+            CatalogueComparisonForm form = new CatalogueComparisonForm(_currentAddonDatabaseName, pCatalogueName, comparisionResult);
+            form.Show(this);
+        }
+
+        
         // ................................................
 
 

@@ -185,6 +185,13 @@
             this.pbCatEdit = new System.Windows.Forms.Button();
             this.pbCatNew = new System.Windows.Forms.Button();
             this.dgvCatalogueIndex = new System.Windows.Forms.DataGridView();
+            this.colCatCurrent = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colCatDefault = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colCatName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCatDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAddonCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLastUpdateDateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cmCatManager = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmiCatManNew = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiCatManEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -202,13 +209,7 @@
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.sfdAddonListExportExcel = new System.Windows.Forms.SaveFileDialog();
             this.ContextHelp = new System.Windows.Forms.HelpProvider();
-            this.colCatCurrent = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.colCatDefault = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.colCatName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCatDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAddonCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLastUpdateDateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pbCatCompareTo = new System.Windows.Forms.Button();
             this.outputContextMenu.SuspendLayout();
             this.pDragFiles.SuspendLayout();
             this.pnlDisplayContents.SuspendLayout();
@@ -1570,6 +1571,7 @@
             // 
             // tpCatalogueManagement
             // 
+            this.tpCatalogueManagement.Controls.Add(this.pbCatCompareTo);
             this.tpCatalogueManagement.Controls.Add(this.pbCatLoadChild);
             this.tpCatalogueManagement.Controls.Add(this.pbRefreshIndex);
             this.tpCatalogueManagement.Controls.Add(this.pbCatSetDefault);
@@ -1595,7 +1597,7 @@
             // 
             // pbCatLoadChild
             // 
-            this.pbCatLoadChild.Location = new System.Drawing.Point(917, 233);
+            this.pbCatLoadChild.Location = new System.Drawing.Point(917, 274);
             this.pbCatLoadChild.Name = "pbCatLoadChild";
             this.pbCatLoadChild.Size = new System.Drawing.Size(75, 23);
             this.pbCatLoadChild.TabIndex = 11;
@@ -1615,7 +1617,7 @@
             // 
             // pbCatSetDefault
             // 
-            this.pbCatSetDefault.Location = new System.Drawing.Point(917, 304);
+            this.pbCatSetDefault.Location = new System.Drawing.Point(917, 345);
             this.pbCatSetDefault.Name = "pbCatSetDefault";
             this.pbCatSetDefault.Size = new System.Drawing.Size(75, 23);
             this.pbCatSetDefault.TabIndex = 9;
@@ -1625,7 +1627,7 @@
             // 
             // pbCatSave
             // 
-            this.pbCatSave.Location = new System.Drawing.Point(917, 262);
+            this.pbCatSave.Location = new System.Drawing.Point(917, 303);
             this.pbCatSave.Name = "pbCatSave";
             this.pbCatSave.Size = new System.Drawing.Size(75, 23);
             this.pbCatSave.TabIndex = 8;
@@ -1635,7 +1637,7 @@
             // 
             // pbCatLoad
             // 
-            this.pbCatLoad.Location = new System.Drawing.Point(917, 204);
+            this.pbCatLoad.Location = new System.Drawing.Point(917, 245);
             this.pbCatLoad.Name = "pbCatLoad";
             this.pbCatLoad.Size = new System.Drawing.Size(75, 23);
             this.pbCatLoad.TabIndex = 7;
@@ -1655,7 +1657,7 @@
             // 
             // pbCatDelete
             // 
-            this.pbCatDelete.Location = new System.Drawing.Point(917, 159);
+            this.pbCatDelete.Location = new System.Drawing.Point(917, 200);
             this.pbCatDelete.Name = "pbCatDelete";
             this.pbCatDelete.Size = new System.Drawing.Size(75, 23);
             this.pbCatDelete.TabIndex = 5;
@@ -1719,6 +1721,80 @@
             this.dgvCatalogueIndex.TabIndex = 1;
             this.dgvCatalogueIndex.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCatalogueIndex_CellDoubleClick);
             this.dgvCatalogueIndex.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvCatalogueIndex_DataBindingComplete);
+            // 
+            // colCatCurrent
+            // 
+            this.colCatCurrent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.colCatCurrent.FalseValue = "false";
+            this.colCatCurrent.HeaderText = "Loaded";
+            this.colCatCurrent.Name = "colCatCurrent";
+            this.colCatCurrent.ReadOnly = true;
+            this.colCatCurrent.TrueValue = "true";
+            this.colCatCurrent.Width = 49;
+            // 
+            // colCatDefault
+            // 
+            this.colCatDefault.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.colCatDefault.FalseValue = "false";
+            this.colCatDefault.HeaderText = "Default";
+            this.colCatDefault.Name = "colCatDefault";
+            this.colCatDefault.ReadOnly = true;
+            this.colCatDefault.TrueValue = "true";
+            this.colCatDefault.Width = 47;
+            // 
+            // colCatName
+            // 
+            this.colCatName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colCatName.DataPropertyName = "Name";
+            this.colCatName.HeaderText = "Name";
+            this.colCatName.Name = "colCatName";
+            this.colCatName.ReadOnly = true;
+            this.colCatName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colCatName.Width = 41;
+            // 
+            // colCatDescription
+            // 
+            this.colCatDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colCatDescription.DataPropertyName = "Description";
+            this.colCatDescription.HeaderText = "Description";
+            this.colCatDescription.Name = "colCatDescription";
+            this.colCatDescription.ReadOnly = true;
+            this.colCatDescription.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colCatDescription.Width = 66;
+            // 
+            // colAddonCount
+            // 
+            this.colAddonCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colAddonCount.DataPropertyName = "AddonCount";
+            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.colAddonCount.DefaultCellStyle = dataGridViewCellStyle21;
+            this.colAddonCount.HeaderText = "Addon#";
+            this.colAddonCount.Name = "colAddonCount";
+            this.colAddonCount.ReadOnly = true;
+            this.colAddonCount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colAddonCount.Width = 51;
+            // 
+            // colLastUpdateDateTime
+            // 
+            this.colLastUpdateDateTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colLastUpdateDateTime.DataPropertyName = "LastUpdateDateTime";
+            this.colLastUpdateDateTime.HeaderText = "Last Update";
+            this.colLastUpdateDateTime.Name = "colLastUpdateDateTime";
+            this.colLastUpdateDateTime.ReadOnly = true;
+            this.colLastUpdateDateTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colLastUpdateDateTime.Width = 71;
+            // 
+            // colVersion
+            // 
+            this.colVersion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colVersion.DataPropertyName = "Version";
+            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.colVersion.DefaultCellStyle = dataGridViewCellStyle22;
+            this.colVersion.HeaderText = "Version";
+            this.colVersion.Name = "colVersion";
+            this.colVersion.ReadOnly = true;
+            this.colVersion.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colVersion.Width = 48;
             // 
             // cmCatManager
             // 
@@ -1854,79 +1930,15 @@
             this.sfdAddonListExportExcel.FileName = "Asset_Search_Result.xlsx";
             this.sfdAddonListExportExcel.Filter = "Excel files|*.xlsx";
             // 
-            // colCatCurrent
+            // pbCatCompareTo
             // 
-            this.colCatCurrent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.colCatCurrent.FalseValue = "false";
-            this.colCatCurrent.HeaderText = "Loaded";
-            this.colCatCurrent.Name = "colCatCurrent";
-            this.colCatCurrent.ReadOnly = true;
-            this.colCatCurrent.TrueValue = "true";
-            this.colCatCurrent.Width = 49;
-            // 
-            // colCatDefault
-            // 
-            this.colCatDefault.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.colCatDefault.FalseValue = "false";
-            this.colCatDefault.HeaderText = "Default";
-            this.colCatDefault.Name = "colCatDefault";
-            this.colCatDefault.ReadOnly = true;
-            this.colCatDefault.TrueValue = "true";
-            this.colCatDefault.Width = 47;
-            // 
-            // colCatName
-            // 
-            this.colCatName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colCatName.DataPropertyName = "Name";
-            this.colCatName.HeaderText = "Name";
-            this.colCatName.Name = "colCatName";
-            this.colCatName.ReadOnly = true;
-            this.colCatName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colCatName.Width = 41;
-            // 
-            // colCatDescription
-            // 
-            this.colCatDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colCatDescription.DataPropertyName = "Description";
-            this.colCatDescription.HeaderText = "Description";
-            this.colCatDescription.Name = "colCatDescription";
-            this.colCatDescription.ReadOnly = true;
-            this.colCatDescription.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colCatDescription.Width = 66;
-            // 
-            // colAddonCount
-            // 
-            this.colAddonCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colAddonCount.DataPropertyName = "AddonCount";
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.colAddonCount.DefaultCellStyle = dataGridViewCellStyle21;
-            this.colAddonCount.HeaderText = "Addon#";
-            this.colAddonCount.Name = "colAddonCount";
-            this.colAddonCount.ReadOnly = true;
-            this.colAddonCount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colAddonCount.Width = 51;
-            // 
-            // colLastUpdateDateTime
-            // 
-            this.colLastUpdateDateTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colLastUpdateDateTime.DataPropertyName = "LastUpdateDateTime";
-            this.colLastUpdateDateTime.HeaderText = "Last Update";
-            this.colLastUpdateDateTime.Name = "colLastUpdateDateTime";
-            this.colLastUpdateDateTime.ReadOnly = true;
-            this.colLastUpdateDateTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colLastUpdateDateTime.Width = 71;
-            // 
-            // colVersion
-            // 
-            this.colVersion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colVersion.DataPropertyName = "Version";
-            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.colVersion.DefaultCellStyle = dataGridViewCellStyle22;
-            this.colVersion.HeaderText = "Version";
-            this.colVersion.Name = "colVersion";
-            this.colVersion.ReadOnly = true;
-            this.colVersion.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colVersion.Width = 48;
+            this.pbCatCompareTo.Location = new System.Drawing.Point(917, 159);
+            this.pbCatCompareTo.Name = "pbCatCompareTo";
+            this.pbCatCompareTo.Size = new System.Drawing.Size(75, 23);
+            this.pbCatCompareTo.TabIndex = 12;
+            this.pbCatCompareTo.Text = "Compare To";
+            this.pbCatCompareTo.UseVisualStyleBackColor = true;
+            this.pbCatCompareTo.Click += new System.EventHandler(this.pbCatCompareTo_Click);
             // 
             // MainForm
             // 
@@ -2134,6 +2146,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colAddonCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn colLastUpdateDateTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn colVersion;
+        private System.Windows.Forms.Button pbCatCompareTo;
     }
 }
 

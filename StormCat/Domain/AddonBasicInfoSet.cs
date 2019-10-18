@@ -39,8 +39,7 @@ namespace StormCat.Domain
                 addons.Add(new AddonBasicInfo(addon));
 
             Addons = addons.OrderBy(o => o.Name).ToList();
-
-
+            
             List<AddonDupSet> dupSets = CheckAddonDuplicates();
             if (dupSets == null)
                 return;
