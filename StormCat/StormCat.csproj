@@ -51,7 +51,7 @@
       <HintPath>..\packages\FastMember.1.3.0\lib\net40\FastMember.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MSAddonLib, Version=1.6.0.0, Culture=neutral, PublicKeyToken=2f700a7d5933eba6, processorArchitecture=x86">
+    <Reference Include="MSAddonLib, Version=1.7.0.0, Culture=neutral, PublicKeyToken=2f700a7d5933eba6, processorArchitecture=x86">
       <HintPath>..\..\MSAddonLib\Published\MSAddonLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -96,6 +96,12 @@
     </Compile>
     <Compile Include="CatalogueIndexOpsForm.Designer.cs">
       <DependentUpon>CatalogueIndexOpsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompareByFingerprintForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompareByFingerprintForm.Designer.cs">
+      <DependentUpon>CompareByFingerprintForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Domain\AddonPackageSetOperator.cs" />
@@ -142,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CatalogueIndexOpsForm.resx">
       <DependentUpon>CatalogueIndexOpsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompareByFingerprintForm.resx">
+      <DependentUpon>CompareByFingerprintForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CreditsForm.resx">
       <DependentUpon>CreditsForm.cs</DependentUpon>

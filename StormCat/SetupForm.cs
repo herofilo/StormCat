@@ -58,7 +58,37 @@ namespace StormCat
             SetDupDetectionCriteriaCheckBox(cbDupDetFileCount, DuplicateDetectionFlag.TotalFiles, pFlags);
             SetDupDetectionCriteriaCheckBox(cbDupDetLastPublished, DuplicateDetectionFlag.LastCompiled, pFlags);
             SetDupDetectionCriteriaCheckBox(cbDupDetMeshSize, DuplicateDetectionFlag.MeshDataSize, pFlags);
+            SetDupDetectionCriteriaCheckBox(cbDupDetFingerprint, DuplicateDetectionFlag.Fingerprint, pFlags);
+            if(cbDupDetFingerprint.Checked)
+                SetDupDetectionCriteriaCheckBoxes2();
         }
+
+        private void cbDupDetFingerprint_CheckedChanged(object sender, EventArgs e)
+        {
+            SetDupDetectionCriteriaCheckBoxes2();
+        }
+
+        private void SetDupDetectionCriteriaCheckBoxes2()
+        {
+            if (cbDupDetFingerprint.Checked)
+            {
+                cbDupDetName.Checked = cbDupDetPublisher.Checked = cbDupDetRecompilable.Checked =
+                    cbDupDetAssetCount.Checked = cbDupDetFileCount.Checked =
+                        cbDupDetLastPublished.Checked = cbDupDetMeshSize.Checked = false;
+                cbDupDetName.Enabled = cbDupDetPublisher.Enabled = 
+                    cbDupDetAssetCount.Enabled = cbDupDetFileCount.Enabled =
+                        cbDupDetLastPublished.Enabled = cbDupDetMeshSize.Enabled = false;
+                return;
+            }
+            cbDupDetName.Enabled = cbDupDetPublisher.Enabled =
+                cbDupDetAssetCount.Enabled = cbDupDetFileCount.Enabled =
+                    cbDupDetLastPublished.Enabled = cbDupDetMeshSize.Enabled = false;
+            cbDupDetRecompilable.Checked = true;
+
+            SetDupDetectionCriteriaCheckBoxes(AddonDupSet.DefaultDuplicateDetectionFlag);
+
+        }
+
 
         private void SetDupDetectionCriteriaCheckBox(CheckBox pCheckBox, DuplicateDetectionFlag pFlag, DuplicateDetectionFlag pFlags)
         {
@@ -130,6 +160,8 @@ namespace StormCat
                 newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.MeshDataSize;
             if (cbDupDetFileCount.Checked)
                 newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.TotalFiles;
+            if (cbDupDetFingerprint.Checked)
+                newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.Fingerprint;
 
             string errorText;
             if (!newConfiguration.Save(ApplicationConfiguration.ConfigurationFilePath, out errorText))

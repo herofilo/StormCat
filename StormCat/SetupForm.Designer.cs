@@ -41,6 +41,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.gbDupCriteria = new System.Windows.Forms.GroupBox();
+            this.cbDupDetFileCount = new System.Windows.Forms.CheckBox();
+            this.cbDupDetPublisher = new System.Windows.Forms.CheckBox();
             this.pbDupCriteriaDefault = new System.Windows.Forms.Button();
             this.cbDupDetMeshSize = new System.Windows.Forms.CheckBox();
             this.cbDupDetAssetCount = new System.Windows.Forms.CheckBox();
@@ -48,8 +50,7 @@
             this.cbDupDetLastPublished = new System.Windows.Forms.CheckBox();
             this.cbDupDetName = new System.Windows.Forms.CheckBox();
             this.ContextHelp = new System.Windows.Forms.HelpProvider();
-            this.cbDupDetPublisher = new System.Windows.Forms.CheckBox();
-            this.cbDupDetFileCount = new System.Windows.Forms.CheckBox();
+            this.cbDupDetFingerprint = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.gbDupCriteria.SuspendLayout();
             this.SuspendLayout();
@@ -161,6 +162,7 @@
             // 
             // gbDupCriteria
             // 
+            this.gbDupCriteria.Controls.Add(this.cbDupDetFingerprint);
             this.gbDupCriteria.Controls.Add(this.cbDupDetFileCount);
             this.gbDupCriteria.Controls.Add(this.cbDupDetPublisher);
             this.gbDupCriteria.Controls.Add(this.pbDupCriteriaDefault);
@@ -175,6 +177,30 @@
             this.gbDupCriteria.TabIndex = 3;
             this.gbDupCriteria.TabStop = false;
             this.gbDupCriteria.Text = "Duplicate Detection Criteria";
+            // 
+            // cbDupDetFileCount
+            // 
+            this.cbDupDetFileCount.AutoSize = true;
+            this.cbDupDetFileCount.Location = new System.Drawing.Point(175, 65);
+            this.cbDupDetFileCount.Name = "cbDupDetFileCount";
+            this.cbDupDetFileCount.Size = new System.Drawing.Size(100, 17);
+            this.cbDupDetFileCount.TabIndex = 7;
+            this.cbDupDetFileCount.Text = "Total File Count";
+            this.cbDupDetFileCount.UseVisualStyleBackColor = true;
+            // 
+            // cbDupDetPublisher
+            // 
+            this.cbDupDetPublisher.AutoSize = true;
+            this.cbDupDetPublisher.Checked = true;
+            this.cbDupDetPublisher.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDupDetPublisher.Enabled = false;
+            this.cbDupDetPublisher.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDupDetPublisher.Location = new System.Drawing.Point(9, 42);
+            this.cbDupDetPublisher.Name = "cbDupDetPublisher";
+            this.cbDupDetPublisher.Size = new System.Drawing.Size(78, 17);
+            this.cbDupDetPublisher.TabIndex = 6;
+            this.cbDupDetPublisher.Text = "Publisher";
+            this.cbDupDetPublisher.UseVisualStyleBackColor = true;
             // 
             // pbDupCriteriaDefault
             // 
@@ -246,29 +272,18 @@
             this.cbDupDetName.Text = "Addon Name";
             this.cbDupDetName.UseVisualStyleBackColor = true;
             // 
-            // cbDupDetPublisher
+            // cbDupDetFingerprint
             // 
-            this.cbDupDetPublisher.AutoSize = true;
-            this.cbDupDetPublisher.Checked = true;
-            this.cbDupDetPublisher.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDupDetPublisher.Enabled = false;
-            this.cbDupDetPublisher.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbDupDetPublisher.Location = new System.Drawing.Point(9, 42);
-            this.cbDupDetPublisher.Name = "cbDupDetPublisher";
-            this.cbDupDetPublisher.Size = new System.Drawing.Size(78, 17);
-            this.cbDupDetPublisher.TabIndex = 6;
-            this.cbDupDetPublisher.Text = "Publisher";
-            this.cbDupDetPublisher.UseVisualStyleBackColor = true;
-            // 
-            // cbDupDetFileCount
-            // 
-            this.cbDupDetFileCount.AutoSize = true;
-            this.cbDupDetFileCount.Location = new System.Drawing.Point(175, 65);
-            this.cbDupDetFileCount.Name = "cbDupDetFileCount";
-            this.cbDupDetFileCount.Size = new System.Drawing.Size(100, 17);
-            this.cbDupDetFileCount.TabIndex = 7;
-            this.cbDupDetFileCount.Text = "Total File Count";
-            this.cbDupDetFileCount.UseVisualStyleBackColor = true;
+            this.cbDupDetFingerprint.AutoSize = true;
+            this.cbDupDetFingerprint.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDupDetFingerprint.ForeColor = System.Drawing.Color.Blue;
+            this.cbDupDetFingerprint.Location = new System.Drawing.Point(347, 38);
+            this.cbDupDetFingerprint.Name = "cbDupDetFingerprint";
+            this.cbDupDetFingerprint.Size = new System.Drawing.Size(86, 17);
+            this.cbDupDetFingerprint.TabIndex = 8;
+            this.cbDupDetFingerprint.Text = "Fingerprint";
+            this.cbDupDetFingerprint.UseVisualStyleBackColor = true;
+            this.cbDupDetFingerprint.CheckedChanged += new System.EventHandler(this.cbDupDetFingerprint_CheckedChanged);
             // 
             // SetupForm
             // 
@@ -319,5 +334,6 @@
         private System.Windows.Forms.HelpProvider ContextHelp;
         private System.Windows.Forms.CheckBox cbDupDetPublisher;
         private System.Windows.Forms.CheckBox cbDupDetFileCount;
+        private System.Windows.Forms.CheckBox cbDupDetFingerprint;
     }
 }

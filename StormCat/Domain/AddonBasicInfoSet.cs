@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MSAddonLib.Domain.Addon;
-using MSAddonLib.Persistence.AddonDB;
 
 namespace StormCat.Domain
 {
@@ -128,7 +127,8 @@ namespace StormCat.Domain
         LastCompiled = 0x0008,
         AssetCount = 0x0010,
         MeshDataSize = 0x0020,
-        TotalFiles = 0x0040
+        TotalFiles = 0x0040,
+        Fingerprint = 0x1000
     }
 
 
@@ -195,6 +195,11 @@ namespace StormCat.Domain
         public static string GetFingerPrint(AddonBasicInfo pAddonBasicInfo)
         {
             StringBuilder fingerprintBuilder = new StringBuilder();
+            if (DuplicateDetectionFlag.HasFlag(DuplicateDetectionFlag.Fingerprint))
+            {
+                return pAddonBasicInfo.AddonPackage.FingerPrint;
+            }
+
             if (DuplicateDetectionFlag.HasFlag(DuplicateDetectionFlag.RecompilableFlag))
                 fingerprintBuilder.Append($"R:{pAddonBasicInfo.AddonPackage.Recompilable}^");
             if (DuplicateDetectionFlag.HasFlag(DuplicateDetectionFlag.Publisher))
@@ -229,7 +234,12 @@ namespace StormCat.Domain
 
         public bool IsMatch(AddonBasicInfo pAddonBasicInfo)
         {
-            return (GetFingerPrint(pAddonBasicInfo) == FingerPrint);
+            if (FingerPrint == null)
+                return false;
+            string addonFingerPrint = GetFingerPrint(pAddonBasicInfo);
+            if (addonFingerPrint == null)
+                return false;
+            return (addonFingerPrint == FingerPrint);
         }
 
         public static string GetDuplicateDetectionCriteria()

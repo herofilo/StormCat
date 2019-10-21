@@ -1,6 +1,6 @@
 StormCat, by jamoram
 
-Current version: 1.9.1
+Current version: 1.10.0
 Last Update: 2019/10/18
 
 A little tool for:
@@ -13,17 +13,32 @@ A little tool for:
 	3) Checking the version of the Sketchup files to be imported in Moviestorm with the Modder's Workshop
 	4) Optionally restoring Moviestorm addon files disguised as archive files
 
-PLEASE NOTE: a full User's Guide is currently under production and will be released ASAP.
+PLEASE NOTE: if you're updating from version:
+	+ 1.9.0: you should refresh the Catalogue Index (Catalogue Management page)
+	+ 1.8.1 or earlies, it's advisable to:
+		- re-create every addon Catalogue
+		- refresh the Catalogue Index
+	
 
 
 WHAT'S NEW:
 -----------
+* A fingerprint is associated to every addon, for inequivocally identifying an addon and detecting duplicates
 * The name of the current Catalogue is now displayed in red whenever any change has been made to it that needs to be saved to file.
-* The table of catalogues in the Catalogue Management page now offers new information about the catalogues in the Catalogue Index:
-	- Count of addons
-	- Last updated
-	- Version
-* Comparison of Catalogues, between the current Catalogue and any other selected in the Catalogue Management table
+* Catalogue page: an option for refreshing the information for every addon in the current Catalogue has been added.
+* Catalogue Management page:
+	- The table of catalogues now offers new information about the catalogues in the Catalogue Index:
+		- Count of addons
+		- Last updated
+		- Version
+	- New options in contextual menu:
+		- Select All addons
+		- Select addons in the selected Duplicate Group
+		- Compare selected addons by fingerprint
+		- Compare by fingerprint addon in the selected Duplicate Group
+* New criterium for identifying duplicate addons: fingerprint
+* Comparison of addons in a Catalogue by fingerprint
+* Comparison of Catalogues: new option for comparing the addons contained in the current Catalogue against any other selected in the Catalogue Management table
 * Some minor bug fixes
 	
 NOTE: you'll need to use the 'Refresh Index' on the Catalogue Management page for updating the new information about the catalogues in the index.
@@ -77,13 +92,23 @@ Suggestions for improvements and bug reports can be addressed to the email accou
 
 VERSION HISTORY
 ---------------
-* v1.9.1 (20191016):
+* v1.10.0 (20191021):
+	- A fingerprint is associated to every addon, for inequivocally identifying an addon and detecting duplicates
 	- The name of the current Catalogue is now displayed in red whenever any change has been made to it that needs to be saved to file.
-	- The table of catalogues in the Catalogue Management page now offers new information about the catalogues in the Catalogue Index:
-		- Count of addons
-		- Last updated
-		- Version
-	- Comparison of Catalogues, between the current Catalogue and any other selected in the Catalogue Management table
+	- Catalogue page: an option for refreshing the information for every addon in the current Catalogue has been added.
+	- Catalogue Management page:
+		- The table of catalogues now offers new information about the catalogues in the Catalogue Index:
+			- Count of addons
+			- Last updated
+			- Version
+		- New options in contextual menu:
+			- Select All addons
+			- Select addons in the selected Duplicate Group
+			- Compare selected addons by fingerprint
+			- Compare by fingerprint addon in the selected Duplicate Group
+	- New criterium for identifying duplicate addons: fingerprint
+	- Comparison of addons in a Catalogue by fingerprint
+	- Comparison of Catalogues: new option for comparing the addons contained in the current Catalogue against any other selected in the Catalogue Management table
 	- Some minor bug fixes
 
 

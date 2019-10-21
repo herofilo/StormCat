@@ -30,12 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CatalogueComparisonForm));
             this.dgvComparison = new System.Windows.Forms.DataGridView();
+            this.colAddonCatalogue0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAddonCatalogue1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.pbSaveExcel = new System.Windows.Forms.Button();
             this.cbOnlyDelta = new System.Windows.Forms.CheckBox();
             this.sfdExportExcel = new System.Windows.Forms.SaveFileDialog();
-            this.colAddonCatalogue0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAddonCatalogue1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ContextHelp = new System.Windows.Forms.HelpProvider();
             ((System.ComponentModel.ISupportInitialize)(this.dgvComparison)).BeginInit();
             this.SuspendLayout();
@@ -55,6 +55,26 @@
             this.dgvComparison.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvComparison.Size = new System.Drawing.Size(656, 367);
             this.dgvComparison.TabIndex = 0;
+            // 
+            // colAddonCatalogue0
+            // 
+            this.colAddonCatalogue0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colAddonCatalogue0.DataPropertyName = "AddonCatalogue0";
+            this.colAddonCatalogue0.HeaderText = "AddonCatalogue0";
+            this.colAddonCatalogue0.Name = "colAddonCatalogue0";
+            this.colAddonCatalogue0.ReadOnly = true;
+            this.colAddonCatalogue0.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colAddonCatalogue0.Width = 98;
+            // 
+            // colAddonCatalogue1
+            // 
+            this.colAddonCatalogue1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colAddonCatalogue1.DataPropertyName = "AddonCatalogue1";
+            this.colAddonCatalogue1.HeaderText = "AddonCatalogue1";
+            this.colAddonCatalogue1.Name = "colAddonCatalogue1";
+            this.colAddonCatalogue1.ReadOnly = true;
+            this.colAddonCatalogue1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colAddonCatalogue1.Width = 98;
             // 
             // label1
             // 
@@ -93,26 +113,6 @@
             this.sfdExportExcel.FileName = "Catalogues_Comparison.xlsx";
             this.sfdExportExcel.Filter = "Excel files|*.xlsx";
             // 
-            // colAddonCatalogue0
-            // 
-            this.colAddonCatalogue0.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colAddonCatalogue0.DataPropertyName = "AddonCatalogue0";
-            this.colAddonCatalogue0.HeaderText = "AddonCatalogue0";
-            this.colAddonCatalogue0.Name = "colAddonCatalogue0";
-            this.colAddonCatalogue0.ReadOnly = true;
-            this.colAddonCatalogue0.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colAddonCatalogue0.Width = 98;
-            // 
-            // colAddonCatalogue1
-            // 
-            this.colAddonCatalogue1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colAddonCatalogue1.DataPropertyName = "AddonCatalogue1";
-            this.colAddonCatalogue1.HeaderText = "AddonCatalogue1";
-            this.colAddonCatalogue1.Name = "colAddonCatalogue1";
-            this.colAddonCatalogue1.ReadOnly = true;
-            this.colAddonCatalogue1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colAddonCatalogue1.Width = 98;
-            // 
             // CatalogueComparisonForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -126,6 +126,7 @@
             this.ContextHelp.SetHelpKeyword(this, "360");
             this.ContextHelp.SetHelpNavigator(this, System.Windows.Forms.HelpNavigator.TopicId);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "CatalogueComparisonForm";
             this.ContextHelp.SetShowHelp(this, true);
             this.Text = "Comparison of Catalogues";

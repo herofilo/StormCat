@@ -69,7 +69,7 @@ namespace StormCat
         private List<TabPage> _childHiddenPages = null;
 
         private ToolTip formToolTip;
-        
+
 
 
         // ----------------------------------------------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ namespace StormCat
             string errorText;
             Utils.ResetTempFolder(out errorText);
 
-            if(!_isChildProcess)
+            if (!_isChildProcess)
                 LoadCataloguesInfo();
 
             LoadAddonDatabase();
@@ -182,7 +182,7 @@ namespace StormCat
                 break;
             }
 
-            if(_isChildProcess)
+            if (_isChildProcess)
                 _arguments = null;
         }
 
@@ -518,6 +518,7 @@ namespace StormCat
 
             formToolTip.SetToolTip(pbClearAddonDatabase, "Clear content of the Addon catalogue");
             formToolTip.SetToolTip(pbInitAddonDatabase, "Initialize Addon catalogue with the addons currently installed");
+            formToolTip.SetToolTip(pbRefreshAll, "Updates information about every addon in the catalogue");
             formToolTip.SetToolTip(pbSaveAddonDatabase, "Save current Addon catalogue to file");
             formToolTip.SetToolTip(cbAutoSave, "Automatically saves the current catalogue whenever some change happens");
 
@@ -546,6 +547,7 @@ namespace StormCat
             formToolTip.SetToolTip(pbCatEdit, "Change the description of the selected catalogue");
             formToolTip.SetToolTip(pbCatRename, "Rename the selected catalogue");
             formToolTip.SetToolTip(pbCatCopy, "Create a copy of the selected catalogue");
+            formToolTip.SetToolTip(pbCatCompareTo, "Compare current catalogue against another selected on the Catalogue Index' table'");
             formToolTip.SetToolTip(pbCatDelete, "Delete the selected catalogue");
             formToolTip.SetToolTip(pbCatLoad, "Load from file the selected catalogue, replacing the currently active");
             formToolTip.SetToolTip(pbCatLoadChild, "Load from file the selected catalogue in another instance of the application (window)");
@@ -554,7 +556,7 @@ namespace StormCat
             formToolTip.SetToolTip(pbRefreshIndex, "Refresh the Index of Addon catalogues, according to the catalogue files found");
 
             formToolTip.SetToolTip(cbListAlwaysAnimations, "List animations, regardless the addon includes verbs or not");
-            
+
         }
 
         // -----------------------------------------------------------------------------------
@@ -601,8 +603,8 @@ namespace StormCat
             if (processingFlags.HasFlag(ProcessingFlags.AppendToAddonPackageSet))
             {
                 RefreshCatalogueAddonTable();
-                if(cbAutoSave.Checked && (_addonPackageSet.LastUpdate > _addonPackageSetTimeStamp))
-                   SaveCurrentAddonDatabase();
+                if (cbAutoSave.Checked && (_addonPackageSet.LastUpdate > _addonPackageSetTimeStamp))
+                    SaveCurrentAddonDatabase();
             }
         }
 
@@ -994,12 +996,12 @@ namespace StormCat
 
         private void cmAddonTable_Opening(object sender, CancelEventArgs e)
         {
-            cmiDisplayReport.Enabled = cmiShowContents.Enabled = 
-                cmiRefreshAddon.Enabled = cmiDeleteAddon.Enabled = 
-                    cmiExportExcel.Enabled = 
+            cmiDisplayReport.Enabled = cmiShowContents.Enabled =
+                cmiRefreshAddon.Enabled = cmiDeleteAddon.Enabled =
+                    cmiExportExcel.Enabled =
                     cmiCopyClipboard.Enabled = // cmiPasteClipboard.Enabled =
                     false;
-
+            cmiSelectAllRows.Enabled = cmiSelectDupGroup.Enabled = cmiCompareSelected.Enabled = cmiCompareDupGroup.Enabled = false;
 
             string text = Clipboard.GetText();
             string errorText;
@@ -1014,9 +1016,15 @@ namespace StormCat
             }
 
             // int countSelected = dgvAddons.SelectedRows.Count;
+            cmiSelectAllRows.Enabled = true;
+            if (dgvAddons.SelectedRows.Count > 1)
+                cmiCompareSelected.Enabled = true;
 
-            cmiDisplayReport.Enabled = cmiShowContents.Enabled = 
-                    cmiRefreshAddon.Enabled = cmiDeleteAddon.Enabled = 
+            int? dupGroup = (int?) dgvAddons.SelectedRows[0].Cells["colDuplicateGroup"].Value;
+            cmiSelectDupGroup.Enabled = cmiCompareDupGroup.Enabled = dupGroup.HasValue;
+
+            cmiDisplayReport.Enabled = cmiShowContents.Enabled =
+                    cmiRefreshAddon.Enabled = cmiDeleteAddon.Enabled =
                     cmiExportExcel.Enabled =
                     cmiCopyClipboard.Enabled =
                     true;
@@ -1040,7 +1048,7 @@ namespace StormCat
             pLocations = new List<string>();
             foreach (DataGridViewRow row in dgvAddons.SelectedRows)
             {
-                pLocations.Add((string) row.Cells["dgvAddonLocation"].Value);
+                pLocations.Add((string)row.Cells["dgvAddonLocation"].Value);
                 names.Add((string)row.Cells["dgvAddonPublisher"].Value + "." + (string)row.Cells["dgvAddonName"].Value);
             }
 
@@ -1073,17 +1081,17 @@ namespace StormCat
 
 
             AssetSearchCriteria criteria = null;
-            if(!cbListAlwaysAnimations.Checked && (package.AssetSummary.Verbs > 0))
+            if (!cbListAlwaysAnimations.Checked && (package.AssetSummary.Verbs > 0))
             {
                 AddonAssetType types = AddonAssetType.Any ^ AddonAssetType.Animation;
                 criteria = new AssetSearchCriteria(null, types, null, null, null);
             }
-            
+
             List<AssetSearchResultItem> assets = _addonPackageSet.SearchAsset(new List<AddonPackage>() { package }, criteria);
             if (assets == null)
                 return;
             assets = assets.OrderBy(o => o.SortKey).ToList();
-            
+
             AddonContentForm contentForm = new AddonContentForm(name, assets);
             contentForm.Show(this);
         }
@@ -1123,6 +1131,37 @@ namespace StormCat
         }
 
 
+        // ---------------------------------------------------------------------------------------------------------
+
+        private void cmiSelectAllRows_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dgvAddons.Rows)
+                row.Selected = true;
+        }
+
+        private void cmiSelectDupGroup_Click(object sender, EventArgs e)
+        {
+            SelectDupGroup();
+        }
+
+        private void SelectDupGroup()
+        {
+            int? dupGroup = (int?)dgvAddons.SelectedRows[0].Cells["colDuplicateGroup"].Value;
+            if (!dupGroup.HasValue)
+                return;
+
+
+            foreach (DataGridViewRow row in dgvAddons.Rows)
+            {
+                int? rowDupGroup = (int?)row.Cells["colDuplicateGroup"].Value;
+                row.Selected = (rowDupGroup.HasValue && (rowDupGroup == dupGroup));
+            }
+        }
+
+
+        // ---------------------------------------------------------------------------------------------------------
+
+
         private void cmiRefreshAddon_Click(object sender, EventArgs e)
         {
             // string location;
@@ -1132,14 +1171,55 @@ namespace StormCat
             List<string> names = GetSelectedAddonNamesLocations(out locations);
             if ((locations == null) || (locations.Count == 0))
                 return;
-            
-            for (int index = 0; index < names.Count; ++index)
-                RefreshAddon(names[index], locations[index]);
 
-            if(names.Count > 0)
-                CurrentAddonDirty = true;
+            List<Tuple<string, string>> addonData = new List<Tuple<string, string>>();
+            for (int index = 0; index < names.Count; ++index)
+                addonData.Add(new Tuple<string, string>(names[index], locations[index]));
+
+            RefreshAddons(addonData);
+        }
+
+
+
+        private void pbRefreshAll_Click(object sender, EventArgs e)
+        {
+            if ((_addonPackageSet.Addons?.Count ?? 0) == 0)
+                return;
+
+            if (_addonPackageSet.Addons.Count > 25)
+            {
+                if (MessageBox.Show("Refresh/update all addons in the current Catalogue. Please confirm",
+                        "Refresh All addons", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                    return;
+            }
+
+            List<Tuple<string, string>> addonData = new List<Tuple<string, string>>();
+            foreach (var addon in _addonPackageSet.Addons)
+            {
+                addonData.Add(new Tuple<string, string>(addon.QualifiedName, addon.Location));
+            }
+            RefreshAddons(addonData);
+        }
+
+
+        private void RefreshAddons(List<Tuple<string, string>> pAddonNamesLocations)
+        {
+            if ((pAddonNamesLocations?.Count ?? 0) == 0)
+                return;
+
+            foreach (Tuple<string, string> addon in pAddonNamesLocations)
+            {
+                string name = addon.Item1;
+                string location = addon.Item2;
+                RefreshAddon(name, location);
+            }
+
+            CurrentAddonDirty = true;
 
             RefreshCatalogueAddonTable();
+
+            tbLog.AppendText("Addon refreshing COMPLETE.\n");
+
             if (cbAutoSave.Checked && (_addonPackageSet.LastUpdate > _addonPackageSetTimeStamp))
                 SaveCurrentAddonDatabase();
         }
@@ -1205,6 +1285,41 @@ namespace StormCat
 
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        private void cmiCompareSelected_Click(object sender, EventArgs e)
+        {
+            CompareAddonsByFingerPrint();
+        }
+
+        private void cmiCompareDupGroup_Click(object sender, EventArgs e)
+        {
+            SelectDupGroup();
+            CompareAddonsByFingerPrint();
+        }
+
+
+        private void CompareAddonsByFingerPrint()
+        {
+            if (dgvAddons.SelectedRows.Count < 2)
+                return;
+
+            List<AddonPackage> addons = new List<AddonPackage>();
+            foreach (DataGridViewRow row in dgvAddons.SelectedRows)
+            {
+                string location = (string) row.Cells["dgvAddonLocation"].Value;
+                AddonPackage addon = _addonPackageSet.FindByLocation(location);
+                if(addon != null)
+                    addons.Add(addon);
+            }
+
+            if (addons.Count < 2)
+                return;
+
+            CompareByFingerprintForm form = new CompareByFingerprintForm(addons.OrderBy(o => o.FingerPrint).ToList(), _addonPackageSet);
+            form.Show(this);
+        }
+
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         private void cmiCopyClipboard_Click(object sender, EventArgs e)
         {
@@ -1240,7 +1355,7 @@ namespace StormCat
             int count = setOperator.AppendAddonSubSet(subSet);
 
             tbLog.AppendText($"{count} addons appended to the Catalogue\n");
-            if(oldCount < _addonPackageSet.Addons.Count)
+            if (oldCount < _addonPackageSet.Addons.Count)
                 CurrentAddonDirty = true;
             if (count > 0)
             {
@@ -1257,7 +1372,7 @@ namespace StormCat
         {
 
         }
-        
+
         // ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -1286,7 +1401,7 @@ namespace StormCat
 
         private void SelectAllAssetTypes(bool pSelect)
         {
-            cbatBodyPart.Checked = cbatDecal.Checked = cbatProp.Checked = cbatVerb.Checked = cbatAnimation.Checked = 
+            cbatBodyPart.Checked = cbatDecal.Checked = cbatProp.Checked = cbatVerb.Checked = cbatAnimation.Checked =
             cbatMaterial.Checked =
                 cbatSound.Checked = cbatCuttingRoom.Checked = cbatSky.Checked = cbatSfx.Checked = cbatOther.Checked = cbatStock.Checked = cbatMovie.Checked = pSelect;
         }
@@ -1378,7 +1493,7 @@ namespace StormCat
             }
 
             SearchStatistics searchStatistics = new SearchStatistics(pSearchOutput);
-            
+
             if (searchStatistics.TotalAssets == 0)
             {
                 tbSearchLog.AppendText("    No assets found.");
@@ -1386,8 +1501,8 @@ namespace StormCat
             }
 
             tbSearchLog.AppendText($"FOUND: {searchStatistics.TotalAssets} Assets in {searchStatistics.Addons} Addons by {searchStatistics.Publishers} Publishers:\n");
-            if(searchStatistics.Bodyparts > 0)
-                tbSearchLog.AppendText($"    {searchStatistics.Bodyparts,6} Bodyparts\n");
+            if (searchStatistics.Bodyparts > 0)
+                tbSearchLog.AppendText($"    {searchStatistics.Bodyparts,6} Body parts\n");
             if (searchStatistics.Decals > 0)
                 tbSearchLog.AppendText($"    {searchStatistics.Decals,6} Decals\n");
             if (searchStatistics.Props > 0)
@@ -1401,7 +1516,7 @@ namespace StormCat
             if (searchStatistics.Sounds > 0)
                 tbSearchLog.AppendText($"    {searchStatistics.Sounds,6} Sounds\n");
             if (searchStatistics.CuttingRoomAssets > 0)
-                tbSearchLog.AppendText($"    {searchStatistics.CuttingRoomAssets,6} Filters\n");
+                tbSearchLog.AppendText($"    {searchStatistics.CuttingRoomAssets,6} Cutting Room Assets\n");
             if (searchStatistics.SpecialEffects > 0)
                 tbSearchLog.AppendText($"    {searchStatistics.SpecialEffects,6} Special Effects\n");
             if (searchStatistics.SkyTextures > 0)
@@ -1429,7 +1544,7 @@ namespace StormCat
             tbLog.AppendText("Clearing Addon Catalogue...\n");
             int oldCount = _addonPackageSet.Addons.Count;
             _addonPackageSet.Clear();
-            if(oldCount > 0)
+            if (oldCount > 0)
                 CurrentAddonDirty = true;
             RefreshCatalogueAddonTable();
             tbLog.AppendText("   Addon Catalogue cleared.\n");
@@ -1521,7 +1636,7 @@ namespace StormCat
 
             RefreshCatalogueIndexTable(_currentAddonDatabaseName);
         }
-        
+
 
         private string ShortenAddonFileName(string pFilename)
         {
@@ -1588,7 +1703,7 @@ namespace StormCat
                     asset.CheckEntity(processingFlags);
                 }
                 _logReportWriter.WriteReportLineFeed("\n*** OPERATION FINISHED ****...");
-                if(pArgs.Length > 0)
+                if (pArgs.Length > 0)
                     CurrentAddonDirty = true;
             }
             catch (Exception exception)
@@ -1602,7 +1717,7 @@ namespace StormCat
             }
 
             RefreshCatalogueAddonTable();
-            if(cbAutoSave.Checked && (_addonPackageSet.LastUpdate > _addonPackageSetTimeStamp))
+            if (cbAutoSave.Checked && (_addonPackageSet.LastUpdate > _addonPackageSetTimeStamp))
                 SaveCurrentAddonDatabase();
         }
 
@@ -2048,7 +2163,7 @@ namespace StormCat
                 return;
             }
 
-            List<CatalogueContentComparisionItem>  comparisionResult = AddonPackageSetOperator.CompareCataloguesContents(_addonPackageSet, addonSet);
+            List<CatalogueContentComparisionItem> comparisionResult = AddonPackageSetOperator.CompareCataloguesContents(_addonPackageSet, addonSet);
             if (comparisionResult == null)
                 return;
 
@@ -2074,7 +2189,7 @@ namespace StormCat
             form.Show(this);
         }
 
-        
+
         // ................................................
 
 
@@ -2133,7 +2248,7 @@ namespace StormCat
         {
             if (_childHiddenPages != null)
             {
-                foreach(TabPage page in _childHiddenPages)
+                foreach (TabPage page in _childHiddenPages)
                     page.Dispose();
             }
         }
