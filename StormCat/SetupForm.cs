@@ -145,8 +145,13 @@ namespace StormCat
 
             ApplicationConfiguration newConfiguration = new ApplicationConfiguration(moviestormInstallPath, tbMoviestormUserDataPath.Text);
 
-            newConfiguration.DuplicateDetectionFlag = AddonDupSet.ForcedDuplicateDetectionFlags;
-            if(cbDupDetName.Checked)
+            newConfiguration.DuplicateDetectionFlag = DuplicateDetectionFlag.None;
+            if (cbDupDetFingerprint.Checked)
+                newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.Fingerprint;
+            else
+                newConfiguration.DuplicateDetectionFlag |= AddonDupSet.ForcedDuplicateDetectionFlags;
+            
+            if (cbDupDetName.Checked)
                 newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.Name;
             if (cbDupDetPublisher.Checked)
                 newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.Publisher;
@@ -160,8 +165,6 @@ namespace StormCat
                 newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.MeshDataSize;
             if (cbDupDetFileCount.Checked)
                 newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.TotalFiles;
-            if (cbDupDetFingerprint.Checked)
-                newConfiguration.DuplicateDetectionFlag |= DuplicateDetectionFlag.Fingerprint;
 
             string errorText;
             if (!newConfiguration.Save(ApplicationConfiguration.ConfigurationFilePath, out errorText))

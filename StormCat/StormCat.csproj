@@ -106,6 +106,7 @@
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Domain\AddonPackageSetOperator.cs" />
     <Compile Include="Misc\Globals.cs" />
+    <Compile Include="Misc\MiscUtils.cs" />
     <Compile Include="Persistence\CataloguesIndex.cs" />
     <Compile Include="Configuration\ConfigurationFileBase.cs" />
     <Compile Include="Configuration\ProcessingOptions.cs" />

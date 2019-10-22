@@ -11,6 +11,7 @@ StormCat - Version History
 			- Last updated
 			- Version
 		- New options in contextual menu:
+			- Open Containing Folder
 			- Select All addons
 			- Select addons in the selected Duplicate Group
 			- Compare selected addons by fingerprint

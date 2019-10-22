@@ -997,7 +997,7 @@ namespace StormCat
         private void cmAddonTable_Opening(object sender, CancelEventArgs e)
         {
             cmiDisplayReport.Enabled = cmiShowContents.Enabled =
-                cmiRefreshAddon.Enabled = cmiDeleteAddon.Enabled =
+                cmiRefreshAddon.Enabled = cmiDeleteAddon.Enabled = cmiOpenContainingFolder.Enabled = 
                     cmiExportExcel.Enabled =
                     cmiCopyClipboard.Enabled = // cmiPasteClipboard.Enabled =
                     false;
@@ -1024,7 +1024,7 @@ namespace StormCat
             cmiSelectDupGroup.Enabled = cmiCompareDupGroup.Enabled = dupGroup.HasValue;
 
             cmiDisplayReport.Enabled = cmiShowContents.Enabled =
-                    cmiRefreshAddon.Enabled = cmiDeleteAddon.Enabled =
+                    cmiRefreshAddon.Enabled = cmiDeleteAddon.Enabled = cmiOpenContainingFolder.Enabled =
                     cmiExportExcel.Enabled =
                     cmiCopyClipboard.Enabled =
                     true;
@@ -1096,6 +1096,7 @@ namespace StormCat
             contentForm.Show(this);
         }
 
+        
 
         private void cmiShowContents_Click(object sender, EventArgs e)
         {
@@ -1109,6 +1110,26 @@ namespace StormCat
                 return;
             ShowAddonContents();
         }
+
+
+        private void cmiOpenContainingFolder_Click(object sender, EventArgs e)
+        {
+            string location;
+            string name = GetSelectedAddonNameLocation(out location);
+
+            AddonPackage package = _addonPackageSet.FindByLocation(location);
+            if (package == null)
+                return;
+
+            string errorText;
+            if (!MiscUtils.OpenContainingFolder(package, out errorText))
+            {
+                if (!string.IsNullOrEmpty(errorText))
+                    MessageBox.Show(errorText, "Error while opening folder", MessageBoxButtons.OK);
+            }
+        }
+
+
 
 
         private void cmiExportExcel_Click(object sender, EventArgs e)

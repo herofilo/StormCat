@@ -41,6 +41,7 @@
             this.cmAddonTable = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmiDisplayAddonReport = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiListAddonContents = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmiOpenContainingFolder = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvComparison)).BeginInit();
             this.cmAddonTable.SuspendLayout();
             this.SuspendLayout();
@@ -130,9 +131,10 @@
             // 
             this.cmAddonTable.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmiDisplayAddonReport,
-            this.cmiListAddonContents});
+            this.cmiListAddonContents,
+            this.cmiOpenContainingFolder});
             this.cmAddonTable.Name = "cmAssetTable";
-            this.cmAddonTable.Size = new System.Drawing.Size(252, 48);
+            this.cmAddonTable.Size = new System.Drawing.Size(252, 92);
             // 
             // cmiDisplayAddonReport
             // 
@@ -147,6 +149,13 @@
             this.cmiListAddonContents.Size = new System.Drawing.Size(251, 22);
             this.cmiListAddonContents.Text = "List (table) contents of the Addon";
             this.cmiListAddonContents.Click += new System.EventHandler(this.cmiListAddonContents_Click);
+            // 
+            // cmiOpenContainingFolder
+            // 
+            this.cmiOpenContainingFolder.Name = "cmiOpenContainingFolder";
+            this.cmiOpenContainingFolder.Size = new System.Drawing.Size(251, 22);
+            this.cmiOpenContainingFolder.Text = "Open Containing Folder";
+            this.cmiOpenContainingFolder.Click += new System.EventHandler(this.cmiOpenContainingFolder_Click);
             // 
             // CompareByFingerprintForm
             // 
@@ -183,5 +192,6 @@
         private System.Windows.Forms.ContextMenuStrip cmAddonTable;
         private System.Windows.Forms.ToolStripMenuItem cmiDisplayAddonReport;
         private System.Windows.Forms.ToolStripMenuItem cmiListAddonContents;
+        private System.Windows.Forms.ToolStripMenuItem cmiOpenContainingFolder;
     }
 }

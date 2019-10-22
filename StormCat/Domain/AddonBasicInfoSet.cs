@@ -145,7 +145,12 @@ namespace StormCat.Domain
         public static DuplicateDetectionFlag DuplicateDetectionFlag
         {
             get { return _duplicateDetectionFlag; }
-            set { _duplicateDetectionFlag = value | ForcedDuplicateDetectionFlags; }
+            set
+            {
+                _duplicateDetectionFlag = value;
+                if(!_duplicateDetectionFlag.HasFlag(Domain.DuplicateDetectionFlag.Fingerprint))
+                    _duplicateDetectionFlag |= ForcedDuplicateDetectionFlags;
+            }
         }
 
 
@@ -259,8 +264,10 @@ namespace StormCat.Domain
                 builder.Append(" Mesh data size,");
             if (DuplicateDetectionFlag.HasFlag(DuplicateDetectionFlag.TotalFiles))
                 builder.Append(" File count,");
+            if (DuplicateDetectionFlag.HasFlag(DuplicateDetectionFlag.Fingerprint))
+                builder.Append(" Fingerprint,");
             string text = builder.ToString();
-
+            
             return text.Substring(0, text.Length - 1).Trim();
         }
     }

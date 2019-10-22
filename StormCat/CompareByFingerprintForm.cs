@@ -103,6 +103,19 @@ namespace StormCat
             contentForm.Show(this);
         }
 
+        private void cmiOpenContainingFolder_Click(object sender, EventArgs e)
+        {
+            AddonPackage addon = GetSelectedAddon();
+            if (addon == null)
+                return;
 
+            string errorText;
+            if (!MiscUtils.OpenContainingFolder(addon, out errorText))
+            {
+                if (!string.IsNullOrEmpty(errorText))
+                    MessageBox.Show(errorText, "Error while opening folder", MessageBoxButtons.OK);
+            }
+
+        }
     }
 }

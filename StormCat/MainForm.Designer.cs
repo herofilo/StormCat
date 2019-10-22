@@ -31,8 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -52,6 +50,8 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tbOutput = new System.Windows.Forms.TextBox();
             this.outputContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmiCopyToClipboard = new System.Windows.Forms.ToolStripMenuItem();
@@ -96,6 +96,28 @@
             this.pbClearAddonDatabase = new System.Windows.Forms.Button();
             this.pbSetup1 = new System.Windows.Forms.Button();
             this.dgvAddons = new System.Windows.Forms.DataGridView();
+            this.dgvAddonName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvAddonPublisher = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDuplicateGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvAddonInstalled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvAddonFree = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvAddonRecompilable = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dgvAddonContentPack = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colBodyPartCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDecalCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPropCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAnimationCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colVerbCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMaterialCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSoundCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSpecialEffectCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colFilterCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSkyTextureCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colOtherAssetsCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colStockCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDemoMovieCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvAddonDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvAddonLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cmAddonTable = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmiDisplayReport = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiShowContents = new System.Windows.Forms.ToolStripMenuItem();
@@ -195,28 +217,7 @@
             this.sfdAddonListExportExcel = new System.Windows.Forms.SaveFileDialog();
             this.ContextHelp = new System.Windows.Forms.HelpProvider();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.dgvAddonName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvAddonPublisher = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDuplicateGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvAddonInstalled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvAddonFree = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvAddonRecompilable = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgvAddonContentPack = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.colBodyPartCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDecalCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPropCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAnimationCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colVerbCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMaterialCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSoundCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSpecialEffectCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colFilterCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSkyTextureCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colOtherAssetsCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colStockCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDemoMovieCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvAddonDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvAddonLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cmiOpenContainingFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.outputContextMenu.SuspendLayout();
             this.pDragFiles.SuspendLayout();
             this.pnlDisplayContents.SuspendLayout();
@@ -750,11 +751,275 @@
             this.dgvAddons.DragDrop += new System.Windows.Forms.DragEventHandler(this.dgvAddons_DragDrop);
             this.dgvAddons.DragEnter += new System.Windows.Forms.DragEventHandler(this.dgvAddons_DragEnter);
             // 
+            // dgvAddonName
+            // 
+            this.dgvAddonName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgvAddonName.DataPropertyName = "Name";
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvAddonName.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvAddonName.Frozen = true;
+            this.dgvAddonName.HeaderText = "Name";
+            this.dgvAddonName.Name = "dgvAddonName";
+            this.dgvAddonName.ReadOnly = true;
+            this.dgvAddonName.Width = 60;
+            // 
+            // dgvAddonPublisher
+            // 
+            this.dgvAddonPublisher.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgvAddonPublisher.DataPropertyName = "Publisher";
+            this.dgvAddonPublisher.Frozen = true;
+            this.dgvAddonPublisher.HeaderText = "Publisher";
+            this.dgvAddonPublisher.Name = "dgvAddonPublisher";
+            this.dgvAddonPublisher.ReadOnly = true;
+            this.dgvAddonPublisher.Width = 75;
+            // 
+            // colDuplicateGroup
+            // 
+            this.colDuplicateGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colDuplicateGroup.DataPropertyName = "DuplicateGroup";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Red;
+            this.colDuplicateGroup.DefaultCellStyle = dataGridViewCellStyle2;
+            this.colDuplicateGroup.Frozen = true;
+            this.colDuplicateGroup.HeaderText = "Dup.Grp.";
+            this.colDuplicateGroup.Name = "colDuplicateGroup";
+            this.colDuplicateGroup.ReadOnly = true;
+            this.colDuplicateGroup.Width = 75;
+            // 
+            // dgvAddonInstalled
+            // 
+            this.dgvAddonInstalled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.dgvAddonInstalled.DataPropertyName = "Installed";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
+            dataGridViewCellStyle3.NullValue = false;
+            this.dgvAddonInstalled.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvAddonInstalled.HeaderText = "Installed";
+            this.dgvAddonInstalled.Name = "dgvAddonInstalled";
+            this.dgvAddonInstalled.ReadOnly = true;
+            this.dgvAddonInstalled.Width = 52;
+            // 
+            // dgvAddonFree
+            // 
+            this.dgvAddonFree.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.dgvAddonFree.DataPropertyName = "Free";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
+            dataGridViewCellStyle4.NullValue = false;
+            this.dgvAddonFree.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvAddonFree.HeaderText = "Free";
+            this.dgvAddonFree.Name = "dgvAddonFree";
+            this.dgvAddonFree.ReadOnly = true;
+            this.dgvAddonFree.Width = 34;
+            // 
+            // dgvAddonRecompilable
+            // 
+            this.dgvAddonRecompilable.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.dgvAddonRecompilable.DataPropertyName = "Recompilable";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
+            dataGridViewCellStyle5.NullValue = false;
+            this.dgvAddonRecompilable.DefaultCellStyle = dataGridViewCellStyle5;
+            this.dgvAddonRecompilable.HeaderText = "Recompilable";
+            this.dgvAddonRecompilable.Name = "dgvAddonRecompilable";
+            this.dgvAddonRecompilable.ReadOnly = true;
+            this.dgvAddonRecompilable.Width = 77;
+            // 
+            // dgvAddonContentPack
+            // 
+            this.dgvAddonContentPack.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.dgvAddonContentPack.DataPropertyName = "ContentPack";
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
+            dataGridViewCellStyle6.NullValue = false;
+            this.dgvAddonContentPack.DefaultCellStyle = dataGridViewCellStyle6;
+            this.dgvAddonContentPack.HeaderText = "Official";
+            this.dgvAddonContentPack.Name = "dgvAddonContentPack";
+            this.dgvAddonContentPack.ReadOnly = true;
+            this.dgvAddonContentPack.Width = 45;
+            // 
+            // colBodyPartCount
+            // 
+            this.colBodyPartCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.colBodyPartCount.DataPropertyName = "BodyPartCount";
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.colBodyPartCount.DefaultCellStyle = dataGridViewCellStyle7;
+            this.colBodyPartCount.HeaderText = "Bodyparts";
+            this.colBodyPartCount.Name = "colBodyPartCount";
+            this.colBodyPartCount.ReadOnly = true;
+            this.colBodyPartCount.Width = 79;
+            // 
+            // colDecalCount
+            // 
+            this.colDecalCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.colDecalCount.DataPropertyName = "DecalCount";
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.colDecalCount.DefaultCellStyle = dataGridViewCellStyle8;
+            this.colDecalCount.HeaderText = "Decals";
+            this.colDecalCount.Name = "colDecalCount";
+            this.colDecalCount.ReadOnly = true;
+            this.colDecalCount.Width = 65;
+            // 
+            // colPropCount
+            // 
+            this.colPropCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colPropCount.DataPropertyName = "PropCount";
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.colPropCount.DefaultCellStyle = dataGridViewCellStyle9;
+            this.colPropCount.HeaderText = "Props";
+            this.colPropCount.Name = "colPropCount";
+            this.colPropCount.ReadOnly = true;
+            this.colPropCount.Width = 59;
+            // 
+            // colAnimationCount
+            // 
+            this.colAnimationCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colAnimationCount.DataPropertyName = "AnimationCount";
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.colAnimationCount.DefaultCellStyle = dataGridViewCellStyle10;
+            this.colAnimationCount.HeaderText = "Animations";
+            this.colAnimationCount.Name = "colAnimationCount";
+            this.colAnimationCount.ReadOnly = true;
+            this.colAnimationCount.Width = 83;
+            // 
+            // colVerbCount
+            // 
+            this.colVerbCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colVerbCount.DataPropertyName = "VerbCount";
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.colVerbCount.DefaultCellStyle = dataGridViewCellStyle11;
+            this.colVerbCount.HeaderText = "Verbs";
+            this.colVerbCount.Name = "colVerbCount";
+            this.colVerbCount.ReadOnly = true;
+            this.colVerbCount.Width = 59;
+            // 
+            // colMaterialCount
+            // 
+            this.colMaterialCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colMaterialCount.DataPropertyName = "MaterialCount";
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.colMaterialCount.DefaultCellStyle = dataGridViewCellStyle12;
+            this.colMaterialCount.HeaderText = "Materials";
+            this.colMaterialCount.Name = "colMaterialCount";
+            this.colMaterialCount.ReadOnly = true;
+            this.colMaterialCount.Width = 74;
+            // 
+            // colSoundCount
+            // 
+            this.colSoundCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colSoundCount.DataPropertyName = "SoundCount";
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.colSoundCount.DefaultCellStyle = dataGridViewCellStyle13;
+            this.colSoundCount.HeaderText = "Sounds";
+            this.colSoundCount.Name = "colSoundCount";
+            this.colSoundCount.ReadOnly = true;
+            this.colSoundCount.Width = 68;
+            // 
+            // colSpecialEffectCount
+            // 
+            this.colSpecialEffectCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colSpecialEffectCount.DataPropertyName = "SpecialEffectCount";
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.colSpecialEffectCount.DefaultCellStyle = dataGridViewCellStyle14;
+            this.colSpecialEffectCount.HeaderText = "SFX";
+            this.colSpecialEffectCount.Name = "colSpecialEffectCount";
+            this.colSpecialEffectCount.ReadOnly = true;
+            this.colSpecialEffectCount.Width = 52;
+            // 
+            // colFilterCount
+            // 
+            this.colFilterCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colFilterCount.DataPropertyName = "CuttingRoomAssetCount";
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.colFilterCount.DefaultCellStyle = dataGridViewCellStyle15;
+            this.colFilterCount.HeaderText = "Cut Room";
+            this.colFilterCount.Name = "colFilterCount";
+            this.colFilterCount.ReadOnly = true;
+            this.colFilterCount.Width = 79;
+            // 
+            // colSkyTextureCount
+            // 
+            this.colSkyTextureCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colSkyTextureCount.DataPropertyName = "SkyTextureCount";
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.colSkyTextureCount.DefaultCellStyle = dataGridViewCellStyle16;
+            this.colSkyTextureCount.HeaderText = "Sky Textures";
+            this.colSkyTextureCount.Name = "colSkyTextureCount";
+            this.colSkyTextureCount.ReadOnly = true;
+            this.colSkyTextureCount.Width = 94;
+            // 
+            // colOtherAssetsCount
+            // 
+            this.colOtherAssetsCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colOtherAssetsCount.DataPropertyName = "OtherAssetsCount";
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.colOtherAssetsCount.DefaultCellStyle = dataGridViewCellStyle17;
+            this.colOtherAssetsCount.HeaderText = "Other";
+            this.colOtherAssetsCount.Name = "colOtherAssetsCount";
+            this.colOtherAssetsCount.ReadOnly = true;
+            this.colOtherAssetsCount.Width = 58;
+            // 
+            // colStockCount
+            // 
+            this.colStockCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colStockCount.DataPropertyName = "StockCount";
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colStockCount.DefaultCellStyle = dataGridViewCellStyle18;
+            this.colStockCount.HeaderText = "Stocks";
+            this.colStockCount.Name = "colStockCount";
+            this.colStockCount.ReadOnly = true;
+            this.colStockCount.Width = 65;
+            // 
+            // colDemoMovieCount
+            // 
+            this.colDemoMovieCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colDemoMovieCount.DataPropertyName = "DemoMovieCount";
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colDemoMovieCount.DefaultCellStyle = dataGridViewCellStyle19;
+            this.colDemoMovieCount.HeaderText = "Movies";
+            this.colDemoMovieCount.Name = "colDemoMovieCount";
+            this.colDemoMovieCount.ReadOnly = true;
+            this.colDemoMovieCount.Width = 66;
+            // 
+            // dgvAddonDescription
+            // 
+            this.dgvAddonDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgvAddonDescription.DataPropertyName = "Description";
+            this.dgvAddonDescription.HeaderText = "Description";
+            this.dgvAddonDescription.Name = "dgvAddonDescription";
+            this.dgvAddonDescription.ReadOnly = true;
+            this.dgvAddonDescription.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dgvAddonDescription.Width = 66;
+            // 
+            // dgvAddonLocation
+            // 
+            this.dgvAddonLocation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgvAddonLocation.DataPropertyName = "Location";
+            this.dgvAddonLocation.HeaderText = "Location";
+            this.dgvAddonLocation.Name = "dgvAddonLocation";
+            this.dgvAddonLocation.ReadOnly = true;
+            this.dgvAddonLocation.Width = 73;
+            // 
             // cmAddonTable
             // 
             this.cmAddonTable.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmiDisplayReport,
             this.cmiShowContents,
+            this.cmiOpenContainingFolder,
             this.toolStripSeparator5,
             this.cmiExportExcel,
             this.toolStripSeparator3,
@@ -770,7 +1035,7 @@
             this.cmiCopyClipboard,
             this.cmiPasteClipboard});
             this.cmAddonTable.Name = "cmAddonTable";
-            this.cmAddonTable.Size = new System.Drawing.Size(309, 276);
+            this.cmAddonTable.Size = new System.Drawing.Size(309, 320);
             this.cmAddonTable.Opening += new System.ComponentModel.CancelEventHandler(this.cmAddonTable_Opening);
             // 
             // cmiDisplayReport
@@ -1737,268 +2002,12 @@
             this.sfdAddonListExportExcel.FileName = "Asset_Search_Result.xlsx";
             this.sfdAddonListExportExcel.Filter = "Excel files|*.xlsx";
             // 
-            // dgvAddonName
+            // cmiOpenContainingFolder
             // 
-            this.dgvAddonName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgvAddonName.DataPropertyName = "Name";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvAddonName.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvAddonName.Frozen = true;
-            this.dgvAddonName.HeaderText = "Name";
-            this.dgvAddonName.Name = "dgvAddonName";
-            this.dgvAddonName.ReadOnly = true;
-            this.dgvAddonName.Width = 60;
-            // 
-            // dgvAddonPublisher
-            // 
-            this.dgvAddonPublisher.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgvAddonPublisher.DataPropertyName = "Publisher";
-            this.dgvAddonPublisher.Frozen = true;
-            this.dgvAddonPublisher.HeaderText = "Publisher";
-            this.dgvAddonPublisher.Name = "dgvAddonPublisher";
-            this.dgvAddonPublisher.ReadOnly = true;
-            this.dgvAddonPublisher.Width = 75;
-            // 
-            // colDuplicateGroup
-            // 
-            this.colDuplicateGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colDuplicateGroup.DataPropertyName = "DuplicateGroup";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Red;
-            this.colDuplicateGroup.DefaultCellStyle = dataGridViewCellStyle2;
-            this.colDuplicateGroup.Frozen = true;
-            this.colDuplicateGroup.HeaderText = "Dup.Grp.";
-            this.colDuplicateGroup.Name = "colDuplicateGroup";
-            this.colDuplicateGroup.ReadOnly = true;
-            this.colDuplicateGroup.Width = 75;
-            // 
-            // dgvAddonInstalled
-            // 
-            this.dgvAddonInstalled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.dgvAddonInstalled.DataPropertyName = "Installed";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
-            dataGridViewCellStyle3.NullValue = false;
-            this.dgvAddonInstalled.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvAddonInstalled.HeaderText = "Installed";
-            this.dgvAddonInstalled.Name = "dgvAddonInstalled";
-            this.dgvAddonInstalled.ReadOnly = true;
-            this.dgvAddonInstalled.Width = 52;
-            // 
-            // dgvAddonFree
-            // 
-            this.dgvAddonFree.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.dgvAddonFree.DataPropertyName = "Free";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
-            dataGridViewCellStyle4.NullValue = false;
-            this.dgvAddonFree.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvAddonFree.HeaderText = "Free";
-            this.dgvAddonFree.Name = "dgvAddonFree";
-            this.dgvAddonFree.ReadOnly = true;
-            this.dgvAddonFree.Width = 34;
-            // 
-            // dgvAddonRecompilable
-            // 
-            this.dgvAddonRecompilable.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.dgvAddonRecompilable.DataPropertyName = "Recompilable";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
-            dataGridViewCellStyle5.NullValue = false;
-            this.dgvAddonRecompilable.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvAddonRecompilable.HeaderText = "Recompilable";
-            this.dgvAddonRecompilable.Name = "dgvAddonRecompilable";
-            this.dgvAddonRecompilable.ReadOnly = true;
-            this.dgvAddonRecompilable.Width = 77;
-            // 
-            // dgvAddonContentPack
-            // 
-            this.dgvAddonContentPack.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.dgvAddonContentPack.DataPropertyName = "ContentPack";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
-            dataGridViewCellStyle6.NullValue = false;
-            this.dgvAddonContentPack.DefaultCellStyle = dataGridViewCellStyle6;
-            this.dgvAddonContentPack.HeaderText = "Official";
-            this.dgvAddonContentPack.Name = "dgvAddonContentPack";
-            this.dgvAddonContentPack.ReadOnly = true;
-            this.dgvAddonContentPack.Width = 45;
-            // 
-            // colBodyPartCount
-            // 
-            this.colBodyPartCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.colBodyPartCount.DataPropertyName = "BodyPartCount";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.colBodyPartCount.DefaultCellStyle = dataGridViewCellStyle7;
-            this.colBodyPartCount.HeaderText = "Bodyparts";
-            this.colBodyPartCount.Name = "colBodyPartCount";
-            this.colBodyPartCount.ReadOnly = true;
-            this.colBodyPartCount.Width = 79;
-            // 
-            // colDecalCount
-            // 
-            this.colDecalCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.colDecalCount.DataPropertyName = "DecalCount";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.colDecalCount.DefaultCellStyle = dataGridViewCellStyle8;
-            this.colDecalCount.HeaderText = "Decals";
-            this.colDecalCount.Name = "colDecalCount";
-            this.colDecalCount.ReadOnly = true;
-            this.colDecalCount.Width = 65;
-            // 
-            // colPropCount
-            // 
-            this.colPropCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colPropCount.DataPropertyName = "PropCount";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.colPropCount.DefaultCellStyle = dataGridViewCellStyle9;
-            this.colPropCount.HeaderText = "Props";
-            this.colPropCount.Name = "colPropCount";
-            this.colPropCount.ReadOnly = true;
-            this.colPropCount.Width = 59;
-            // 
-            // colAnimationCount
-            // 
-            this.colAnimationCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colAnimationCount.DataPropertyName = "AnimationCount";
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.colAnimationCount.DefaultCellStyle = dataGridViewCellStyle10;
-            this.colAnimationCount.HeaderText = "Animations";
-            this.colAnimationCount.Name = "colAnimationCount";
-            this.colAnimationCount.ReadOnly = true;
-            this.colAnimationCount.Width = 83;
-            // 
-            // colVerbCount
-            // 
-            this.colVerbCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colVerbCount.DataPropertyName = "VerbCount";
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.colVerbCount.DefaultCellStyle = dataGridViewCellStyle11;
-            this.colVerbCount.HeaderText = "Verbs";
-            this.colVerbCount.Name = "colVerbCount";
-            this.colVerbCount.ReadOnly = true;
-            this.colVerbCount.Width = 59;
-            // 
-            // colMaterialCount
-            // 
-            this.colMaterialCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colMaterialCount.DataPropertyName = "MaterialCount";
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.colMaterialCount.DefaultCellStyle = dataGridViewCellStyle12;
-            this.colMaterialCount.HeaderText = "Materials";
-            this.colMaterialCount.Name = "colMaterialCount";
-            this.colMaterialCount.ReadOnly = true;
-            this.colMaterialCount.Width = 74;
-            // 
-            // colSoundCount
-            // 
-            this.colSoundCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colSoundCount.DataPropertyName = "SoundCount";
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.colSoundCount.DefaultCellStyle = dataGridViewCellStyle13;
-            this.colSoundCount.HeaderText = "Sounds";
-            this.colSoundCount.Name = "colSoundCount";
-            this.colSoundCount.ReadOnly = true;
-            this.colSoundCount.Width = 68;
-            // 
-            // colSpecialEffectCount
-            // 
-            this.colSpecialEffectCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colSpecialEffectCount.DataPropertyName = "SpecialEffectCount";
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.colSpecialEffectCount.DefaultCellStyle = dataGridViewCellStyle14;
-            this.colSpecialEffectCount.HeaderText = "SFX";
-            this.colSpecialEffectCount.Name = "colSpecialEffectCount";
-            this.colSpecialEffectCount.ReadOnly = true;
-            this.colSpecialEffectCount.Width = 52;
-            // 
-            // colFilterCount
-            // 
-            this.colFilterCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colFilterCount.DataPropertyName = "CuttingRoomAssetCount";
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.colFilterCount.DefaultCellStyle = dataGridViewCellStyle15;
-            this.colFilterCount.HeaderText = "Cut Room";
-            this.colFilterCount.Name = "colFilterCount";
-            this.colFilterCount.ReadOnly = true;
-            this.colFilterCount.Width = 79;
-            // 
-            // colSkyTextureCount
-            // 
-            this.colSkyTextureCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colSkyTextureCount.DataPropertyName = "SkyTextureCount";
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.colSkyTextureCount.DefaultCellStyle = dataGridViewCellStyle16;
-            this.colSkyTextureCount.HeaderText = "Sky Textures";
-            this.colSkyTextureCount.Name = "colSkyTextureCount";
-            this.colSkyTextureCount.ReadOnly = true;
-            this.colSkyTextureCount.Width = 94;
-            // 
-            // colOtherAssetsCount
-            // 
-            this.colOtherAssetsCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colOtherAssetsCount.DataPropertyName = "OtherAssetsCount";
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.colOtherAssetsCount.DefaultCellStyle = dataGridViewCellStyle17;
-            this.colOtherAssetsCount.HeaderText = "Other";
-            this.colOtherAssetsCount.Name = "colOtherAssetsCount";
-            this.colOtherAssetsCount.ReadOnly = true;
-            this.colOtherAssetsCount.Width = 58;
-            // 
-            // colStockCount
-            // 
-            this.colStockCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colStockCount.DataPropertyName = "StockCount";
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colStockCount.DefaultCellStyle = dataGridViewCellStyle18;
-            this.colStockCount.HeaderText = "Stocks";
-            this.colStockCount.Name = "colStockCount";
-            this.colStockCount.ReadOnly = true;
-            this.colStockCount.Width = 65;
-            // 
-            // colDemoMovieCount
-            // 
-            this.colDemoMovieCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colDemoMovieCount.DataPropertyName = "DemoMovieCount";
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colDemoMovieCount.DefaultCellStyle = dataGridViewCellStyle19;
-            this.colDemoMovieCount.HeaderText = "Movies";
-            this.colDemoMovieCount.Name = "colDemoMovieCount";
-            this.colDemoMovieCount.ReadOnly = true;
-            this.colDemoMovieCount.Width = 66;
-            // 
-            // dgvAddonDescription
-            // 
-            this.dgvAddonDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgvAddonDescription.DataPropertyName = "Description";
-            this.dgvAddonDescription.HeaderText = "Description";
-            this.dgvAddonDescription.Name = "dgvAddonDescription";
-            this.dgvAddonDescription.ReadOnly = true;
-            this.dgvAddonDescription.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dgvAddonDescription.Width = 66;
-            // 
-            // dgvAddonLocation
-            // 
-            this.dgvAddonLocation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgvAddonLocation.DataPropertyName = "Location";
-            this.dgvAddonLocation.HeaderText = "Location";
-            this.dgvAddonLocation.Name = "dgvAddonLocation";
-            this.dgvAddonLocation.ReadOnly = true;
-            this.dgvAddonLocation.Width = 73;
+            this.cmiOpenContainingFolder.Name = "cmiOpenContainingFolder";
+            this.cmiOpenContainingFolder.Size = new System.Drawing.Size(308, 22);
+            this.cmiOpenContainingFolder.Text = "Open Containing Folder";
+            this.cmiOpenContainingFolder.Click += new System.EventHandler(this.cmiOpenContainingFolder_Click);
             // 
             // MainForm
             // 
@@ -2214,6 +2223,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colDemoMovieCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvAddonDescription;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvAddonLocation;
+        private System.Windows.Forms.ToolStripMenuItem cmiOpenContainingFolder;
     }
 }
 

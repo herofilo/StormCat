@@ -1,7 +1,7 @@
 StormCat, by jamoram
 
 Current version: 1.10.0
-Last Update: 2019/10/18
+Last Update: 2019/10/22
 
 A little tool for:
 	1) Creating and managing multiple independent catalogues of Moviestorm addons, both installed and as addon files:
@@ -14,8 +14,9 @@ A little tool for:
 	4) Optionally restoring Moviestorm addon files disguised as archive files
 
 PLEASE NOTE: if you're updating from version:
+	+ 1.10.0: please either refresh the information for every addon in your catalogues or re-create your catalogues. SORRY for the inconvenience
 	+ 1.9.0: you should refresh the Catalogue Index (Catalogue Management page)
-	+ 1.8.1 or earlies, it's advisable to:
+	+ 1.8.1 or earlier, it's advisable to:
 		- re-create every addon Catalogue
 		- refresh the Catalogue Index
 	
@@ -32,6 +33,7 @@ WHAT'S NEW:
 		- Last updated
 		- Version
 	- New options in contextual menu:
+		- Open Containing Folder
 		- Select All addons
 		- Select addons in the selected Duplicate Group
 		- Compare selected addons by fingerprint
@@ -40,8 +42,6 @@ WHAT'S NEW:
 * Comparison of addons in a Catalogue by fingerprint
 * Comparison of Catalogues: new option for comparing the addons contained in the current Catalogue against any other selected in the Catalogue Management table
 * Some minor bug fixes
-	
-NOTE: you'll need to use the 'Refresh Index' on the Catalogue Management page for updating the new information about the catalogues in the index.
 
 Please refer to the VERSION HISTORY section for a complete history of changes in the program
 
@@ -102,6 +102,7 @@ VERSION HISTORY
 			- Last updated
 			- Version
 		- New options in contextual menu:
+			- Open Containing Folder
 			- Select All addons
 			- Select addons in the selected Duplicate Group
 			- Compare selected addons by fingerprint
