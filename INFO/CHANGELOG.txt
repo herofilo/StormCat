@@ -1,7 +1,7 @@
 
 StormCat - Version History
 --------------------------
-* v1.10.0 (20191021):
+* v1.10.0 (20191025):
 	- A fingerprint is associated to every addon, for inequivocally identifying an addon and detecting duplicates
 	- The name of the current Catalogue is now displayed in red whenever any change has been made to it that needs to be saved to file.
 	- Catalogue page: an option for refreshing the information for every addon in the current Catalogue has been added.

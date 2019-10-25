@@ -1,7 +1,7 @@
 StormCat, by jamoram
 
 Current version: 1.10.0
-Last Update: 2019/10/22
+Last Update: 2019/10/25
 
 A little tool for:
 	1) Creating and managing multiple independent catalogues of Moviestorm addons, both installed and as addon files:
@@ -20,7 +20,9 @@ PLEASE NOTE: if you're updating from version:
 		- re-create every addon Catalogue
 		- refresh the Catalogue Index
 	
-
+VERY IMPORTANT NOTE: version 1.10.0 is the last regular version of StormCat, in the sense that no further work on this tool is planned and no new features will be implemented. 
+However, this does not mean StormCat has become an abandoned application, for as long as any bugs will be found, it will receive new updates to get them fixed.
+	
 
 WHAT'S NEW:
 -----------
@@ -80,7 +82,7 @@ When selecting the 'Report Only Issues' some spurious output may be generated as
 
 SOURCE CODE FOR THE APPLICATION COMPONENTS AND THIRD-PARTY LIBRARIES:
 ---------------------------------------------------------------------
-The source code for the application is available from its GitHub repository (https://github.com/herofilo/MSAddonChecker)
+The source code for the application is available from its GitHub repository (https://github.com/herofilo/StormCat)
 The source code for the MSAddonLib library can be downloaded from https://github.com/herofilo/MSAddonLib
 SevenZipSharp can be obtained from its home site (https://archive.codeplex.com/?p=sevenzipsharp)
 Other libraries will be restored automatically by the Nuget Package Restore system.
