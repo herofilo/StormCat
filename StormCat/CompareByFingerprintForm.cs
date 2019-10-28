@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using MSAddonLib.Domain.Addon;
 using MSAddonLib.Persistence.AddonDB;
+using MSAddonLib.Util.Persistence;
 using StormCat.Misc;
 
 namespace StormCat
@@ -15,6 +11,8 @@ namespace StormCat
     public partial class CompareByFingerprintForm : Form
     {
         private List<AddonPackage> _addons;
+
+        private List<AddonCompareInfo> _addonCompareInfos;
 
         private AddonPackageSet _addonPackageSet;
 
@@ -29,11 +27,43 @@ namespace StormCat
 
         private void CompareByFingerprintForm_Load(object sender, EventArgs e)
         {
+            BuildCompareInfo();
+
             ContextHelp.HelpNamespace = Globals.HelpFilename;
             ContextHelp.SetHelpNavigator(this, HelpNavigator.TopicId);
 
             DisplayData();
         }
+
+
+
+        private void BuildCompareInfo()
+        {
+            if (_addons == null)
+                return;
+
+            _addonCompareInfos = new List<AddonCompareInfo>();
+            foreach (AddonPackage addon in _addons)
+            {
+                string errorText;
+                string strongHash = AddonStrongHash.GetStrongHash(addon.Location, out errorText);
+
+                _addonCompareInfos.Add(new AddonCompareInfo()
+                {
+                    Name = addon.Name,
+                    Publisher = addon.Publisher,
+                    LastCompiled = addon.LastCompiled,
+                    FingerPrint = addon.FingerPrint,
+                    StrongFingerPrint = strongHash,
+                    Location = addon.Location
+                });
+
+
+
+            }
+        }
+
+
 
         private void DisplayData()
         {
@@ -41,7 +71,7 @@ namespace StormCat
 
             BindingSource source = null;
 
-            var bindingList = new SortableBindingList<AddonPackage>(_addons);
+            var bindingList = new SortableBindingList<AddonCompareInfo>(_addonCompareInfos);
             source = new BindingSource(bindingList, null);
 
             dgvComparison.DataSource = source;
@@ -117,5 +147,26 @@ namespace StormCat
             }
 
         }
+
+
+        // ------------------------------------------------------------------------------------------
+
+        private sealed class AddonCompareInfo
+        {
+            public string Name { get; set; }
+
+            public string Publisher { get; set; }
+
+            public DateTime? LastCompiled { get; set; }
+
+            public string FingerPrint { get; set; }
+
+            public string StrongFingerPrint { get; set; }
+
+            public string Location { get; set; }
+        }
+
+
+
     }
 }

@@ -1,6 +1,16 @@
 
 StormCat - Version History
 --------------------------
+* v1.10.1 (20191027):
+	- Addon detail content report: if no animations associated to a puppet model, no animation summary line printed
+	- Compare by Fingerprint form: added Fingerprint2 or "Strong fingerprint", computed from the contents of the relevant files in the addon, that is:
+		- Manifest archive
+		- Mesh data file
+		- Data files except:
+			Description of bodyparts: .bodypart
+			Description of props: DESCRIPTOR .template .part
+			Cal3D files: mesh material
+
 * v1.10.0 (20191025):
 	- A fingerprint is associated to every addon, for inequivocally identifying an addon and detecting duplicates
 	- The name of the current Catalogue is now displayed in red whenever any change has been made to it that needs to be saved to file.

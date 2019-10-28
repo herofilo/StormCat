@@ -1,7 +1,7 @@
 StormCat, by jamoram
 
-Current version: 1.10.0
-Last Update: 2019/10/25
+Current version: 1.10.1
+Last Update: 2019/10/28
 
 A little tool for:
 	1) Creating and managing multiple independent catalogues of Moviestorm addons, both installed and as addon files:
@@ -26,24 +26,8 @@ However, this does not mean StormCat has become an abandoned application, for as
 
 WHAT'S NEW:
 -----------
-* A fingerprint is associated to every addon, for inequivocally identifying an addon and detecting duplicates
-* The name of the current Catalogue is now displayed in red whenever any change has been made to it that needs to be saved to file.
-* Catalogue page: an option for refreshing the information for every addon in the current Catalogue has been added.
-* Catalogue Management page:
-	- The table of catalogues now offers new information about the catalogues in the Catalogue Index:
-		- Count of addons
-		- Last updated
-		- Version
-	- New options in contextual menu:
-		- Open Containing Folder
-		- Select All addons
-		- Select addons in the selected Duplicate Group
-		- Compare selected addons by fingerprint
-		- Compare by fingerprint addon in the selected Duplicate Group
-* New criterium for identifying duplicate addons: fingerprint
-* Comparison of addons in a Catalogue by fingerprint
-* Comparison of Catalogues: new option for comparing the addons contained in the current Catalogue against any other selected in the Catalogue Management table
-* Some minor bug fixes
+* Addon detail content report: if no animations associated to a puppet model, no animation summary line printed
+* Compare by Fingerprint form: added Fingerprint2 or "Strong fingerprint", computed from the contents of the relevant files in the addon.
 
 Please refer to the VERSION HISTORY section for a complete history of changes in the program
 
@@ -94,6 +78,17 @@ Suggestions for improvements and bug reports can be addressed to the email accou
 
 VERSION HISTORY
 ---------------
+* v1.10.1 (20191027): [INTERNAL]
+	- Addon detail content report: if no animations associated to a puppet model, no animation summary line printed
+	- Compare by Fingerprint form: added Fingerprint2 or "Strong fingerprint", computed from the contents of the relevant files in the addon, that is:
+		- Manifest archive
+		- Mesh data file
+		- Data files except:
+			Description of bodyparts: .bodypart
+			Description of props: DESCRIPTOR .template .part
+			Cal3D files: mesh material
+
+
 * v1.10.0 (20191021):
 	- A fingerprint is associated to every addon, for inequivocally identifying an addon and detecting duplicates
 	- The name of the current Catalogue is now displayed in red whenever any change has been made to it that needs to be saved to file.

@@ -33,15 +33,16 @@
             this.ContextHelp = new System.Windows.Forms.HelpProvider();
             this.label1 = new System.Windows.Forms.Label();
             this.dgvComparison = new System.Windows.Forms.DataGridView();
-            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPublisher = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPublished = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colFingerprint = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cmAddonTable = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmiDisplayAddonReport = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiListAddonContents = new System.Windows.Forms.ToolStripMenuItem();
             this.cmiOpenContainingFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPublisher = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPublished = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colFingerprint = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colStrongFingerPrint = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvComparison)).BeginInit();
             this.cmAddonTable.SuspendLayout();
             this.SuspendLayout();
@@ -71,6 +72,7 @@
             this.colPublisher,
             this.colPublished,
             this.colFingerprint,
+            this.colStrongFingerPrint,
             this.colLocation});
             this.dgvComparison.ContextMenuStrip = this.cmAddonTable;
             this.dgvComparison.Location = new System.Drawing.Point(6, 25);
@@ -81,6 +83,36 @@
             this.dgvComparison.Size = new System.Drawing.Size(616, 233);
             this.dgvComparison.TabIndex = 3;
             this.dgvComparison.DoubleClick += new System.EventHandler(this.dgvComparison_DoubleClick);
+            // 
+            // cmAddonTable
+            // 
+            this.cmAddonTable.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmiDisplayAddonReport,
+            this.cmiListAddonContents,
+            this.cmiOpenContainingFolder});
+            this.cmAddonTable.Name = "cmAssetTable";
+            this.cmAddonTable.Size = new System.Drawing.Size(252, 70);
+            // 
+            // cmiDisplayAddonReport
+            // 
+            this.cmiDisplayAddonReport.Name = "cmiDisplayAddonReport";
+            this.cmiDisplayAddonReport.Size = new System.Drawing.Size(251, 22);
+            this.cmiDisplayAddonReport.Text = "Display Report for the Addon";
+            this.cmiDisplayAddonReport.Click += new System.EventHandler(this.cmiDisplayAddonReport_Click);
+            // 
+            // cmiListAddonContents
+            // 
+            this.cmiListAddonContents.Name = "cmiListAddonContents";
+            this.cmiListAddonContents.Size = new System.Drawing.Size(251, 22);
+            this.cmiListAddonContents.Text = "List (table) contents of the Addon";
+            this.cmiListAddonContents.Click += new System.EventHandler(this.cmiListAddonContents_Click);
+            // 
+            // cmiOpenContainingFolder
+            // 
+            this.cmiOpenContainingFolder.Name = "cmiOpenContainingFolder";
+            this.cmiOpenContainingFolder.Size = new System.Drawing.Size(251, 22);
+            this.cmiOpenContainingFolder.Text = "Open Containing Folder";
+            this.cmiOpenContainingFolder.Click += new System.EventHandler(this.cmiOpenContainingFolder_Click);
             // 
             // colName
             // 
@@ -118,6 +150,15 @@
             this.colFingerprint.ReadOnly = true;
             this.colFingerprint.Width = 81;
             // 
+            // colStrongFingerPrint
+            // 
+            this.colStrongFingerPrint.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colStrongFingerPrint.DataPropertyName = "StrongFingerPrint";
+            this.colStrongFingerPrint.HeaderText = "Fingerprint 2";
+            this.colStrongFingerPrint.Name = "colStrongFingerPrint";
+            this.colStrongFingerPrint.ReadOnly = true;
+            this.colStrongFingerPrint.Width = 90;
+            // 
             // colLocation
             // 
             this.colLocation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -126,36 +167,6 @@
             this.colLocation.Name = "colLocation";
             this.colLocation.ReadOnly = true;
             this.colLocation.Width = 73;
-            // 
-            // cmAddonTable
-            // 
-            this.cmAddonTable.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmiDisplayAddonReport,
-            this.cmiListAddonContents,
-            this.cmiOpenContainingFolder});
-            this.cmAddonTable.Name = "cmAssetTable";
-            this.cmAddonTable.Size = new System.Drawing.Size(252, 92);
-            // 
-            // cmiDisplayAddonReport
-            // 
-            this.cmiDisplayAddonReport.Name = "cmiDisplayAddonReport";
-            this.cmiDisplayAddonReport.Size = new System.Drawing.Size(251, 22);
-            this.cmiDisplayAddonReport.Text = "Display Report for the Addon";
-            this.cmiDisplayAddonReport.Click += new System.EventHandler(this.cmiDisplayAddonReport_Click);
-            // 
-            // cmiListAddonContents
-            // 
-            this.cmiListAddonContents.Name = "cmiListAddonContents";
-            this.cmiListAddonContents.Size = new System.Drawing.Size(251, 22);
-            this.cmiListAddonContents.Text = "List (table) contents of the Addon";
-            this.cmiListAddonContents.Click += new System.EventHandler(this.cmiListAddonContents_Click);
-            // 
-            // cmiOpenContainingFolder
-            // 
-            this.cmiOpenContainingFolder.Name = "cmiOpenContainingFolder";
-            this.cmiOpenContainingFolder.Size = new System.Drawing.Size(251, 22);
-            this.cmiOpenContainingFolder.Text = "Open Containing Folder";
-            this.cmiOpenContainingFolder.Click += new System.EventHandler(this.cmiOpenContainingFolder_Click);
             // 
             // CompareByFingerprintForm
             // 
@@ -184,14 +195,15 @@
         private System.Windows.Forms.HelpProvider ContextHelp;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dgvComparison;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colPublisher;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colPublished;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colFingerprint;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colLocation;
         private System.Windows.Forms.ContextMenuStrip cmAddonTable;
         private System.Windows.Forms.ToolStripMenuItem cmiDisplayAddonReport;
         private System.Windows.Forms.ToolStripMenuItem cmiListAddonContents;
         private System.Windows.Forms.ToolStripMenuItem cmiOpenContainingFolder;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPublisher;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPublished;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colFingerprint;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colStrongFingerPrint;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colLocation;
     }
 }
