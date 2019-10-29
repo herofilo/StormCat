@@ -16,12 +16,15 @@ namespace StormCat
 
         private AddonPackageSet _addonPackageSet;
 
+        private TextBox _logOutput;
+
         // --------------------------------------------------------------------------------------------------------------------
 
-        public CompareByFingerprintForm(List<AddonPackage> pAddons, AddonPackageSet pAddonPackageSet)
+        public CompareByFingerprintForm(List<AddonPackage> pAddons, AddonPackageSet pAddonPackageSet, TextBox pLogOutput)
         {
             _addons = pAddons;
             _addonPackageSet = pAddonPackageSet;
+            _logOutput = pLogOutput;
             InitializeComponent();
         }
 
@@ -58,6 +61,11 @@ namespace StormCat
                     Location = addon.Location
                 });
 
+                if (!string.IsNullOrEmpty(errorText))
+                {
+                    _logOutput.AppendText($"ERROR while computing Fingerprint2 for '{addon.Location}':\n");
+                    _logOutput.AppendText(errorText + "\n");
+                }
 
 
             }

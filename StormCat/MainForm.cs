@@ -1335,7 +1335,7 @@ namespace StormCat
             if (addons.Count < 2)
                 return;
 
-            CompareByFingerprintForm form = new CompareByFingerprintForm(addons.OrderBy(o => o.FingerPrint).ToList(), _addonPackageSet);
+            CompareByFingerprintForm form = new CompareByFingerprintForm(addons.OrderBy(o => o.FingerPrint).ToList(), _addonPackageSet, tbLog);
             form.Show(this);
         }
 
