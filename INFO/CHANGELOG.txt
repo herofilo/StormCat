@@ -1,6 +1,9 @@
 
 StormCat - Version History
 --------------------------
+* v1.11.0 (20191031):
+	- Support for addon's unoffical note file, for conveying information about the original publisher of republished addons
+
 * v1.10.1 (20191027):
 	- Addon detail content report: if no animations associated to a puppet model, no animation summary line printed
 	- Compare by Fingerprint form: added Fingerprint2 or "Strong fingerprint", computed from the contents of the relevant files in the addon, that is:
