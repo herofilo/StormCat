@@ -1,6 +1,9 @@
 
 StormCat - Version History
 --------------------------
+* v1.11.1 (20191101):
+	- Asset list: if prop has animations associated, a new flag "[Animated]" will be added to ExtraInfo
+
 * v1.11.0 (20191031):
 	- Support for addon's unoffical note file, for conveying information about the original publisher of republished addons
 

@@ -1,7 +1,7 @@
 StormCat, by jamoram
 
-Current version: 1.11.0
-Last Update: 2019/10/31
+Current version: 1.11.1
+Last Update: 2019/11/01
 
 A little tool for:
 	1) Creating and managing multiple independent catalogues of Moviestorm addons, both installed and as addon files:
@@ -26,7 +26,7 @@ However, this does not mean StormCat has become an abandoned application, for as
 
 WHAT'S NEW:
 -----------
-* Support for addon's unoffical note file, for conveying information about the original publisher of republished addons
+* Asset list: if prop has animations associated, a new flag "[Animated]" will be added to ExtraInfo
 
 Please refer to the VERSION HISTORY section for a complete history of changes in the program
 
@@ -77,6 +77,9 @@ Suggestions for improvements and bug reports can be addressed to the email accou
 
 VERSION HISTORY
 ---------------
+* v1.11.1 (20191101):
+	- Asset list: if prop has animations associated, a new flag "[Animated]" will be added to ExtraInfo
+
 * v1.11.0 (20191031): [INTERNAL]
 	- Support for addon's unoffical note file, for conveying information about the original publisher of republished addons
 
