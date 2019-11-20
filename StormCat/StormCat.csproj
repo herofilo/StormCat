@@ -181,6 +181,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="StormCat User Guide.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="StormCat.chm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

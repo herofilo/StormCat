@@ -1,6 +1,11 @@
 
 StormCat - Version History
 --------------------------
+* v1.11.2 (20191120):
+	- Before checking/appending files/folders, checks whether the temporary folder exists.
+	- Minor correction to help text
+	- Added: PDF version of the full help text.
+
 * v1.11.1 (20191101):
 	- Asset list: if prop has animations associated, a new flag "[Animated]" will be added to ExtraInfo
 

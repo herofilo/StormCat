@@ -564,6 +564,13 @@ namespace StormCat
 
         private void ProcessArguments(string[] pArgs)
         {
+            if (!Directory.Exists(Utils.GetTempDirectory()))
+            {
+                MessageBox.Show("Can't proceed: temporary folder can't be found'", "Error: Temporary folder not found",
+                    MessageBoxButtons.OK);
+                return;
+            }
+
             Cursor currentCursor = Cursor;
             Cursor = Cursors.WaitCursor;
 

@@ -1,7 +1,7 @@
 StormCat, by jamoram
 
-Current version: 1.11.1
-Last Update: 2019/11/01
+Current version: 1.11.2
+Last Update: 2019/11/20
 
 A little tool for:
 	1) Creating and managing multiple independent catalogues of Moviestorm addons, both installed and as addon files:
@@ -20,20 +20,20 @@ PLEASE NOTE: if you're updating from version:
 		- re-create every addon Catalogue
 		- refresh the Catalogue Index
 	
-VERY IMPORTANT NOTE: version 1.10.0 is the last regular version of StormCat, in the sense that no further work on this tool is planned and no new features will be implemented. 
-However, this does not mean StormCat has become an abandoned application, for as long as any bugs will be found, it will receive new updates to get them fixed.
-	
 
 WHAT'S NEW:
 -----------
-* Asset list: if prop has animations associated, a new flag "[Animated]" will be added to ExtraInfo
+* Before checking/appending files/folders, checks whether the temporary folder exists.
+* Minor correction to help text
+* Added: PDF version of the full help text.
 
 Please refer to the VERSION HISTORY section for a complete history of changes in the program
 
 
 REQUIREMENTS
 ------------
-Microsoft .NET runtime version 4.x must be installed for the application to be properly executed. Otherwise, an error will happen on launching.
+- Microsoft .NET runtime version 4.x must be installed for the application to be properly executed. Otherwise, an error will happen on launching.
+- The tool program must to be extrated into a folder with permissions for creating new files (configuration, databases/collections, indexes) and a temporary folder
 
 
 HOW TO USE:
@@ -61,6 +61,9 @@ Also please check the page 'Installing and Launching the Application' in the Hel
 KNOWN ISSUES:
 -------------
 When selecting the 'Report Only Issues' some spurious output may be generated as it tries to inspect folders and the contents of archive files.
+IMPORTANT: when invoking the offline Help included with the system, it's possible that the text of the pages doesn't show. This is a security feature of Windows. You may either:
+1) By using an account with administrative permissions, right-click on the help file (StormCat.chm), select Properties and then "Unblock"
+2) Alternatively, you may use the new "StormCat User Guide", provided as a PDF document.
 
 
 SOURCE CODE FOR THE APPLICATION COMPONENTS AND THIRD-PARTY LIBRARIES:
@@ -77,7 +80,12 @@ Suggestions for improvements and bug reports can be addressed to the email accou
 
 VERSION HISTORY
 ---------------
-* v1.11.1 (20191101):
+* v1.11.2 (20191120):
+	- Before checking/appending files/folders, checks whether the temporary folder exists.
+	- Minor correction to help text
+	- Added: PDF version of the full help text.
+
+* v1.11.1 (20191101): [INTERNAL]
 	- Asset list: if prop has animations associated, a new flag "[Animated]" will be added to ExtraInfo
 
 * v1.11.0 (20191031): [INTERNAL]

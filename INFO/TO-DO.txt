@@ -2,6 +2,16 @@
 StormCat - TO-DO
 ----------------
 
+* Less techie error message if Temp file can't be found
+
+* Documentación en PDF
+
+
+* README:
+	WARNING - pre-requisites: .NET
+								location
+	CHM not page text displayed
+
 * Better inline documentation of code
 ----
 
